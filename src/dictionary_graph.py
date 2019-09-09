@@ -1,17 +1,5 @@
 """Implementing graphs in plain Python, no extra libraries required."""
 
-def example_dict_graph():
-    """Returns a dictionary representing an example of an undirected graph."""
-    g = {
-        'A': ['B'],
-        'B': ['A', 'C', 'D'],
-        'C': ['B', 'D'],
-        'D': ['B', 'C'],
-        'E': []
-    }
-
-    return g
-
 def num_nodes(g):
     """For a dictionary representation of a graph, returns the number of nodes
     in the graph."""
