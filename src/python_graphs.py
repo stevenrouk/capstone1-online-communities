@@ -82,6 +82,10 @@ class BasicGraph:
         self.graph_degree = self.degree()
         self.adjacency_matrix = self._create_adjacency_matrix()
     
+    def adj(self, node):
+        """Returns list of adjacent nodes."""
+        return self.graph[node]
+    
     def degree(self, node=None):
         """If passed a node label, returns the degree of that node. Otherwise,
         returns the degree of the graph, i.e. the maximum degree of any node
