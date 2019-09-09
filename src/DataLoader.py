@@ -6,7 +6,7 @@ class DataLoader:
 
     def __init__(self, full_file=False, num_lines=10, cols_to_load=[]):
         self.filepath = "data/soc-redditHyperlinks-body.tsv"
-        self.full_file = False
+        self.full_file = full_file
         self.num_lines = num_lines
         self.cols_to_load = cols_to_load
 
@@ -17,7 +17,7 @@ class DataLoader:
                 for __ in range(self.num_lines):
                     lines.append(f.readline())
             else:
-                lines = f.readlines
+                lines = f.readlines()
 
         cleaned_lines = np.array(self.clean(lines))
         if not self.cols_to_load:
