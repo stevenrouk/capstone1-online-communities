@@ -3,7 +3,7 @@
 class UndirectedGraph:
     """Represents an undirected graph with nodes and edges between nodes."""
 
-    def __init__(self, graph_dict):
+    def __init__(self, graph_dict={}):
         self.graph = graph_dict
         self.nodes = sorted(self.graph.keys())
         self.num_nodes = len(self.nodes)
@@ -30,6 +30,8 @@ class UndirectedGraph:
         in the graph."""
         if node:
             return len(self.graph[node])
+        elif not self.graph:
+            return 0
         else:
             return max(self.degree(node) for node in self.nodes)
     
