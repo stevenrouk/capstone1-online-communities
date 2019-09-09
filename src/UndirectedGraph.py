@@ -5,20 +5,18 @@ class UndirectedGraph:
 
     def __init__(self, graph_dict={}):
         self.graph = graph_dict
-        self.nodes = sorted(self.graph.keys())
+        self.nodes = set(self.graph.keys())
         self.num_nodes = len(self.nodes)
         self.edges = "Not implemented yet" #TODO
         self.num_edges = sum(len(v) for v in self.graph.values()) // 2
         self.graph_degree = self.degree()
-        self.adjacency_matrix = self._create_adjacency_matrix()
     
     def _refresh_graph(self):
-        self.nodes = sorted(self.graph.keys())
+        self.nodes = set(self.graph.keys())
         self.num_nodes = len(self.nodes)
         self.edges = "Not implemented yet" #TODO
         self.num_edges = sum(len(v) for v in self.graph.values()) // 2
         self.graph_degree = self.degree()
-        self.adjacency_matrix = self._create_adjacency_matrix()
     
     def adj(self, node):
         """Returns list of adjacent nodes."""
@@ -35,14 +33,15 @@ class UndirectedGraph:
         else:
             return max(self.degree(node) for node in self.nodes)
     
-    def _create_adjacency_matrix(self):
+    def adjacency_matrix(self):
         """Returns a list representing the adjacency matrix of the graph, where
         the indices of the adjacency matrix are sorted in alphabetical order for
         strings and numerical order for numbers."""
         adj = []
-        for row_node in self.nodes:
+        sorted_nodes = sorted(self.nodes)
+        for row_node in sorted_nodes:
             row = []
-            for column_node in self.nodes:
+            for column_node in sorted_nodes:
                 if column_node in self.graph[row_node]:
                     row.append(1)
                 else:

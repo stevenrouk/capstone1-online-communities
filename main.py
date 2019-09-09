@@ -1,3 +1,5 @@
+import time
+
 import numpy as np
 
 from src.example_graphs import simple_undirected_graph, simple_directed_graph
@@ -23,9 +25,10 @@ if __name__ == "__main__":
     # The code as it is currently written takes a while to load for 1000 lines.
     # The efficiency could be immediately improved through changing lists to sets in the classes,
     # where appropriate.
-    data_loader = DataLoader(num_lines=1000, cols_to_load=['SOURCE_SUBREDDIT', 'TARGET_SUBREDDIT'])
+    data_loader = DataLoader(num_lines=10000, cols_to_load=['SOURCE_SUBREDDIT', 'TARGET_SUBREDDIT'])
     lines = data_loader.load()
 
+    start_time = time.time()
     reddit_body_hyperlink_graph = DirectedGraph({})
     for line in lines[1:]:
         #print("Working on {}".format(line))
@@ -40,3 +43,10 @@ if __name__ == "__main__":
             #TODO - We want to add multiple edges from one node to another eventually.
             pass
         #input()
+    end_time = time.time()
+    print("Data load took {} seconds.".format(end_time - start_time))
+
+    start_time = time.time()
+    adj = reddit_body_hyperlink_graph.adjacency_matrix()
+    end_time = time.time()
+    print("Creating the adjacency matrix took {} seconds.".format(end_time - start_time))
