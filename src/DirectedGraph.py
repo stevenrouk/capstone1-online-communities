@@ -1,5 +1,10 @@
 """The DirectedGraph class offers basic methods for a directed graph."""
 
+# Modifying the path so we can import from src directory.
+import sys
+import os
+sys.path.append(os.path.abspath('.'))
+
 from src.UndirectedGraph import UndirectedGraph
 
 class DirectedGraph(UndirectedGraph):
