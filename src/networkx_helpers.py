@@ -1,4 +1,5 @@
 import copy
+from collections import Counter
 
 import networkx as nx
 
@@ -26,3 +27,15 @@ def top_n_pagerank(graph, n):
     pr_items = list(pr.items())
     
     return sorted(pr_items, key=lambda x: x[1], reverse=True)[:n]
+
+def degree_of_connected_components(graph):
+    graph_undirected = graph.to_undirected()
+    connected_components_list = list(nx.connected_components(graph_undirected))
+    
+    return Counter([len(component) for component in connected_components_list])
+
+def connected_components_of_degree_n(graph, n):
+    graph_undirected = graph.to_undirected()
+    connected_components_list = list(nx.connected_components(graph_undirected))
+
+    return [c for c in connected_components_list if len(c) == n]
