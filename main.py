@@ -1,7 +1,10 @@
+import copy
+import pickle
 import time
 
 import numpy as np
 import pandas as pd
+import networkx as nx
 
 from src.example_graphs import simple_undirected_graph, simple_directed_graph
 from src.UndirectedGraph import UndirectedGraph
@@ -109,5 +112,96 @@ def pandas_analysis():
     print(value_count_overlap(concat_target_counts, body_target_counts, 10))
     print(value_count_overlap(concat_target_counts, title_target_counts, 10))
 
+def networkx_loading(filepath):
+    start_time = time.time()
+    data_loader = DataLoader(filepath=filepath, full_file=True, cols_to_load=['SOURCE_SUBREDDIT', 'TARGET_SUBREDDIT'])
+    node_edge_pairs = data_loader.load()
+    print("Data loaded in {} seconds".format(time.time() - start_time))
+
+    start_time = time.time()
+    G = nx.DiGraph()
+    
+    # Initialize loading counter.
+    i = 0
+    #G.add_edges_from(node_edge_pairs[1:])
+    for node_from, node_to in node_edge_pairs[1:]:
+        # Counter to track progress loading
+        if i % 10000 == 0:
+            print(i)
+        i += 1
+        # Add nodes
+        G.add_edge(node_from, node_to)
+        # if node_from not in graph.nodes:
+        #     graph.add_node(node_from, [node_to])
+        # elif node_to not in graph.graph[node_from]:
+        #     graph.add_edge(node_from, node_to)
+        # else:
+        #     # TODO - We want to add multiple edges from one node to another eventually.
+        #     pass
+    end_time = time.time()
+    print("Data load took {} seconds.".format(end_time - start_time))
+
+    return G
+
+def pickle_obj(obj, filename):
+    with open(filename, 'wb') as f:
+        pickle.dump(obj, f)
+
+def load_pickled_obj(filename):
+    with open(filename, 'rb') as f:
+        obj = pickle.load(f)
+    
+    return obj
+
+def print_num_nodes_and_edges(G, g_name):
+    print(g_name)
+    print(G.number_of_nodes())
+    print(G.number_of_edges())
+
 if __name__ == "__main__":
-    pass
+    # Load body data.
+    #G_body = networkx_loading(filepath='data/soc-redditHyperlinks-body.tsv')
+    #pickle_obj(G_body, "data_pickle/networkx_digraph_body.pickle")
+    print("Load pickled G_body...")
+    G_body = load_pickled_obj("data_pickle/networkx_digraph_body.pickle")
+
+    # Load title data.
+    #G_title = networkx_loading(filepath='data/soc-redditHyperlinks-title.tsv')
+    #pickle_obj(G_title, "data_pickle/networkx_digraph_title.pickle")
+    print("Load pickled G_title...")
+    G_title = load_pickled_obj("data_pickle/networkx_digraph_title.pickle")
+
+    #print("Create deepcopy of G_body...")
+    #G_combined = copy.deepcopy(G_body)
+    #print("Add nodes from G_title...")
+    #G_combined.add_nodes_from(G_title)
+    #print("Add edges from G_title...")
+    #G_combined.add_edges_from(G_title.edges)
+    #print("Pickle G_combined...")
+    #pickle_obj(G_combined, "data_pickle/networkx_digraph_combined.pickle")
+
+    # Load combined data.
+    print("Load pickled G_combined...")
+    G_combined = load_pickled_obj("data_pickle/networkx_digraph_combined.pickle")
+
+    for graph, name in zip([G_body, G_title, G_combined], ['G_body', 'G_title', 'G_combined']):
+        print_num_nodes_and_edges(graph, name)
+
+    """
+    G_body
+    35776
+    137821
+
+    G_title
+    54075
+    234792
+
+    G_combined
+    67180
+    339643
+
+    ...
+
+    (35776 + 54075 - 67180) / 67180
+    (137821 + 234792 - 339643) / 339643
+    """
