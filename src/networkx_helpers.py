@@ -39,3 +39,10 @@ def connected_components_of_degree_n(graph, n):
     connected_components_list = list(nx.connected_components(graph_undirected))
 
     return [c for c in connected_components_list if len(c) == n]
+
+def create_subgraph_from_node_and_ins_outs(graph, n):
+    subgraph = nx.DiGraph()
+    subgraph.add_edges_from(graph.in_edges(n))
+    subgraph.add_edges_from(graph.out_edges(n))
+
+    return subgraph
