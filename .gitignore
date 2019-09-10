@@ -1,6 +1,7 @@
 *.pyc
-__pycache__
+__pycache__/
 .DS_Store
 .vscode
 *.tsv
 *.pickle
+.ipynb_checkpoints/
