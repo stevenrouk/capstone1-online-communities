@@ -4,8 +4,8 @@ import numpy as np
 
 class DataLoader:
 
-    def __init__(self, full_file=False, num_lines=10, cols_to_load=[]):
-        self.filepath = "data/soc-redditHyperlinks-body.tsv"
+    def __init__(self, filepath, full_file=False, num_lines=10, cols_to_load=[]):
+        self.filepath = filepath
         self.full_file = full_file
         self.num_lines = num_lines
         self.cols_to_load = cols_to_load
