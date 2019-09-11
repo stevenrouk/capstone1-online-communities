@@ -1,0 +1,113 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "Evelyn Jefferson", "label": "Evelyn Jefferson", "shape": "dot", "title": "Evelyn Jefferson"}, {"id": "E1", "label": "E1", "shape": "dot", "title": "E1"}, {"id": "E2", "label": "E2", "shape": "dot", "title": "E2"}, {"id": "E3", "label": "E3", "shape": "dot", "title": "E3"}, {"id": "E4", "label": "E4", "shape": "dot", "title": "E4"}, {"id": "E5", "label": "E5", "shape": "dot", "title": "E5"}, {"id": "E6", "label": "E6", "shape": "dot", "title": "E6"}, {"id": "E8", "label": "E8", "shape": "dot", "title": "E8"}, {"id": "E9", "label": "E9", "shape": "dot", "title": "E9"}, {"id": "Laura Mandeville", "label": "Laura Mandeville", "shape": "dot", "title": "Laura Mandeville"}, {"id": "E7", "label": "E7", "shape": "dot", "title": "E7"}, {"id": "Theresa Anderson", "label": "Theresa Anderson", "shape": "dot", "title": "Theresa Anderson"}, {"id": "Brenda Rogers", "label": "Brenda Rogers", "shape": "dot", "title": "Brenda Rogers"}, {"id": "Charlotte McDowd", "label": "Charlotte McDowd", "shape": "dot", "title": "Charlotte McDowd"}, {"id": "Frances Anderson", "label": "Frances Anderson", "shape": "dot", "title": "Frances Anderson"}, {"id": "Eleanor Nye", "label": "Eleanor Nye", "shape": "dot", "title": "Eleanor Nye"}, {"id": "Pearl Oglethorpe", "label": "Pearl Oglethorpe", "shape": "dot", "title": "Pearl Oglethorpe"}, {"id": "Ruth DeSand", "label": "Ruth DeSand", "shape": "dot", "title": "Ruth DeSand"}, {"id": "Verne Sanderson", "label": "Verne Sanderson", "shape": "dot", "title": "Verne Sanderson"}, {"id": "E12", "label": "E12", "shape": "dot", "title": "E12"}, {"id": "Myra Liddel", "label": "Myra Liddel", "shape": "dot", "title": "Myra Liddel"}, {"id": "E10", "label": "E10", "shape": "dot", "title": "E10"}, {"id": "Katherina Rogers", "label": "Katherina Rogers", "shape": "dot", "title": "Katherina Rogers"}, {"id": "E13", "label": "E13", "shape": "dot", "title": "E13"}, {"id": "E14", "label": "E14", "shape": "dot", "title": "E14"}, {"id": "Sylvia Avondale", "label": "Sylvia Avondale", "shape": "dot", "title": "Sylvia Avondale"}, {"id": "Nora Fayette", "label": "Nora Fayette", "shape": "dot", "title": "Nora Fayette"}, {"id": "E11", "label": "E11", "shape": "dot", "title": "E11"}, {"id": "Helen Lloyd", "label": "Helen Lloyd", "shape": "dot", "title": "Helen Lloyd"}, {"id": "Dorothy Murchison", "label": "Dorothy Murchison", "shape": "dot", "title": "Dorothy Murchison"}, {"id": "Olivia Carleton", "label": "Olivia Carleton", "shape": "dot", "title": "Olivia Carleton"}, {"id": "Flora Price", "label": "Flora Price", "shape": "dot", "title": "Flora Price"}]);
+        edges = new vis.DataSet([{"from": "Evelyn Jefferson", "to": "E1"}, {"from": "Evelyn Jefferson", "to": "E2"}, {"from": "Evelyn Jefferson", "to": "E3"}, {"from": "Evelyn Jefferson", "to": "E4"}, {"from": "Evelyn Jefferson", "to": "E5"}, {"from": "Evelyn Jefferson", "to": "E6"}, {"from": "Evelyn Jefferson", "to": "E8"}, {"from": "Evelyn Jefferson", "to": "E9"}, {"from": "Laura Mandeville", "to": "E1"}, {"from": "Laura Mandeville", "to": "E2"}, {"from": "Laura Mandeville", "to": "E3"}, {"from": "Laura Mandeville", "to": "E5"}, {"from": "Laura Mandeville", "to": "E6"}, {"from": "Laura Mandeville", "to": "E7"}, {"from": "Laura Mandeville", "to": "E8"}, {"from": "Theresa Anderson", "to": "E2"}, {"from": "Theresa Anderson", "to": "E3"}, {"from": "Theresa Anderson", "to": "E4"}, {"from": "Theresa Anderson", "to": "E5"}, {"from": "Theresa Anderson", "to": "E6"}, {"from": "Theresa Anderson", "to": "E7"}, {"from": "Theresa Anderson", "to": "E8"}, {"from": "Theresa Anderson", "to": "E9"}, {"from": "Brenda Rogers", "to": "E1"}, {"from": "Brenda Rogers", "to": "E3"}, {"from": "Brenda Rogers", "to": "E4"}, {"from": "Brenda Rogers", "to": "E5"}, {"from": "Brenda Rogers", "to": "E6"}, {"from": "Brenda Rogers", "to": "E7"}, {"from": "Brenda Rogers", "to": "E8"}, {"from": "Charlotte McDowd", "to": "E3"}, {"from": "Charlotte McDowd", "to": "E4"}, {"from": "Charlotte McDowd", "to": "E5"}, {"from": "Charlotte McDowd", "to": "E7"}, {"from": "Frances Anderson", "to": "E3"}, {"from": "Frances Anderson", "to": "E5"}, {"from": "Frances Anderson", "to": "E6"}, {"from": "Frances Anderson", "to": "E8"}, {"from": "Eleanor Nye", "to": "E5"}, {"from": "Eleanor Nye", "to": "E6"}, {"from": "Eleanor Nye", "to": "E7"}, {"from": "Eleanor Nye", "to": "E8"}, {"from": "Pearl Oglethorpe", "to": "E6"}, {"from": "Pearl Oglethorpe", "to": "E8"}, {"from": "Pearl Oglethorpe", "to": "E9"}, {"from": "Ruth DeSand", "to": "E5"}, {"from": "Ruth DeSand", "to": "E7"}, {"from": "Ruth DeSand", "to": "E8"}, {"from": "Ruth DeSand", "to": "E9"}, {"from": "Verne Sanderson", "to": "E7"}, {"from": "Verne Sanderson", "to": "E8"}, {"from": "Verne Sanderson", "to": "E9"}, {"from": "Verne Sanderson", "to": "E12"}, {"from": "Myra Liddel", "to": "E8"}, {"from": "Myra Liddel", "to": "E9"}, {"from": "Myra Liddel", "to": "E10"}, {"from": "Myra Liddel", "to": "E12"}, {"from": "Katherina Rogers", "to": "E8"}, {"from": "Katherina Rogers", "to": "E9"}, {"from": "Katherina Rogers", "to": "E10"}, {"from": "Katherina Rogers", "to": "E12"}, {"from": "Katherina Rogers", "to": "E13"}, {"from": "Katherina Rogers", "to": "E14"}, {"from": "Sylvia Avondale", "to": "E7"}, {"from": "Sylvia Avondale", "to": "E8"}, {"from": "Sylvia Avondale", "to": "E9"}, {"from": "Sylvia Avondale", "to": "E10"}, {"from": "Sylvia Avondale", "to": "E12"}, {"from": "Sylvia Avondale", "to": "E13"}, {"from": "Sylvia Avondale", "to": "E14"}, {"from": "Nora Fayette", "to": "E6"}, {"from": "Nora Fayette", "to": "E7"}, {"from": "Nora Fayette", "to": "E9"}, {"from": "Nora Fayette", "to": "E10"}, {"from": "Nora Fayette", "to": "E11"}, {"from": "Nora Fayette", "to": "E12"}, {"from": "Nora Fayette", "to": "E13"}, {"from": "Nora Fayette", "to": "E14"}, {"from": "Helen Lloyd", "to": "E7"}, {"from": "Helen Lloyd", "to": "E8"}, {"from": "Helen Lloyd", "to": "E10"}, {"from": "Helen Lloyd", "to": "E11"}, {"from": "Helen Lloyd", "to": "E12"}, {"from": "Dorothy Murchison", "to": "E8"}, {"from": "Dorothy Murchison", "to": "E9"}, {"from": "Olivia Carleton", "to": "E9"}, {"from": "Olivia Carleton", "to": "E11"}, {"from": "Flora Price", "to": "E9"}, {"from": "Flora Price", "to": "E11"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -80000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
