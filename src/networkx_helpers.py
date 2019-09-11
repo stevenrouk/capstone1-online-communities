@@ -18,7 +18,7 @@ def max_n_degree(graph, n):
 def combine_graphs(graph1, graph2):
     combined_graph = copy.deepcopy(graph1)
     combined_graph.add_nodes_from(graph2)
-    combined_graph.add_edges_from(graph2)
+    combined_graph.add_edges_from(graph2.edges)
 
     return combined_graph
 
