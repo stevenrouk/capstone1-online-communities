@@ -28,16 +28,18 @@ def create_example_viz_2(filename):
     )
     g.show(filename)
 
-def visualize_random_graph(filename, color_by_degree=True):
-    # Create a random graph.
-    G = nx.fast_gnp_random_graph(20, 0.5, seed=42, directed=True)
-    g = Network()
+def visualize_fast_gnp_random_graph(filename, n=20, p=0.5, seed=None, directed=False):
+    G = nx.fast_gnp_random_graph(n, p, seed=seed, directed=directed)
+    visualize_random_graph(filename, G)
+
+def visualize_random_graph(filename, graph, color_by_degree=True, notebook=False):
+    g = Network(notebook=notebook)
     g.barnes_hut()
-    G_nodes = G.nodes
+    G_nodes = graph.nodes
 
     # Coloring by degree:
     if color_by_degree:
-        G_degrees = [G.degree(node) for node in G_nodes]
+        G_degrees = [graph.degree(node) for node in G_nodes]
         G_colors = nums_to_greyscale_hex(G_degrees)
 
         for node, color in zip(G_nodes, G_colors):
@@ -48,7 +50,7 @@ def visualize_random_graph(filename, color_by_degree=True):
         for node in G_nodes:
             g.add_node(node)
     
-    for edge in G.edges:
+    for edge in graph.edges:
         g.add_edge(*edge)
 
     g.show(filename)
