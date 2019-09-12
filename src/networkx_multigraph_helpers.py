@@ -29,3 +29,24 @@ def sum_numeric_properties(graph, node1, node2, numeric_attrs):
 
 def count_edges(graph, node1, node2):
     return len(graph[node1][node2])
+
+def sharing_reciprocity(graph, n, m):
+    try:
+        n_to_m = graph[n][m]['weight']
+    except:
+        n_to_m = 0
+    
+    try:
+        m_to_n = graph[m][n]['weight']
+    except:
+        m_to_n = 0
+    
+    if n_to_m + m_to_n == 0:
+        return 0
+    
+    return {
+        'reciprocity': n_to_m / (n_to_m + m_to_n),
+        'summed weights': n_to_m + m_to_n,
+        'n-to-m': n_to_m,
+        'm_to_n': m_to_n
+    }
