@@ -137,7 +137,7 @@ Since we're dealing with network data, of course we need to ask the question "Wh
 _Casually: "Who's getting talked about? Who's getting their stuff shared?"_
 
 | subreddit | In-Degree (Uniques) | In-Degree (Total) |
-| --- | --- |
+| --- | --- | --- |
 | askreddit | 5448 | 24295 |
 | iama | 4508 | 11624 |
 | pics | 3335 | 11728 |
@@ -155,7 +155,7 @@ _Casually: "Who's getting talked about? Who's getting their stuff shared?"_
 _Casually: "Who's gossiping about others? Who's sharing things from others?"_
 
 | subreddit | Out-Degree (Uniques) | Out-Degree (Total) |
-| --- | --- |
+| --- | --- | --- |
 | bestof | 3111 | 21170 |
 | subredditdrama | 3020 | 23458 |
 | titlegore | 2469 | 9501 |
@@ -165,10 +165,10 @@ _Casually: "Who's gossiping about others? Who's sharing things from others?"_
 | switcharoo | 918 | 5999 |
 | the_donald | 798 |  -- |
 | shitamericanssay | 793 | 5509 |
-| botsrights | 792)] -- |
-| shitpost | -- 6658 |
-| circlebroke2 | -- 6089 |
-| shitstatistssay | -- 4278 |
+| botsrights | 792 | -- |
+| shitpost | -- | 6658 |
+| circlebroke2 | -- | 6089 |
+| shitstatistssay | -- | 4278 |
 
 There are some interesting results here:
 
