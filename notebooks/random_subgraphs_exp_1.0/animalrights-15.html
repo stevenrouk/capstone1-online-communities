@@ -1,0 +1,105 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#8f1414", "id": "animalrights", "label": "animalrights", "shape": "dot"}, {"color": "#ea1414", "id": "cfb", "label": "cfb", "shape": "dot"}, {"color": "#8f1414", "id": "inthenews", "label": "inthenews", "shape": "dot"}, {"color": "#001414", "id": "againstpetownership", "label": "againstpetownership", "shape": "dot"}, {"color": "#b51414", "id": "sanfrancisco", "label": "sanfrancisco", "shape": "dot"}, {"color": "#001414", "id": "promoteyourvideos", "label": "promoteyourvideos", "shape": "dot"}, {"color": "#001414", "id": "sflist", "label": "sflist", "shape": "dot"}, {"color": "#8f1414", "id": "frugalmalefashion", "label": "frugalmalefashion", "shape": "dot"}, {"color": "#001414", "id": "asksf", "label": "asksf", "shape": "dot"}, {"color": "#8f1414", "id": "dallas", "label": "dallas", "shape": "dot"}, {"color": "#8f1414", "id": "freebies", "label": "freebies", "shape": "dot"}, {"color": "#ff1414", "id": "toronto", "label": "toronto", "shape": "dot"}, {"color": "#001414", "id": "tmobiletuesdays", "label": "tmobiletuesdays", "shape": "dot"}, {"color": "#001414", "id": "mississauga", "label": "mississauga", "shape": "dot"}, {"color": "#001414", "id": "chiptunes", "label": "chiptunes", "shape": "dot"}, {"color": "#001414", "id": "yorku", "label": "yorku", "shape": "dot"}, {"color": "#5a1414", "id": "torontobluejays", "label": "torontobluejays", "shape": "dot"}, {"color": "#ff1414", "id": "apple", "label": "apple", "shape": "dot"}, {"color": "#001414", "id": "tdcs", "label": "tdcs", "shape": "dot"}, {"color": "#001414", "id": "announcements", "label": "announcements", "shape": "dot"}, {"color": "#001414", "id": "chipcards", "label": "chipcards", "shape": "dot"}, {"color": "#d21414", "id": "wallstreetbets", "label": "wallstreetbets", "shape": "dot"}, {"color": "#5a1414", "id": "design", "label": "design", "shape": "dot"}, {"color": "#ea1414", "id": "windowsphone", "label": "windowsphone", "shape": "dot"}, {"color": "#5a1414", "id": "datasets", "label": "datasets", "shape": "dot"}, {"color": "#001414", "id": "bigquery", "label": "bigquery", "shape": "dot"}, {"color": "#d21414", "id": "forhire", "label": "forhire", "shape": "dot"}, {"color": "#001414", "id": "polandball", "label": "polandball", "shape": "dot"}, {"color": "#ea1414", "id": "3dprinting", "label": "3dprinting", "shape": "dot"}, {"color": "#001414", "id": "giantbomb", "label": "giantbomb", "shape": "dot"}, {"color": "#001414", "id": "wpwishes", "label": "wpwishes", "shape": "dot"}, {"color": "#b51414", "id": "engineering", "label": "engineering", "shape": "dot"}, {"color": "#001414", "id": "reprap", "label": "reprap", "shape": "dot"}, {"color": "#001414", "id": "mageworks", "label": "mageworks", "shape": "dot"}, {"color": "#d21414", "id": "israel", "label": "israel", "shape": "dot"}, {"color": "#001414", "id": "3dprintingforum", "label": "3dprintingforum", "shape": "dot"}, {"color": "#5a1414", "id": "subredditanalysis", "label": "subredditanalysis", "shape": "dot"}, {"color": "#8f1414", "id": "volunteer", "label": "volunteer", "shape": "dot"}, {"color": "#8f1414", "id": "socialskills", "label": "socialskills", "shape": "dot"}, {"color": "#d21414", "id": "judaism", "label": "judaism", "shape": "dot"}, {"color": "#001414", "id": "theimperialcult", "label": "theimperialcult", "shape": "dot"}, {"color": "#001414", "id": "volleyballgirls", "label": "volleyballgirls", "shape": "dot"}, {"color": "#001414", "id": "ukraine", "label": "ukraine", "shape": "dot"}, {"color": "#b51414", "id": "psychology", "label": "psychology", "shape": "dot"}, {"color": "#8f1414", "id": "relationship_advice", "label": "relationship_advice", "shape": "dot"}, {"color": "#001414", "id": "longdistance", "label": "longdistance", "shape": "dot"}, {"color": "#001414", "id": "teenrelationships", "label": "teenrelationships", "shape": "dot"}, {"color": "#001414", "id": "bipolarreddit", "label": "bipolarreddit", "shape": "dot"}, {"color": "#001414", "id": "positivementalhealth", "label": "positivementalhealth", "shape": "dot"}, {"color": "#001414", "id": "sportspsychology", "label": "sportspsychology", "shape": "dot"}, {"color": "#5a1414", "id": "premed", "label": "premed", "shape": "dot"}, {"color": "#5a1414", "id": "pets", "label": "pets", "shape": "dot"}, {"color": "#001414", "id": "catadvice", "label": "catadvice", "shape": "dot"}, {"color": "#001414", "id": "doctorsthatgame", "label": "doctorsthatgame", "shape": "dot"}, {"color": "#5a1414", "id": "ece", "label": "ece", "shape": "dot"}, {"color": "#5a1414", "id": "askengineers", "label": "askengineers", "shape": "dot"}, {"color": "#d21414", "id": "jobs", "label": "jobs", "shape": "dot"}, {"color": "#001414", "id": "usa", "label": "usa", "shape": "dot"}, {"color": "#8f1414", "id": "lostgeneration", "label": "lostgeneration", "shape": "dot"}, {"color": "#001414", "id": "careeradvice", "label": "careeradvice", "shape": "dot"}, {"color": "#001414", "id": "careerguidance", "label": "careerguidance", "shape": "dot"}, {"color": "#001414", "id": "unemployed", "label": "unemployed", "shape": "dot"}, {"color": "#001414", "id": "automate", "label": "automate", "shape": "dot"}, {"color": "#b51414", "id": "mechanicadvice", "label": "mechanicadvice", "shape": "dot"}, {"color": "#001414", "id": "chattanooga", "label": "chattanooga", "shape": "dot"}, {"color": "#001414", "id": "e46", "label": "e46", "shape": "dot"}, {"color": "#001414", "id": "techniciansadvice", "label": "techniciansadvice", "shape": "dot"}, {"color": "#001414", "id": "cableadvice", "label": "cableadvice", "shape": "dot"}, {"color": "#5a1414", "id": "bitmarket", "label": "bitmarket", "shape": "dot"}, {"color": "#001414", "id": "startup", "label": "startup", "shape": "dot"}, {"color": "#001414", "id": "designjobs", "label": "designjobs", "shape": "dot"}, {"color": "#001414", "id": "cofounder", "label": "cofounder", "shape": "dot"}, {"color": "#001414", "id": "ltcmarket", "label": "ltcmarket", "shape": "dot"}, {"color": "#001414", "id": "callcenter", "label": "callcenter", "shape": "dot"}, {"color": "#8f1414", "id": "entp", "label": "entp", "shape": "dot"}, {"color": "#001414", "id": "forex", "label": "forex", "shape": "dot"}, {"color": "#001414", "id": "daytraderparadise", "label": "daytraderparadise", "shape": "dot"}, {"color": "#001414", "id": "wallstreetdd", "label": "wallstreetdd", "shape": "dot"}, {"color": "#5a1414", "id": "killthosewhodisagree", "label": "killthosewhodisagree", "shape": "dot"}, {"color": "#5a1414", "id": "infp", "label": "infp", "shape": "dot"}, {"color": "#001414", "id": "humansbeingbros", "label": "humansbeingbros", "shape": "dot"}, {"color": "#001414", "id": "uncensorednews", "label": "uncensorednews", "shape": "dot"}, {"color": "#001414", "id": "kcroyals", "label": "kcroyals", "shape": "dot"}, {"color": "#001414", "id": "denton", "label": "denton", "shape": "dot"}, {"color": "#001414", "id": "e_cigarette", "label": "e_cigarette", "shape": "dot"}, {"color": "#001414", "id": "subredditreports", "label": "subredditreports", "shape": "dot"}, {"color": "#001414", "id": "cfbmemes", "label": "cfbmemes", "shape": "dot"}, {"color": "#001414", "id": "notredamefootball", "label": "notredamefootball", "shape": "dot"}, {"color": "#001414", "id": "fxfl", "label": "fxfl", "shape": "dot"}, {"color": "#001414", "id": "thefulmercup", "label": "thefulmercup", "shape": "dot"}]);
+        edges = new vis.DataSet([{"from": "animalrights", "to": "cfb"}, {"from": "animalrights", "to": "inthenews"}, {"from": "animalrights", "to": "againstpetownership"}, {"from": "cfb", "to": "subredditreports"}, {"from": "cfb", "to": "cfbmemes"}, {"from": "cfb", "to": "notredamefootball"}, {"from": "cfb", "to": "fxfl"}, {"from": "cfb", "to": "thefulmercup"}, {"from": "inthenews", "to": "sanfrancisco"}, {"from": "inthenews", "to": "promoteyourvideos"}, {"from": "sanfrancisco", "to": "sflist"}, {"from": "sanfrancisco", "to": "frugalmalefashion"}, {"from": "sanfrancisco", "to": "asksf"}, {"from": "frugalmalefashion", "to": "dallas"}, {"from": "frugalmalefashion", "to": "freebies"}, {"from": "dallas", "to": "denton"}, {"from": "dallas", "to": "e_cigarette"}, {"from": "freebies", "to": "toronto"}, {"from": "freebies", "to": "tmobiletuesdays"}, {"from": "toronto", "to": "mississauga"}, {"from": "toronto", "to": "chiptunes"}, {"from": "toronto", "to": "yorku"}, {"from": "toronto", "to": "torontobluejays"}, {"from": "toronto", "to": "apple"}, {"from": "toronto", "to": "tdcs"}, {"from": "torontobluejays", "to": "kcroyals"}, {"from": "apple", "to": "announcements"}, {"from": "apple", "to": "chipcards"}, {"from": "apple", "to": "wallstreetbets"}, {"from": "apple", "to": "design"}, {"from": "apple", "to": "windowsphone"}, {"from": "apple", "to": "datasets"}, {"from": "wallstreetbets", "to": "entp"}, {"from": "wallstreetbets", "to": "forex"}, {"from": "wallstreetbets", "to": "daytraderparadise"}, {"from": "wallstreetbets", "to": "wallstreetdd"}, {"from": "design", "to": "callcenter"}, {"from": "windowsphone", "to": "forhire"}, {"from": "windowsphone", "to": "polandball"}, {"from": "windowsphone", "to": "3dprinting"}, {"from": "windowsphone", "to": "giantbomb"}, {"from": "windowsphone", "to": "wpwishes"}, {"from": "datasets", "to": "bigquery"}, {"from": "forhire", "to": "bitmarket"}, {"from": "forhire", "to": "startup"}, {"from": "forhire", "to": "designjobs"}, {"from": "forhire", "to": "cofounder"}, {"from": "3dprinting", "to": "engineering"}, {"from": "3dprinting", "to": "reprap"}, {"from": "3dprinting", "to": "mageworks"}, {"from": "3dprinting", "to": "israel"}, {"from": "3dprinting", "to": "3dprintingforum"}, {"from": "engineering", "to": "ece"}, {"from": "engineering", "to": "askengineers"}, {"from": "engineering", "to": "jobs"}, {"from": "israel", "to": "subredditanalysis"}, {"from": "israel", "to": "volunteer"}, {"from": "israel", "to": "socialskills"}, {"from": "israel", "to": "judaism"}, {"from": "volunteer", "to": "premed"}, {"from": "volunteer", "to": "pets"}, {"from": "socialskills", "to": "psychology"}, {"from": "socialskills", "to": "relationship_advice"}, {"from": "judaism", "to": "theimperialcult"}, {"from": "judaism", "to": "subredditanalysis"}, {"from": "judaism", "to": "volleyballgirls"}, {"from": "judaism", "to": "ukraine"}, {"from": "psychology", "to": "bipolarreddit"}, {"from": "psychology", "to": "positivementalhealth"}, {"from": "psychology", "to": "sportspsychology"}, {"from": "relationship_advice", "to": "longdistance"}, {"from": "relationship_advice", "to": "teenrelationships"}, {"from": "premed", "to": "doctorsthatgame"}, {"from": "pets", "to": "catadvice"}, {"from": "ece", "to": "cableadvice"}, {"from": "askengineers", "to": "mechanicadvice"}, {"from": "jobs", "to": "usa"}, {"from": "jobs", "to": "lostgeneration"}, {"from": "jobs", "to": "careeradvice"}, {"from": "jobs", "to": "careerguidance"}, {"from": "lostgeneration", "to": "unemployed"}, {"from": "lostgeneration", "to": "automate"}, {"from": "mechanicadvice", "to": "chattanooga"}, {"from": "mechanicadvice", "to": "e46"}, {"from": "mechanicadvice", "to": "techniciansadvice"}, {"from": "bitmarket", "to": "ltcmarket"}, {"from": "entp", "to": "killthosewhodisagree"}, {"from": "entp", "to": "infp"}, {"from": "killthosewhodisagree", "to": "uncensorednews"}, {"from": "infp", "to": "humansbeingbros"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

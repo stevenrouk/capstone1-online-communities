@@ -1,0 +1,105 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#ff1414", "id": "askreddit", "label": "askreddit", "shape": "dot"}, {"color": "#001414", "id": "mildlyamusing", "label": "mildlyamusing", "shape": "dot"}, {"color": "#001414", "id": "socialengineering", "label": "socialengineering", "shape": "dot"}, {"color": "#001414", "id": "furry", "label": "furry", "shape": "dot"}, {"color": "#001414", "id": "teslamotors", "label": "teslamotors", "shape": "dot"}, {"color": "#001414", "id": "askscience", "label": "askscience", "shape": "dot"}, {"color": "#001414", "id": "reactiongifs", "label": "reactiongifs", "shape": "dot"}, {"color": "#001414", "id": "self", "label": "self", "shape": "dot"}, {"color": "#001414", "id": "marilynmonroe", "label": "marilynmonroe", "shape": "dot"}, {"color": "#001414", "id": "nosleep", "label": "nosleep", "shape": "dot"}, {"color": "#001414", "id": "financialindependence", "label": "financialindependence", "shape": "dot"}, {"color": "#001414", "id": "anythinggoesnews", "label": "anythinggoesnews", "shape": "dot"}, {"color": "#001414", "id": "harrypotter", "label": "harrypotter", "shape": "dot"}, {"color": "#001414", "id": "smashbros", "label": "smashbros", "shape": "dot"}, {"color": "#7a1414", "id": "asoiaf", "label": "asoiaf", "shape": "dot"}, {"color": "#001414", "id": "badmovies", "label": "badmovies", "shape": "dot"}, {"color": "#001414", "id": "dinosaurs", "label": "dinosaurs", "shape": "dot"}, {"color": "#001414", "id": "worldcrisis", "label": "worldcrisis", "shape": "dot"}, {"color": "#001414", "id": "truetrueaskreddit", "label": "truetrueaskreddit", "shape": "dot"}, {"color": "#001414", "id": "pureasoiaf", "label": "pureasoiaf", "shape": "dot"}, {"color": "#001414", "id": "oblivion", "label": "oblivion", "shape": "dot"}, {"color": "#c11414", "id": "overwatch", "label": "overwatch", "shape": "dot"}, {"color": "#001414", "id": "competitiveoverwatch", "label": "competitiveoverwatch", "shape": "dot"}, {"color": "#001414", "id": "starcraft", "label": "starcraft", "shape": "dot"}, {"color": "#001414", "id": "deviantart", "label": "deviantart", "shape": "dot"}, {"color": "#001414", "id": "rwby", "label": "rwby", "shape": "dot"}, {"color": "#001414", "id": "techsupport", "label": "techsupport", "shape": "dot"}, {"color": "#8d1414", "id": "rickandmorty", "label": "rickandmorty", "shape": "dot"}, {"color": "#601414", "id": "manga", "label": "manga", "shape": "dot"}, {"color": "#001414", "id": "rogers", "label": "rogers", "shape": "dot"}, {"color": "#001414", "id": "noveltranslations", "label": "noveltranslations", "shape": "dot"}, {"color": "#001414", "id": "lightnovels", "label": "lightnovels", "shape": "dot"}, {"color": "#001414", "id": "adultswim", "label": "adultswim", "shape": "dot"}, {"color": "#3d1414", "id": "guildwars2", "label": "guildwars2", "shape": "dot"}, {"color": "#001414", "id": "gif", "label": "gif", "shape": "dot"}, {"color": "#601414", "id": "ffxiv", "label": "ffxiv", "shape": "dot"}, {"color": "#001414", "id": "actoverlayplugin", "label": "actoverlayplugin", "shape": "dot"}, {"color": "#001414", "id": "hpmor", "label": "hpmor", "shape": "dot"}, {"color": "#601414", "id": "girlgamers", "label": "girlgamers", "shape": "dot"}, {"color": "#001414", "id": "wowguilds", "label": "wowguilds", "shape": "dot"}, {"color": "#001414", "id": "everythingscience", "label": "everythingscience", "shape": "dot"}]);
+        edges = new vis.DataSet([{"from": "askreddit", "to": "mildlyamusing"}, {"from": "askreddit", "to": "socialengineering"}, {"from": "askreddit", "to": "furry"}, {"from": "askreddit", "to": "teslamotors"}, {"from": "askreddit", "to": "askscience"}, {"from": "askreddit", "to": "reactiongifs"}, {"from": "askreddit", "to": "self"}, {"from": "askreddit", "to": "marilynmonroe"}, {"from": "askreddit", "to": "nosleep"}, {"from": "askreddit", "to": "financialindependence"}, {"from": "askreddit", "to": "anythinggoesnews"}, {"from": "askreddit", "to": "harrypotter"}, {"from": "askreddit", "to": "smashbros"}, {"from": "askreddit", "to": "asoiaf"}, {"from": "askreddit", "to": "badmovies"}, {"from": "askreddit", "to": "dinosaurs"}, {"from": "askreddit", "to": "worldcrisis"}, {"from": "askreddit", "to": "truetrueaskreddit"}, {"from": "asoiaf", "to": "pureasoiaf"}, {"from": "asoiaf", "to": "oblivion"}, {"from": "asoiaf", "to": "overwatch"}, {"from": "overwatch", "to": "competitiveoverwatch"}, {"from": "overwatch", "to": "starcraft"}, {"from": "overwatch", "to": "deviantart"}, {"from": "overwatch", "to": "rwby"}, {"from": "overwatch", "to": "techsupport"}, {"from": "overwatch", "to": "rickandmorty"}, {"from": "overwatch", "to": "manga"}, {"from": "overwatch", "to": "rogers"}, {"from": "rickandmorty", "to": "adultswim"}, {"from": "rickandmorty", "to": "guildwars2"}, {"from": "rickandmorty", "to": "gif"}, {"from": "rickandmorty", "to": "ffxiv"}, {"from": "manga", "to": "noveltranslations"}, {"from": "manga", "to": "lightnovels"}, {"from": "guildwars2", "to": "girlgamers"}, {"from": "ffxiv", "to": "actoverlayplugin"}, {"from": "ffxiv", "to": "hpmor"}, {"from": "girlgamers", "to": "wowguilds"}, {"from": "girlgamers", "to": "everythingscience"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
