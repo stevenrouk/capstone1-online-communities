@@ -4,6 +4,55 @@ import numpy as np
 import networkx as nx
 from pyvis.network import Network
 
+def map_nodes_to_random_colors(nodes):
+    """Takes in a list of nodes, and returns a list of colors for those nodes."""
+    return [random_color() for _ in nodes]
+
+def map_degrees_to_colors(nodes, graph, how='log'):
+    if how == 'linear':
+        degrees = [graph.degree(node) for node in nodes]
+    elif how == 'log':
+        degrees = np.log([graph.degree(node) for node in nodes])
+    colors = nums_to_greyscale_hex(degrees)
+    
+    return colors
+
+def map_nodefunc_to_colors(nodes, nodefunc, how='log'):
+    """BROKEN FOR NOW.
+    
+    Takes in any function that maps nodes to real numbers
+    and returns a color gradient mapping from those numbers
+    to colors.
+    
+    Note that nodefunc can be a class method like `graph.degree`.
+    """
+    nums = np.log([nodefunc(node) for node in nodes])
+    colors = nums_to_greyscale_hex(nums)
+    
+    return colors
+
+def get_pyvis_graph_with_colors(graph=None, color_map_func=map_degrees_to_colors, color_map_func_kwargs={}):
+    """Return a pyvis Network graphing object with nodes colored by the mapping function.
+    
+    With the returned option, you just need to call .show(filename) to show the graph. Example:
+    >>> g = get_colorful_graph(graph)
+    >>> g.show()
+    """
+    g = Network(notebook=True)
+    
+    # Get colors for nodes
+    G_nodes = graph.nodes
+    G_colors = color_map_func(G_nodes, **color_map_func_kwargs)
+
+    # Add colorful nodes to our pyvis Network object
+    for node, color in zip(G_nodes, G_colors):
+        g.add_node(node, color=color)
+
+    for edge in graph.edges:
+        g.add_edge(*edge)
+
+    return g
+
 def ensure_html_filename(filename):
     if filename.split('.')[-1] != 'html':
         filename += '.html'
