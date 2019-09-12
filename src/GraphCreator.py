@@ -17,6 +17,38 @@ from src.DirectedGraph import DirectedGraph
 from src.DataLoader import DataLoader
 
 
+class DataFilePaths:
+
+    DATA_DIRECTORY = 'data'
+    PICKLE_DIRECTORY = 'data_pickle'
+
+    # Raw data files.
+    BODY_DATA_RAW = os.path.join(DATA_DIRECTORY, 'soc-redditHyperlinks-body.tsv')
+    TITLE_DATA_RAW = os.path.join(DATA_DIRECTORY, 'soc-redditHyperlinks-body.tsv')
+
+    # Pickles - Test files - Nodes only
+
+    # Pickles - Test files - Nodes and post_id only
+
+    # Pickles - Test files - Everything except post properties only
+
+    # Pickles - Test files - Full attributes only
+
+    # Pickles - Full files - Nodes only
+
+    # Pickles - Full files - Nodes and post_id only
+
+    # Pickles - Full files - Everything except post properties only
+
+    # Pickles - Full files - Full attributes only
+
+    BODY_DATA_PICKLE = 'data_pickle/networkx_attr_full_body.pickle'
+    TITLE_DATA_PICKLE = 'data_pickle/networkx_attr_full_title.pickle'
+    COMBINED_DATA_PICKLE = 'data_pickle/networkx_attr_full_combined.pickle'
+
+    def __init__(self):
+        pass
+
 class GraphCreator:
     """Load graph using custom graph class."""
 
@@ -145,3 +177,51 @@ class NetworkXAttributeGraphCreator:
             graph = pickle.load(f)
         
         return graph
+
+class GraphLoader:
+    """IN DEVELOPMENT - The goal is to provide a simple wrapper around all data loading and graph creating
+    functionality, including the ability to load certain columns, load a certain number of rows, and
+    default to loading a pickle file if one exists.
+    
+    GraphLoader Stories:
+        LOADING DATA
+            1. Use GraphCreator usually. Only use DataLoader if you need the raw data.
+            2. If a pickle file exists, we want to use that.
+            3. We need the ability to get only a subset of rows. (Especially for testing. We need test data loads.)
+            4. We need the ability to only get a certain number of columns.
+    """
+
+    def __init__(self):
+        pass
+    
+    def load_graph(self, name=None, num_rows=None, cols=None, testing=True):
+        # Set up testing load options
+        if testing:
+            load_options = {'full_file': False, 'num_lines': 10}
+        else:
+            load_options = {'full_file': True}
+
+        # Load data
+        data_loader = DataLoader(
+            filepath=DataFilePaths.BODY_DATA_RAW,
+            cols_to_load=[],
+            **load_options
+        )
+        data = data_loader.load()
+
+        # Create graph
+
+
+        return data
+    
+    # def f():
+    #     i = 1
+    #     for node_from, node_to, *attributes in node_edge_attrs[1:]:
+    #         if i % 10000 == 0:
+    #             print(i)
+    #         i += 1
+    #         G.add_edge(node_from, node_to, **dict(zip(attr_names, attributes)))
+    #     end_time = time.time()
+    #     print("Data load into graph took {} seconds.".format(end_time - start_time))
+
+    #     return G
