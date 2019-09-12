@@ -130,7 +130,59 @@ Let's get started!
 
 ### Who's the most connected? (Max Degree: In-Degree and Out-Degree)
 
-Results...
+Since we're dealing with network data, of course we need to ask the question "Who's the most popular?" This is what we're looking at here with "degree".
+
+#### In-Degrees: Edges coming into a node
+
+_Casually: "Who's getting talked about? Who's getting their stuff shared?"_
+
+| subreddit | In-Degree (Uniques) | In-Degree (Total) |
+| --- | --- |
+| askreddit | 5448 | 24295 |
+| iama | 4508 | 11624 |
+| pics | 3335 | 11728 |
+| funny | 3031 | 10201 |
+| videos | 2644 | 9216 |
+| todayilearned | 2589 | 10292 |
+| worldnews | 1770 | 8901 |
+| gaming | 1746 | 5584 |
+| news | 1610 | 7005 |
+| gifs | 1591 | -- |
+| politics | -- | 5511 |
+
+#### Out-Degrees: Edges going out of a node
+
+_Casually: "Who's gossiping about others? Who's sharing things from others?"_
+
+| subreddit | Out-Degree (Uniques) | Out-Degree (Total) |
+| --- | --- |
+| bestof | 3111 | 21170 |
+| subredditdrama | 3020 | 23458 |
+| titlegore | 2469 | 9501 |
+| drama | 1413 | 5778 |
+| hailcorporate | 939 |  -- |
+| shitredditsays | 923 | 7394 |
+| switcharoo | 918 | 5999 |
+| the_donald | 798 |  -- |
+| shitamericanssay | 793 | 5509 |
+| botsrights | 792)] -- |
+| shitpost | -- 6658 |
+| circlebroke2 | -- 6089 |
+| shitstatistssay | -- 4278 |
+
+There are some interesting results here:
+
+**In-Degree Results**
+- All of the top "in-degree" nodes look pretty official and fairly mainstream. They're fairly broad in topic ("funny", "news"), and the top two explicitly encourage interaction ("askreddit", "iama").
+- You can also get a sense here for what most people find interesting: funny things, relatable human narrative, news, games, etc.
+- It seems to make sense for top in-degree nodes to be more mainstream and widely applicable. Things that are more mainstream are going to be referenced and shared by more different kinds of people.
+
+**Out-Degree Results**
+- The top "out-degree" nodes look a little more edgy and niche on average; for example, "haircorporate" and "shitstatistssay". You can't tell what many of them are just by looking (e.g. "circlebroke2", "switcharoo", "titlegore") because of slang / jargon.
+- There are also several top "out-degree" nodes explicitly for critiquing/complaining about things: "subredditdrama" and "circlebroke2", for example.
+- However, there are also aggregation subreddits like "bestof" and "shitredditsays", which compiles the "best of" Reddit.
+- It makes sense for aggregation-oriented subreddits to post the most links to other subreddits.
+
 
 ### Who's friendly, and who's gossipy? (Sharing Reciprocity)
 
@@ -178,12 +230,15 @@ Conclusions...
 
 Future research...
 
+(Neo4j // GraphQL // GraphX)
+
 ## Technologies & Techniques Used
 
 Technologies:
 - Python
 - pandas
 - NumPy
+- Jupyter Notebooks
 - NetworkX
 - pyvis
 
