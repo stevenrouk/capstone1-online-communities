@@ -1,5 +1,11 @@
 """Data loading class for Stanford SNAP Reddit Hyperlink data."""
 
+# Modifying the path so we can import from src directory.
+import sys
+import os
+sys.path.append(os.path.abspath('.'))
+sys.path.append(os.path.abspath('..'))
+
 import numpy as np
 
 class DataLoader:
