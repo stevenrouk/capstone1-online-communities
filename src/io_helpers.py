@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath('..'))
 
 import pickle
 
-from src.GraphCreator import NetworkXGraphCreator
+from src.GraphCreator import NetworkXGraphCreator, NetworkXAttributeGraphCreator
 from src.networkx_helpers import combine_graphs
 from src.DataLoader import DataLoader
 
