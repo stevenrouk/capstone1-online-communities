@@ -55,6 +55,50 @@ def create_and_pickle_combined_multigraph():
     print("pickling combined graph")
     pickle_obj(combine_graphs, "data_pickle/networkx_multigraph_combined.pickle")
 
+def full_body_load_and_pickle():
+    body_data_loader = DataLoader('data/soc-redditHyperlinks-body.tsv', full_file=True)
+    body_data = body_data_loader.load()
+
+    nx_attr_graph_creator = NetworkXAttributeGraphCreator()
+    G_attr = nx_attr_graph_creator.create_graph(body_data, attr_names=['post_id', 'timestamp', 'post_label', 'post_properties'], graph_type='multidigraph')
+    pickle_obj(G_attr, "data_pickle/networkx_attr_full_body.pickle")
+
+def full_title_load_and_pickle():
+    title_data_loader = DataLoader('data/soc-redditHyperlinks-title.tsv', full_file=True)
+    title_data = title_data_loader.load()
+
+    nx_attr_graph_creator = NetworkXAttributeGraphCreator()
+    G_attr = nx_attr_graph_creator.create_graph(title_data, attr_names=['post_id', 'timestamp', 'post_label', 'post_properties'], graph_type='multidigraph')
+    pickle_obj(G_attr, "data_pickle/networkx_attr_full_title.pickle")
+
+def create_combined_full_attr_multigraph():
+    g_body_full = load_pickled_obj("data_pickle/networkx_attr_full_body.pickle")
+    g_title_full = load_pickled_obj("data_pickle/networkx_attr_full_title.pickle")
+    g_combined_full = combine_graphs(g_body_full, g_title_full)
+    pickle_obj(g_combined_full, "data_pickle/networkx_attr_full_combined.pickle")
+
+def multigraph_node_only_body_load_and_pickle():
+    body_data_loader = DataLoader('data/soc-redditHyperlinks-body.tsv', full_file=True, cols_to_load=['SOURCE_SUBREDDIT', 'TARGET_SUBREDDIT'])
+    body_data = body_data_loader.load()
+
+    nx_graph_creator = NetworkXGraphCreator()
+    G = nx_graph_creator.create_graph(body_data, graph_type='multidigraph')
+    pickle_obj(G, "data_pickle/networkx_multigraph_body.pickle")
+
+def multigraph_node_only_title_load_and_pickle():
+    title_data_loader = DataLoader('data/soc-redditHyperlinks-title.tsv', full_file=True, cols_to_load=['SOURCE_SUBREDDIT', 'TARGET_SUBREDDIT'])
+    title_data = title_data_loader.load()
+
+    nx_graph_creator = NetworkXGraphCreator()
+    G = nx_graph_creator.create_graph(title_data, graph_type='multidigraph')
+    pickle_obj(G, "data_pickle/networkx_multigraph_title.pickle")
+
+def create_combined_node_only_multigraph():
+    g_body_full = load_pickled_obj("data_pickle/networkx_multigraph_body.pickle")
+    g_title_full = load_pickled_obj("data_pickle/networkx_multigraph_title.pickle")
+    g_combined_full = combine_graphs(g_body_full, g_title_full)
+    pickle_obj(g_combined_full, "data_pickle/networkx_multigraph_combined.pickle")
+
 def get_dataset(data_filepath=None, pickle_filepath=None):
     """Gets pickled data if possible, otherwise loads data from the .tsv file.
 

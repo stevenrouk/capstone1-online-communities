@@ -13,10 +13,10 @@ from src.example_graphs import simple_undirected_graph, simple_directed_graph
 from src.UndirectedGraph import UndirectedGraph
 from src.DirectedGraph import DirectedGraph
 from src.DataLoader import DataLoader
-from src.GraphCreator import GraphCreator, NetworkXGraphCreator
+from src.GraphCreator import GraphCreator, NetworkXGraphCreator, NetworkXAttributeGraphCreator
 
-from src.io_helpers import pickle_obj, load_pickled_obj, get_dataset
-
+from src.io_helpers import pickle_obj, load_pickled_obj, get_dataset, create_and_pickle_combined_multigraph
+from src.networkx_helpers import combine_graphs
 
 if __name__ == "__main__":
-    G_combined = get_dataset(pickle_filepath='data_pickle/networkx_digraph_combined.pickle')
+    print("Capstone 1 - Finding Patterns in Social Networks Using Graph Data")
