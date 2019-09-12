@@ -32,6 +32,13 @@ def visualize_fast_gnp_random_graph(filename, n=20, p=0.5, seed=None, directed=F
     G = nx.fast_gnp_random_graph(n, p, seed=seed, directed=directed)
     visualize_random_graph(filename, G)
 
+def get_degree_colors(graph):
+    nodes = graph.nodes
+    degrees = [graph.degree(node) for node in nodes]
+    colors = nums_to_greyscale_hex(degrees)
+
+    return list(zip(nodes, colors))
+
 def visualize_random_graph(filename, graph, color_by_degree=True, notebook=False):
     g = Network(notebook=notebook)
     g.barnes_hut()
