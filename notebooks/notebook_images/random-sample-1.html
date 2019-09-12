@@ -1,0 +1,201 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 500px;
+            height: 500px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "askreddit", "label": "askreddit", "shape": "dot", "title": "askreddit"}, {"id": "gonewildstories", "label": "gonewildstories", "shape": "dot", "title": "gonewildstories"}, {"id": "offmychest", "label": "offmychest", "shape": "dot", "title": "offmychest"}, {"id": "science", "label": "science", "shape": "dot", "title": "science"}, {"id": "ukrainianconflict", "label": "ukrainianconflict", "shape": "dot", "title": "ukrainianconflict"}, {"id": "medicine", "label": "medicine", "shape": "dot", "title": "medicine"}, {"id": "respectthreads", "label": "respectthreads", "shape": "dot", "title": "respectthreads"}, {"id": "nfl", "label": "nfl", "shape": "dot", "title": "nfl"}, {"id": "thebutton", "label": "thebutton", "shape": "dot", "title": "thebutton"}, {"id": "starwars", "label": "starwars", "shape": "dot", "title": "starwars"}, {"id": "outoftheloop", "label": "outoftheloop", "shape": "dot", "title": "outoftheloop"}, {"id": "askdocs", "label": "askdocs", "shape": "dot", "title": "askdocs"}, {"id": "relationship_advice", "label": "relationship_advice", "shape": "dot", "title": "relationship_advice"}, {"id": "food", "label": "food", "shape": "dot", "title": "food"}, {"id": "asktechnology", "label": "asktechnology", "shape": "dot", "title": "asktechnology"}, {"id": "arabic", "label": "arabic", "shape": "dot", "title": "arabic"}, {"id": "askphilosophy", "label": "askphilosophy", "shape": "dot", "title": "askphilosophy"}, {"id": "artificial", "label": "artificial", "shape": "dot", "title": "artificial"}, {"id": "motorcycles", "label": "motorcycles", "shape": "dot", "title": "motorcycles"}, {"id": "readeranonerotica", "label": "readeranonerotica", "shape": "dot", "title": "readeranonerotica"}, {"id": "startupaccelerators", "label": "startupaccelerators", "shape": "dot", "title": "startupaccelerators"}, {"id": "painscience", "label": "painscience", "shape": "dot", "title": "painscience"}, {"id": "weather", "label": "weather", "shape": "dot", "title": "weather"}, {"id": "falcons", "label": "falcons", "shape": "dot", "title": "falcons"}, {"id": "saints", "label": "saints", "shape": "dot", "title": "saints"}, {"id": "holyorderofprimes", "label": "holyorderofprimes", "shape": "dot", "title": "holyorderofprimes"}, {"id": "casualtodayilearned", "label": "casualtodayilearned", "shape": "dot", "title": "casualtodayilearned"}, {"id": "wallpapers", "label": "wallpapers", "shape": "dot", "title": "wallpapers"}, {"id": "songwriters", "label": "songwriters", "shape": "dot", "title": "songwriters"}, {"id": "toyexchange", "label": "toyexchange", "shape": "dot", "title": "toyexchange"}, {"id": "kings", "label": "kings", "shape": "dot", "title": "kings"}, {"id": "fatalbert", "label": "fatalbert", "shape": "dot", "title": "fatalbert"}, {"id": "srssucks", "label": "srssucks", "shape": "dot", "title": "srssucks"}, {"id": "girlsdoporn", "label": "girlsdoporn", "shape": "dot", "title": "girlsdoporn"}, {"id": "freeforall", "label": "freeforall", "shape": "dot", "title": "freeforall"}, {"id": "starterpacks", "label": "starterpacks", "shape": "dot", "title": "starterpacks"}, {"id": "uoft", "label": "uoft", "shape": "dot", "title": "uoft"}, {"id": "fulllengthfilms", "label": "fulllengthfilms", "shape": "dot", "title": "fulllengthfilms"}, {"id": "sweden", "label": "sweden", "shape": "dot", "title": "sweden"}, {"id": "fellowkids", "label": "fellowkids", "shape": "dot", "title": "fellowkids"}, {"id": "stem", "label": "stem", "shape": "dot", "title": "stem"}, {"id": "obgyn", "label": "obgyn", "shape": "dot", "title": "obgyn"}, {"id": "lying", "label": "lying", "shape": "dot", "title": "lying"}, {"id": "askculinary", "label": "askculinary", "shape": "dot", "title": "askculinary"}, {"id": "ethicalbuying", "label": "ethicalbuying", "shape": "dot", "title": "ethicalbuying"}, {"id": "plato", "label": "plato", "shape": "dot", "title": "plato"}, {"id": "anarchy101", "label": "anarchy101", "shape": "dot", "title": "anarchy101"}, {"id": "rickandmorty", "label": "rickandmorty", "shape": "dot", "title": "rickandmorty"}, {"id": "denvermotorcycles", "label": "denvermotorcycles", "shape": "dot", "title": "denvermotorcycles"}, {"id": "rvamotorcycles", "label": "rvamotorcycles", "shape": "dot", "title": "rvamotorcycles"}, {"id": "amazone", "label": "amazone", "shape": "dot", "title": "amazone"}, {"id": "mechanicadvice", "label": "mechanicadvice", "shape": "dot", "title": "mechanicadvice"}, {"id": "adventures", "label": "adventures", "shape": "dot", "title": "adventures"}, {"id": "ems", "label": "ems", "shape": "dot", "title": "ems"}, {"id": "motorcyclepricing", "label": "motorcyclepricing", "shape": "dot", "title": "motorcyclepricing"}, {"id": "prius", "label": "prius", "shape": "dot", "title": "prius"}, {"id": "carfix", "label": "carfix", "shape": "dot", "title": "carfix"}, {"id": "pontiac", "label": "pontiac", "shape": "dot", "title": "pontiac"}, {"id": "crimescene", "label": "crimescene", "shape": "dot", "title": "crimescene"}, {"id": "overwatch", "label": "overwatch", "shape": "dot", "title": "overwatch"}, {"id": "ffxiv", "label": "ffxiv", "shape": "dot", "title": "ffxiv"}, {"id": "suicidewatch", "label": "suicidewatch", "shape": "dot", "title": "suicidewatch"}, {"id": "fightthevoid", "label": "fightthevoid", "shape": "dot", "title": "fightthevoid"}, {"id": "glitch_in_the_matrix", "label": "glitch_in_the_matrix", "shape": "dot", "title": "glitch_in_the_matrix"}, {"id": "sfm", "label": "sfm", "shape": "dot", "title": "sfm"}, {"id": "shittyanimalfacts", "label": "shittyanimalfacts", "shape": "dot", "title": "shittyanimalfacts"}, {"id": "onepiece", "label": "onepiece", "shape": "dot", "title": "onepiece"}, {"id": "overwatchcustomgames", "label": "overwatchcustomgames", "shape": "dot", "title": "overwatchcustomgames"}, {"id": "weekendgunnit", "label": "weekendgunnit", "shape": "dot", "title": "weekendgunnit"}, {"id": "homestuck", "label": "homestuck", "shape": "dot", "title": "homestuck"}, {"id": "relayforreddit", "label": "relayforreddit", "shape": "dot", "title": "relayforreddit"}, {"id": "ffxivexplorers", "label": "ffxivexplorers", "shape": "dot", "title": "ffxivexplorers"}, {"id": "ocd", "label": "ocd", "shape": "dot", "title": "ocd"}, {"id": "lostgeneration", "label": "lostgeneration", "shape": "dot", "title": "lostgeneration"}, {"id": "runescape", "label": "runescape", "shape": "dot", "title": "runescape"}, {"id": "getdisciplined", "label": "getdisciplined", "shape": "dot", "title": "getdisciplined"}, {"id": "reformed", "label": "reformed", "shape": "dot", "title": "reformed"}, {"id": "aspergirls", "label": "aspergirls", "shape": "dot", "title": "aspergirls"}, {"id": "rubberducks", "label": "rubberducks", "shape": "dot", "title": "rubberducks"}, {"id": "economy", "label": "economy", "shape": "dot", "title": "economy"}, {"id": "vaping", "label": "vaping", "shape": "dot", "title": "vaping"}, {"id": "blackdesertonline", "label": "blackdesertonline", "shape": "dot", "title": "blackdesertonline"}, {"id": "malelivingspace", "label": "malelivingspace", "shape": "dot", "title": "malelivingspace"}, {"id": "charlotte", "label": "charlotte", "shape": "dot", "title": "charlotte"}, {"id": "lfg", "label": "lfg", "shape": "dot", "title": "lfg"}, {"id": "roleplayadventure", "label": "roleplayadventure", "shape": "dot", "title": "roleplayadventure"}, {"id": "dishonoredrp", "label": "dishonoredrp", "shape": "dot", "title": "dishonoredrp"}, {"id": "runbypost", "label": "runbypost", "shape": "dot", "title": "runbypost"}, {"id": "ecigclassifieds", "label": "ecigclassifieds", "shape": "dot", "title": "ecigclassifieds"}, {"id": "slumberland", "label": "slumberland", "shape": "dot", "title": "slumberland"}, {"id": "usa", "label": "usa", "shape": "dot", "title": "usa"}, {"id": "kerbalacademy", "label": "kerbalacademy", "shape": "dot", "title": "kerbalacademy"}, {"id": "shittytumblrgifs", "label": "shittytumblrgifs", "shape": "dot", "title": "shittytumblrgifs"}, {"id": "androidcirclejerk", "label": "androidcirclejerk", "shape": "dot", "title": "androidcirclejerk"}, {"id": "fandroids", "label": "fandroids", "shape": "dot", "title": "fandroids"}, {"id": "windowsphone", "label": "windowsphone", "shape": "dot", "title": "windowsphone"}, {"id": "ads", "label": "ads", "shape": "dot", "title": "ads"}, {"id": "nexus7", "label": "nexus7", "shape": "dot", "title": "nexus7"}, {"id": "surface", "label": "surface", "shape": "dot", "title": "surface"}, {"id": "reddhub", "label": "reddhub", "shape": "dot", "title": "reddhub"}, {"id": "reloading", "label": "reloading", "shape": "dot", "title": "reloading"}, {"id": "gatdeals", "label": "gatdeals", "shape": "dot", "title": "gatdeals"}, {"id": "weeabootales", "label": "weeabootales", "shape": "dot", "title": "weeabootales"}, {"id": "awwnverts", "label": "awwnverts", "shape": "dot", "title": "awwnverts"}, {"id": "thesquadonpoint", "label": "thesquadonpoint", "shape": "dot", "title": "thesquadonpoint"}, {"id": "oregonstateuniv", "label": "oregonstateuniv", "shape": "dot", "title": "oregonstateuniv"}, {"id": "srsquestions", "label": "srsquestions", "shape": "dot", "title": "srsquestions"}, {"id": "srssucksbroke", "label": "srssucksbroke", "shape": "dot", "title": "srssucksbroke"}, {"id": "enoughlibertarianspam", "label": "enoughlibertarianspam", "shape": "dot", "title": "enoughlibertarianspam"}, {"id": "swarje", "label": "swarje", "shape": "dot", "title": "swarje"}, {"id": "teamcanada", "label": "teamcanada", "shape": "dot", "title": "teamcanada"}, {"id": "suomi", "label": "suomi", "shape": "dot", "title": "suomi"}, {"id": "imaginarymaps", "label": "imaginarymaps", "shape": "dot", "title": "imaginarymaps"}, {"id": "eiolelehti", "label": "eiolelehti", "shape": "dot", "title": "eiolelehti"}, {"id": "progun", "label": "progun", "shape": "dot", "title": "progun"}, {"id": "futuristparty", "label": "futuristparty", "shape": "dot", "title": "futuristparty"}, {"id": "austrian_economics", "label": "austrian_economics", "shape": "dot", "title": "austrian_economics"}, {"id": "investing", "label": "investing", "shape": "dot", "title": "investing"}, {"id": "georgia", "label": "georgia", "shape": "dot", "title": "georgia"}, {"id": "enoughpaulspam", "label": "enoughpaulspam", "shape": "dot", "title": "enoughpaulspam"}, {"id": "options", "label": "options", "shape": "dot", "title": "options"}]);
+        edges = new vis.DataSet([{"from": "askreddit", "to": "gonewildstories"}, {"from": "askreddit", "to": "offmychest"}, {"from": "askreddit", "to": "science"}, {"from": "askreddit", "to": "ukrainianconflict"}, {"from": "askreddit", "to": "medicine"}, {"from": "askreddit", "to": "respectthreads"}, {"from": "askreddit", "to": "nfl"}, {"from": "askreddit", "to": "thebutton"}, {"from": "askreddit", "to": "starwars"}, {"from": "askreddit", "to": "outoftheloop"}, {"from": "askreddit", "to": "askdocs"}, {"from": "askreddit", "to": "relationship_advice"}, {"from": "askreddit", "to": "food"}, {"from": "askreddit", "to": "asktechnology"}, {"from": "askreddit", "to": "arabic"}, {"from": "askreddit", "to": "askphilosophy"}, {"from": "askreddit", "to": "artificial"}, {"from": "askreddit", "to": "motorcycles"}, {"from": "gonewildstories", "to": "readeranonerotica"}, {"from": "science", "to": "startupaccelerators"}, {"from": "medicine", "to": "painscience"}, {"from": "nfl", "to": "weather"}, {"from": "nfl", "to": "falcons"}, {"from": "nfl", "to": "saints"}, {"from": "thebutton", "to": "holyorderofprimes"}, {"from": "thebutton", "to": "casualtodayilearned"}, {"from": "starwars", "to": "wallpapers"}, {"from": "starwars", "to": "songwriters"}, {"from": "starwars", "to": "toyexchange"}, {"from": "outoftheloop", "to": "kings"}, {"from": "outoftheloop", "to": "fatalbert"}, {"from": "outoftheloop", "to": "srssucks"}, {"from": "outoftheloop", "to": "girlsdoporn"}, {"from": "outoftheloop", "to": "freeforall"}, {"from": "outoftheloop", "to": "starterpacks"}, {"from": "outoftheloop", "to": "uoft"}, {"from": "outoftheloop", "to": "fulllengthfilms"}, {"from": "outoftheloop", "to": "sweden"}, {"from": "outoftheloop", "to": "fellowkids"}, {"from": "askdocs", "to": "stem"}, {"from": "askdocs", "to": "obgyn"}, {"from": "relationship_advice", "to": "lying"}, {"from": "food", "to": "askculinary"}, {"from": "food", "to": "ethicalbuying"}, {"from": "askphilosophy", "to": "plato"}, {"from": "askphilosophy", "to": "anarchy101"}, {"from": "artificial", "to": "rickandmorty"}, {"from": "motorcycles", "to": "denvermotorcycles"}, {"from": "motorcycles", "to": "rvamotorcycles"}, {"from": "motorcycles", "to": "amazone"}, {"from": "motorcycles", "to": "mechanicadvice"}, {"from": "motorcycles", "to": "adventures"}, {"from": "motorcycles", "to": "ems"}, {"from": "motorcycles", "to": "motorcyclepricing"}, {"from": "mechanicadvice", "to": "prius"}, {"from": "mechanicadvice", "to": "carfix"}, {"from": "mechanicadvice", "to": "pontiac"}, {"from": "ems", "to": "crimescene"}, {"from": "rickandmorty", "to": "overwatch"}, {"from": "rickandmorty", "to": "ffxiv"}, {"from": "rickandmorty", "to": "suicidewatch"}, {"from": "rickandmorty", "to": "fightthevoid"}, {"from": "rickandmorty", "to": "glitch_in_the_matrix"}, {"from": "overwatch", "to": "sfm"}, {"from": "overwatch", "to": "shittyanimalfacts"}, {"from": "overwatch", "to": "onepiece"}, {"from": "overwatch", "to": "overwatchcustomgames"}, {"from": "overwatch", "to": "weekendgunnit"}, {"from": "overwatch", "to": "homestuck"}, {"from": "ffxiv", "to": "relayforreddit"}, {"from": "ffxiv", "to": "ffxivexplorers"}, {"from": "suicidewatch", "to": "ocd"}, {"from": "suicidewatch", "to": "lostgeneration"}, {"from": "suicidewatch", "to": "runescape"}, {"from": "suicidewatch", "to": "getdisciplined"}, {"from": "suicidewatch", "to": "reformed"}, {"from": "suicidewatch", "to": "aspergirls"}, {"from": "glitch_in_the_matrix", "to": "rubberducks"}, {"from": "lostgeneration", "to": "economy"}, {"from": "runescape", "to": "vaping"}, {"from": "runescape", "to": "blackdesertonline"}, {"from": "getdisciplined", "to": "malelivingspace"}, {"from": "reformed", "to": "charlotte"}, {"from": "charlotte", "to": "lfg"}, {"from": "lfg", "to": "roleplayadventure"}, {"from": "lfg", "to": "dishonoredrp"}, {"from": "lfg", "to": "runbypost"}, {"from": "vaping", "to": "ecigclassifieds"}, {"from": "ecigclassifieds", "to": "slumberland"}, {"from": "economy", "to": "usa"}, {"from": "relayforreddit", "to": "kerbalacademy"}, {"from": "relayforreddit", "to": "shittytumblrgifs"}, {"from": "relayforreddit", "to": "androidcirclejerk"}, {"from": "androidcirclejerk", "to": "fandroids"}, {"from": "androidcirclejerk", "to": "windowsphone"}, {"from": "androidcirclejerk", "to": "ads"}, {"from": "androidcirclejerk", "to": "nexus7"}, {"from": "windowsphone", "to": "surface"}, {"from": "windowsphone", "to": "reddhub"}, {"from": "weekendgunnit", "to": "reloading"}, {"from": "weekendgunnit", "to": "gatdeals"}, {"from": "homestuck", "to": "weeabootales"}, {"from": "homestuck", "to": "awwnverts"}, {"from": "srssucks", "to": "thesquadonpoint"}, {"from": "srssucks", "to": "oregonstateuniv"}, {"from": "srssucks", "to": "srsquestions"}, {"from": "srssucks", "to": "srssucksbroke"}, {"from": "srssucks", "to": "enoughlibertarianspam"}, {"from": "sweden", "to": "swarje"}, {"from": "sweden", "to": "teamcanada"}, {"from": "sweden", "to": "suomi"}, {"from": "sweden", "to": "imaginarymaps"}, {"from": "suomi", "to": "eiolelehti"}, {"from": "enoughlibertarianspam", "to": "progun"}, {"from": "enoughlibertarianspam", "to": "futuristparty"}, {"from": "enoughlibertarianspam", "to": "austrian_economics"}, {"from": "enoughlibertarianspam", "to": "investing"}, {"from": "enoughlibertarianspam", "to": "georgia"}, {"from": "enoughlibertarianspam", "to": "enoughpaulspam"}, {"from": "investing", "to": "options"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
