@@ -1,6 +1,12 @@
 # Steven Rouk, Capstone 1 - Finding Patterns in Social Networks Using Graph Data
 
-Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset.
+_Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset._
+
+---
+
+**You can find me on LinkedIn here: [Steven Rouk - LinkedIn](https://www.linkedin.com/in/stevenrouk/)**
+
+---
 
 ## Table of Contents
 1. [Motivation](#)
@@ -111,7 +117,7 @@ Before turning to off-the-shelf libraries, I wanted to see how much progress I c
 
 In Python, you can represent graphs using dictionaries where the keys are nodes and the values are lists of nodes (representing edges). For example, here is a toy undirected graph dataset:
 
-<img src="images/toy-graph-1.png" alt="Toy Undirected Graph" width="300" height="300">
+<img src="images/toy-graph-1.png" alt="Toy Undirected Graph" width="400" height="400">
 
 <sub><b>Figure 3: </b> A toy undirected graph that I used for developing custom graph classes. There was a lot of whiteboard doodling during this project. </sub>
 
@@ -174,7 +180,7 @@ Let's get started!
 
 My first question of the data was essentially the classic one we might ask about a network: "Who's the most popular?" This is what we're looking at here with "degree".
 
-<img src="images/example-color-nodes-by-degree.png" alt="Example of coloring nodes by degree" width="400" height="400">
+<img src="images/example-color-nodes-by-degree.png" alt="Example of coloring nodes by degree" width="600" height="600">
 
 <sub><b>Figure 4: </b> Example of coloring nodes by degree with a demo graph </sub>
 
@@ -231,11 +237,11 @@ There are some other interesting results here:
 - However, there are also aggregation subreddits like "bestof" and "shitredditsays", which compiles the "best of" Reddit.
 - It makes sense for aggregation-oriented subreddits to post the most links to other subreddits.
 
-<img src="images/color-by-degree.png" alt="Example of coloring nodes by degree" width="400" height="400">
+<img src="images/color-by-degree.png" alt="Example of coloring nodes by degree" width="600" height="600">
 
 <sub><b>Figure 5: </b> Example of coloring nodes by degree with Reddit data </sub>
 
-<img src="images/color-by-degree-zoomed.png" alt="Coloring by degree, zoomed in" width="400" height="400">
+<img src="images/color-by-degree-zoomed.png" alt="Coloring by degree, zoomed in" width="600" height="600">
 
 <sub><b>Figure 6: </b> Zoomed in so you can see the subreddit names </sub>
 
@@ -315,15 +321,27 @@ First, let's just say that trying to visualize tens of thousands of data points 
 
 We can plot subsets of the graph, but even these blow up very quickly...
 
-**(insert image of one of the subgraphs)**
+<img src="images/science.png" alt="science subgraph" width="500" height="500">
+
+<sub><b>Figure ##: </b> The subgraph of science and its adjacent nodes </sub>
+
+<img src="images/science-animalrights.png" alt="science and animal rights subgraph" width="500" height="500">
+
+<sub><b>Figure ##: </b> The subgraph of science, animal rights, and their adjacent nodes </sub>
+
+<img src="images/science-animalrights-books.png" alt="science, animal rights, and books subgraph" width="500" height="500">
+
+<sub><b>Figure ##: </b> The subgraph of science, animal rights, books, and their adjacent nodes </sub>
 
 But, it's still better than nothing!
 
 #### Second Attempt - Coloring the Graph
 
-We can also color the graphs by metrics related to the nodes, such as node degree...
+We can also color the graphs by metrics related to the nodes, such as node degree, which we saw earlier...
 
-**(insert image of colored graph)**
+<img src="images/science-animalrights-books-colored-by-degree.png" alt="science, animal rights, and books subgraph, colored by degree" width="500" height="500">
+
+<sub><b>Figure ##: </b> The subgraph of science, animal rights, books, and their adjacent nodes, colored by degree </sub>
 
 #### Third Attempt - Random Subgraphs
 
@@ -331,23 +349,25 @@ As you can see in the previous graphs, one of the big problems here is that many
 
 All of this brought me to an idea: what if instead of showing _all_ of the neighboring nodes, we randomly selected a few and only showed them? And then what if we did the same for those nodes?
 
-When you work this out (see my RandomSubgraph class if you're interested), you get something that looks like this:
+When you work this out (see my RandomSubgraph class if you're interested), you get something that looks like this...
 
-**(tada! great image!)**
+<img src="images/random-sample-1.png" alt="askreddit small random sample" width="600" height="600">
+
+<sub><b>Figure ##: </b> Small random sample, starting with askreddit </sub>
+
+By fiddling with the parameters, you can get either a higher or lower percentage of nodes in the graph, and by tweaking some of the internals of the RandomSubgraph class I was also able to sample more of the nodes for nodes that didn't have many neighbors in an attempt to branch throughout more of the full graph structure. Color by degree again and you get this...
 
 <img src="images/big-graph-colored-by-degree.png" alt="askreddit full graph random sample" width="600" height="600">
 
 <sub><b>Figure ##: </b> Attempt at randomly sampling from the full graph, starting with askreddit </sub>
 
-By fiddling with the parameters, you can get either a higher or lower percentage of nodes in the graph, and by tweaking some of the internals of the RandomSubgraph class I was also able to sample more of the nodes for nodes that didn't have many neighbors in an attempt to branch throughout more of the full graph structure.
+Which, frankly, is _beautiful_. And although we've only been coloring by degree so far, you can color by anything...
 
-**(insert one of the "full graph" attempts)**
+<img src="images/big-graph-colored-by-degree-rainbow.png" alt="askreddit full graph random sample rainbow!" width="600" height="600">
 
-And although we've only been coloring by degree so far, you can color by anything...
+<sub><b>Figure ##: </b> Full graph sample, rainbow-ified! </sub>
 
-**(insert rainbow graph)**
-
-Although the rainbow graph isn't very useful, it does get us thinking about how we might be able to use the power of coloring and graph visualization to discover hidden patterns that are harder to detect.
+Even though the rainbow graph isn't very useful, it does get us thinking about how we might be able to use the power of coloring and graph visualization to discover hidden patterns that are harder to detect.
 
 ## Future Research
 
@@ -386,3 +406,20 @@ Techniques:
 - Centrality / PageRank
 - Random Walks
 - Random Sampling
+
+## Gallery
+
+Here's a gallery of some other cool images from this project!
+
+<img src="images/ask-reddit-10-sphere.png" alt="" width="300" height="300"> <img src="images/adjacent-nodes-sphere.png" alt="" width="300" height="300">
+
+<img src="images/animal-rights-15-random-sample.png" alt="" width="300" height="300"> <img src="images/barbell.png" alt="" width="300" height="300">
+
+<img src="images/watts-strogatz.png" alt="" width="300" height="300"> <img src="images/complete-graph.png" alt="" width="300" height="300">
+
+<img src="images/vegan-10.png" alt="" width="300" height="300"> <img src="images/rainbow2.png" alt="" width="300" height="300">
+
+<img src="images/the-donald-rainbow.png" alt="" width="300" height="300"> <img src="images/ask-reddit-greyscale.png" alt="" width="300" height="300">
+
+
+<img src="images/ask-reddit-jumbled.png" alt="" width="300" height="300"> <img src="/images/reddit-10-full.png" alt="" width="300" height="300">
