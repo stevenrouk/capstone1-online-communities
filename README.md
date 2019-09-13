@@ -78,7 +78,10 @@ The dataset also includes a timestamp, and a label of whether the reposted post 
 
 Here are a few example rows from the data:
 
-:paperclip: **(Insert rows or screenshots or something here.)**
+| SOURCE_SUBREDDIT | TARGET_SUBREDDIT | POST_ID | TIMESTAMP | LINK_SENTIMENT | PROPERTIES |
+| --- | --- | --- | --- | --- | --- |
+| leagueoflegends | teamredditteams | 1u4nrps | 2013-12-31 16:39:58 | 1 | 345.0,298.0, ... |
+| theredlion | soccer | 1u4qkd | 2013-12-31 18:18:37 | -1 | 101.0,98.0, ... |
 
 ## Graph Theory Terminology
 
