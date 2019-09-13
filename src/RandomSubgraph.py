@@ -1,3 +1,5 @@
+"""This module defines a helper class for returning a more sparse subgraph."""
+
 import random
 
 import networkx as nx

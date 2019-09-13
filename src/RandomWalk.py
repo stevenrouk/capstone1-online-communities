@@ -1,3 +1,5 @@
+"""This module defines a helper class for going on a random walk through a graph."""
+
 from collections import defaultdict
 import random
 
