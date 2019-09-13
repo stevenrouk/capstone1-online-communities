@@ -128,6 +128,12 @@ Before diving into a completely new domain, it can make sense to try your usual 
 
 <sub><b>Figure: </b> Histogram of Link Sentiment </sub>
 
+```python
+# Number of unique subreddits we're looking at.
+print(len(set(df['SOURCE_SUBREDDIT']).union(set(df['TARGET_SUBREDDIT']))))
+* 67180
+```
+
 Although I could have continued analyzing the data in pandas, I wanted to see what interesting analyses came out of graph-specific approaches.
 
 ### Custom Graph Class: Python Dictionaries and Classes
@@ -268,7 +274,14 @@ There are some other interesting results here:
 
 I actually stumbled my way into this question after somehow discovering that some of the nodes were disconnected. I was then able to find a NetworkX function that calculated the number of distinct, separated graphs (known as "components").
 
-:paperclip: **(insert the number of nodes and components, etc, wherever that is.)**
+```python
+# Not implemented for directed, so we'll cast to undirected.
+connected_components = list(nx.connected_components(G_combined.to_undirected()))
+component_length_counts = Counter([len(x) for x in connected_components])
+
+print(component_length_counts)
+* Counter({2: 646, 3: 42, 4: 14, 5: 3, 7: 2, 6: 2, 65648: 1, 9: 1, 8: 1})
+```
 
 ### Who's friendly, and who's gossipy? (Sharing Reciprocity)
 
