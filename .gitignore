@@ -5,3 +5,4 @@ __pycache__/
 *.tsv
 *.pickle
 .ipynb_checkpoints/
+notebooks/gif/
