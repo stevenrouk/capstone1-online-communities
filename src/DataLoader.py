@@ -6,7 +6,11 @@ import os
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 
+import ast
 import numpy as np
+import pandas as pd
+
+from src.property_names import PROPERTIES_COLUMN_NAMES
 
 class DataLoader:
 
@@ -41,3 +45,26 @@ class DataLoader:
             new_lines.append(line.replace('\n', '').split('\t'))
         
         return new_lines
+
+class PandasDataLoader:
+
+    def __init__(self, filepath1, filepath2=None):
+        self.filepath1 = filepath1
+        self.filepath2 = filepath2
+    
+    def load(self):
+        df1 = pd.read_csv(self.filepath1, delimiter='\t')
+        if not self.filepath2:
+            return df1
+        else:
+            df2 = pd.read_csv(self.filepath2, delimiter='\t')
+            df_combined = pd.concat([df1, df2])
+            return df_combined
+    
+    @staticmethod
+    def generate_properties_df(df):
+        text_properties = df.apply(lambda row: ast.literal_eval(row['PROPERTIES']), axis=1).values.tolist()
+        df_properties = pd.DataFrame(text_properties, columns=PROPERTIES_COLUMN_NAMES)
+
+        return df_properties
+
