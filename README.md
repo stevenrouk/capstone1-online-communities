@@ -23,7 +23,8 @@ Google models websites and knowledge as graphs. Facebook models social networks 
 And in this data exploration, we're looking at Reddit hyperlink networks as graphs.
 
 <img src="images/colorful-graph-1.png" alt="colorful graph 1" width="400" height="400">
-**(insert image of one of my graphs here...but maybe not one of the _best_ ones just yet.)**
+
+<sub><b>Figure 1: </b> Example graph using the pyvis library </sub>
 
 With the prevalence of problems that can be viewed as graph problems, I wanted to know how to conduct an analysis on graph data. This isn't an idle interest for me, either. I think that most of the big problems we face today are fundamantally problems of social networks and information flow, problems like: improving our democracies; maintaining freedom of speech while combatting misleading information; connecting people to necessary resources; fighting extreme wealth inequality; creating effective organizations and communities; etc.
 
@@ -35,11 +36,15 @@ _(This was also an interesting and enlightening analysis project for me as someo
 
 In this project, I worked with the Stanford [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset made available through [SNAP](https://snap.stanford.edu/index.html), the Stanford Network Analysis Platform.
 
+<img src="https://images.app.goo.gl/A82qdcug3NfryvSEA" alt="Stanford SNAP Logo">
+
+<sub><b></b> The Stanford SNAP Logo </sub>
+
 Specifically, this dataset catalogues hyperlinks between subreddits over the course of 2.5 years from January 2014 through April 2017. (A "subreddit" is a community or forum on Reddit dedicated to a specific topic. Subreddits are the basic community structure on Reddit.)
 
 Intuitively, you can think about the data this way:
 
-- Someone posts something on one subreddit: for example, the subreddit "askreddit". This original post can be about anything.
+- Someone posts something on one subreddit: for example, the subreddit [askreddit](https://www.reddit.com/r/AskReddit/). This original post can be about anything.
 - Someone else links to that post on a different subreddit, essentially sharing the content as something they think the subreddit would find interesting: for example, the original post on "askreddit" could get shared to the subreddit "bestof". This post could be positive ("look at this great post!"), negative ("this post is stupid"), or anywhere in between.
 
 In this dataset, the original post is said to be in the **TARGET** subreddit, and the shared post referencing the TARGET is said to be in the **SOURCE** subreddit. So in our example above, "askreddit" is the TARGET and "bestof" is the SOURCE.
@@ -61,6 +66,11 @@ Here are a few example rows from the data:
 Compared to working with normal tabular or text data, graph data introduced a whole new glossary of terms, topics, and methods that have to be used to discuss the data. This section will provide a brief introduction to the most important terms used in graph theory. Other terms will be defined as needed throughout the README.
 
 These definitions come from (or are adapted from) the Wikipedia page [Glossary of graph theory terms](https://en.wikipedia.org/wiki/Glossary_of_graph_theory_terms), which was an invaluable asset during this project. Beneath each definition, there is a description of how the term translates to this specific dataset.
+
+
+<img src="https://en.wikipedia.org/wiki/Graph_theory#/media/File:6n-graf.svg" alt="Graph Image, from Wikipedia">
+
+<sub><b>Figure 2: </b> Example Undirected Graph with 6 Nodes and 7 Edges, from Wikipedia </sub>
 
 1. **graph.** The fundamental object of study in graph theory, a system of vertices connected in pairs by edges. Often subdivided into directed graphs or undirected graphs according to whether the edges have an orientation or not.
     * _The graph that we're working with is the system of all hyperlinks shared between subreddits over our 2.5 year period._
@@ -99,19 +109,31 @@ Although I could have continued analyzing the data in pandas, I wanted to see wh
 
 Before turning to off-the-shelf libraries, I wanted to see how much progress I could make on my own, using classes and built-in Python data structures. I spent the first day of the project working with toy datasets and building classes to build, navigate, and manipulate graphs.
 
-In Python, you can represent graphs using dictionaries where the keys are nodes and the values are lists of nodes (representing edges). For example, here is a toy undirected graph dataset and its corresponding representation using Python dictionaries:
+In Python, you can represent graphs using dictionaries where the keys are nodes and the values are lists of nodes (representing edges). For example, here is a toy undirected graph dataset:
 
-**(insert photo of toy class, with a caption about there being much doodling on whiteboards)**
+<img src="images/toy-graph-1.png" alt="Toy Undirected Graph" width="300" height="300">
 
-And here is the same graph, but now with directed edges:
+<sub><b>Figure 3: </b> A toy undirected graph that I used for developing custom graph classes. There was a lot of whiteboard doodling during this project. </sub>
 
-**(insert photo of toy class, with a caption about there being much doodling on whiteboards)**
+And here is the corresponding dictionary representation in Python:
 
-The code I used to represent these graphs can be found in the custom class files such as [UndirectedGraph.py](https://github.com/stevenrouk/capstone1-online-communities/blob/master/src/UndirectedGraph.py) and [DirectedGraph.py](https://github.com/stevenrouk/capstone1-online-communities/blob/master/src/DirectedGraph.py).
+```python
+def simple_undirected_graph():
+    """Returns a dictionary representing an example of an undirected graph."""
+    g = {
+        'A': ['B'],
+        'B': ['A', 'C', 'D'],
+        'C': ['B', 'D'],
+        'D': ['B', 'C'],
+        'E': []
+    }
 
-I did try loading and analyzing the Reddit hyperlink using these custom-built classes, and was able to speed up my load time by 99% by making my classes more efficient.
+    return g
+```
 
-**(insert photo of improving the efficiency)**
+To modify the graph (such as add a node, add an edge, remove a node, etc.) you can write helper functions that operate on this dictionary. And to coordinate all of this further, you can wrap the data and the methods up into a class. You can see the code I wrote to represent graphs using dictionaries and classes in [UndirectedGraph.py](https://github.com/stevenrouk/capstone1-online-communities/blob/master/src/UndirectedGraph.py) and [DirectedGraph.py](https://github.com/stevenrouk/capstone1-online-communities/blob/master/src/DirectedGraph.py) in the repo.
+
+I did try loading and analyzing the Reddit hyperlink using these custom-built classes, which worked fairly well for smaller subsets of the data. Larger subsets ran slowly at first, but I was able to **speed up my load time by 99%** by making my classes more efficient.
 
 However, as fun as it would have been to completely rebuild graph data structures myself, there are robust and highly efficient libraries that already exist. On the second day of the project, I turned my attention to those.
 
@@ -121,7 +143,24 @@ However, as fun as it would have been to completely rebuild graph data structure
 
 Now, NetworkX provided an easy API to access nodes and edges:
 
-**(Show some example code)**
+```python
+import networkx as nx
+from src.example_graphs import simple_undirected_graph
+
+# The dictionary graph shown earlier
+simple_graph = simple_undirected_graph()
+
+G = nx.from_dict_of_lists(simple_graph)
+
+print(G.nodes)
+* ['A', 'B', 'C', 'D', 'E']
+
+print(G.edges)
+* [('A', 'B'), ('B', 'C'), ('B', 'D'), ('C', 'D')]
+
+print(G['B'])
+* {'A': {}, 'C': {}, 'D': {}} # the extra {} here is a dictionary for edge attributes
+```
 
 With the graph loaded into NetworkX objects, I was ready to conduct analysis.
 
@@ -134,6 +173,10 @@ Let's get started!
 ### Who's the most connected? (Max Degree: In-Degree and Out-Degree)
 
 My first question of the data was essentially the classic one we might ask about a network: "Who's the most popular?" This is what we're looking at here with "degree".
+
+<img src="images/example-color-nodes-by-degree.png" alt="Example of coloring nodes by degree" width="400" height="400">
+
+<sub><b>Figure 4: </b> Example of coloring nodes by degree with a demo graph </sub>
 
 #### In-Degrees: Edges coming into a node
 
@@ -187,6 +230,14 @@ There are some other interesting results here:
 - There are also several top "out-degree" nodes explicitly for critiquing/complaining about things: "subredditdrama" and "circlebroke2", for example.
 - However, there are also aggregation subreddits like "bestof" and "shitredditsays", which compiles the "best of" Reddit.
 - It makes sense for aggregation-oriented subreddits to post the most links to other subreddits.
+
+<img src="images/color-by-degree.png" alt="Example of coloring nodes by degree" width="400" height="400">
+
+<sub><b>Figure 5: </b> Example of coloring nodes by degree with Reddit data </sub>
+
+<img src="images/color-by-degree-zoomed.png" alt="Coloring by degree, zoomed in" width="400" height="400">
+
+<sub><b>Figure 6: </b> Zoomed in so you can see the subreddit names </sub>
 
 ### How many distinct networks are there? (Component Analysis)
 
@@ -283,6 +334,10 @@ All of this brought me to an idea: what if instead of showing _all_ of the neigh
 When you work this out (see my RandomSubgraph class if you're interested), you get something that looks like this:
 
 **(tada! great image!)**
+
+<img src="images/big-graph-colored-by-degree.png" alt="askreddit full graph random sample" width="600" height="600">
+
+<sub><b>Figure ##: </b> Attempt at randomly sampling from the full graph, starting with askreddit </sub>
 
 By fiddling with the parameters, you can get either a higher or lower percentage of nodes in the graph, and by tweaking some of the internals of the RandomSubgraph class I was also able to sample more of the nodes for nodes that didn't have many neighbors in an attempt to branch throughout more of the full graph structure.
 

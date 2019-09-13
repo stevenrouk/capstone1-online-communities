@@ -1,0 +1,105 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"id": "science", "label": "science", "shape": "dot", "title": "science"}, {"id": "everythingscience", "label": "everythingscience", "shape": "dot", "title": "everythingscience"}, {"id": "genomics", "label": "genomics", "shape": "dot", "title": "genomics"}, {"id": "genetics", "label": "genetics", "shape": "dot", "title": "genetics"}, {"id": "bioinformatics", "label": "bioinformatics", "shape": "dot", "title": "bioinformatics"}, {"id": "news", "label": "news", "shape": "dot", "title": "news"}, {"id": "iama", "label": "iama", "shape": "dot", "title": "iama"}, {"id": "askscience", "label": "askscience", "shape": "dot", "title": "askscience"}, {"id": "novapbs", "label": "novapbs", "shape": "dot", "title": "novapbs"}, {"id": "videos", "label": "videos", "shape": "dot", "title": "videos"}, {"id": "artificial", "label": "artificial", "shape": "dot", "title": "artificial"}, {"id": "mildlyinteresting", "label": "mildlyinteresting", "shape": "dot", "title": "mildlyinteresting"}, {"id": "india", "label": "india", "shape": "dot", "title": "india"}, {"id": "dublin", "label": "dublin", "shape": "dot", "title": "dublin"}, {"id": "futurology", "label": "futurology", "shape": "dot", "title": "futurology"}, {"id": "philosophy", "label": "philosophy", "shape": "dot", "title": "philosophy"}, {"id": "astronomy", "label": "astronomy", "shape": "dot", "title": "astronomy"}, {"id": "physics", "label": "physics", "shape": "dot", "title": "physics"}, {"id": "datascience", "label": "datascience", "shape": "dot", "title": "datascience"}, {"id": "askreddit", "label": "askreddit", "shape": "dot", "title": "askreddit"}, {"id": "thermalperformance", "label": "thermalperformance", "shape": "dot", "title": "thermalperformance"}, {"id": "pics", "label": "pics", "shape": "dot", "title": "pics"}, {"id": "conspiracy", "label": "conspiracy", "shape": "dot", "title": "conspiracy"}, {"id": "todayilearned", "label": "todayilearned", "shape": "dot", "title": "todayilearned"}, {"id": "space", "label": "space", "shape": "dot", "title": "space"}, {"id": "technology", "label": "technology", "shape": "dot", "title": "technology"}, {"id": "worldnews", "label": "worldnews", "shape": "dot", "title": "worldnews"}, {"id": "medical", "label": "medical", "shape": "dot", "title": "medical"}, {"id": "funny", "label": "funny", "shape": "dot", "title": "funny"}, {"id": "machinelearning", "label": "machinelearning", "shape": "dot", "title": "machinelearning"}, {"id": "infertility", "label": "infertility", "shape": "dot", "title": "infertility"}, {"id": "redditmade", "label": "redditmade", "shape": "dot", "title": "redditmade"}, {"id": "advancedfitness", "label": "advancedfitness", "shape": "dot", "title": "advancedfitness"}, {"id": "diabetes", "label": "diabetes", "shape": "dot", "title": "diabetes"}, {"id": "roosterteeth", "label": "roosterteeth", "shape": "dot", "title": "roosterteeth"}, {"id": "starwars", "label": "starwars", "shape": "dot", "title": "starwars"}, {"id": "oecake", "label": "oecake", "shape": "dot", "title": "oecake"}, {"id": "whatif", "label": "whatif", "shape": "dot", "title": "whatif"}, {"id": "igem", "label": "igem", "shape": "dot", "title": "igem"}, {"id": "shrooms", "label": "shrooms", "shape": "dot", "title": "shrooms"}, {"id": "popping", "label": "popping", "shape": "dot", "title": "popping"}, {"id": "nottheonion", "label": "nottheonion", "shape": "dot", "title": "nottheonion"}, {"id": "explainlikeimfive", "label": "explainlikeimfive", "shape": "dot", "title": "explainlikeimfive"}, {"id": "environment", "label": "environment", "shape": "dot", "title": "environment"}, {"id": "samplesize", "label": "samplesize", "shape": "dot", "title": "samplesize"}, {"id": "askhistorians", "label": "askhistorians", "shape": "dot", "title": "askhistorians"}, {"id": "startupaccelerators", "label": "startupaccelerators", "shape": "dot", "title": "startupaccelerators"}, {"id": "subredditsmeet", "label": "subredditsmeet", "shape": "dot", "title": "subredditsmeet"}, {"id": "truechristian", "label": "truechristian", "shape": "dot", "title": "truechristian"}, {"id": "yesno", "label": "yesno", "shape": "dot", "title": "yesno"}, {"id": "engineering", "label": "engineering", "shape": "dot", "title": "engineering"}, {"id": "tifu", "label": "tifu", "shape": "dot", "title": "tifu"}, {"id": "gaming", "label": "gaming", "shape": "dot", "title": "gaming"}, {"id": "atheism", "label": "atheism", "shape": "dot", "title": "atheism"}, {"id": "cancer", "label": "cancer", "shape": "dot", "title": "cancer"}, {"id": "gifs", "label": "gifs", "shape": "dot", "title": "gifs"}, {"id": "evergreencoin", "label": "evergreencoin", "shape": "dot", "title": "evergreencoin"}, {"id": "programming", "label": "programming", "shape": "dot", "title": "programming"}, {"id": "mentalhealth", "label": "mentalhealth", "shape": "dot", "title": "mentalhealth"}, {"id": "c_s_t", "label": "c_s_t", "shape": "dot", "title": "c_s_t"}, {"id": "canning", "label": "canning", "shape": "dot", "title": "canning"}, {"id": "fishing", "label": "fishing", "shape": "dot", "title": "fishing"}, {"id": "whowouldwin", "label": "whowouldwin", "shape": "dot", "title": "whowouldwin"}, {"id": "gamedetectives", "label": "gamedetectives", "shape": "dot", "title": "gamedetectives"}, {"id": "lhc", "label": "lhc", "shape": "dot", "title": "lhc"}, {"id": "newzealand", "label": "newzealand", "shape": "dot", "title": "newzealand"}, {"id": "upliftingnews", "label": "upliftingnews", "shape": "dot", "title": "upliftingnews"}, {"id": "scientists", "label": "scientists", "shape": "dot", "title": "scientists"}, {"id": "the_donald", "label": "the_donald", "shape": "dot", "title": "the_donald"}, {"id": "whatsthisbug", "label": "whatsthisbug", "shape": "dot", "title": "whatsthisbug"}, {"id": "youshouldknow", "label": "youshouldknow", "shape": "dot", "title": "youshouldknow"}, {"id": "neil_degrasse_tyson", "label": "neil_degrasse_tyson", "shape": "dot", "title": "neil_degrasse_tyson"}, {"id": "prostatecancer", "label": "prostatecancer", "shape": "dot", "title": "prostatecancer"}, {"id": "kotakuinaction", "label": "kotakuinaction", "shape": "dot", "title": "kotakuinaction"}, {"id": "earthscience", "label": "earthscience", "shape": "dot", "title": "earthscience"}, {"id": "drugnerds", "label": "drugnerds", "shape": "dot", "title": "drugnerds"}, {"id": "interestingasfuck", "label": "interestingasfuck", "shape": "dot", "title": "interestingasfuck"}, {"id": "spinalcordinjuries", "label": "spinalcordinjuries", "shape": "dot", "title": "spinalcordinjuries"}]);
+        edges = new vis.DataSet([{"from": "science", "to": "everythingscience"}, {"from": "science", "to": "genomics"}, {"from": "science", "to": "genetics"}, {"from": "science", "to": "bioinformatics"}, {"from": "science", "to": "news"}, {"from": "science", "to": "iama"}, {"from": "science", "to": "askscience"}, {"from": "science", "to": "novapbs"}, {"from": "science", "to": "videos"}, {"from": "science", "to": "artificial"}, {"from": "science", "to": "mildlyinteresting"}, {"from": "science", "to": "india"}, {"from": "science", "to": "dublin"}, {"from": "science", "to": "futurology"}, {"from": "science", "to": "philosophy"}, {"from": "science", "to": "astronomy"}, {"from": "science", "to": "physics"}, {"from": "science", "to": "datascience"}, {"from": "science", "to": "askreddit"}, {"from": "science", "to": "thermalperformance"}, {"from": "science", "to": "pics"}, {"from": "science", "to": "conspiracy"}, {"from": "science", "to": "todayilearned"}, {"from": "science", "to": "space"}, {"from": "science", "to": "technology"}, {"from": "science", "to": "worldnews"}, {"from": "science", "to": "medical"}, {"from": "science", "to": "funny"}, {"from": "science", "to": "machinelearning"}, {"from": "science", "to": "infertility"}, {"from": "science", "to": "redditmade"}, {"from": "science", "to": "advancedfitness"}, {"from": "science", "to": "diabetes"}, {"from": "science", "to": "roosterteeth"}, {"from": "science", "to": "starwars"}, {"from": "science", "to": "oecake"}, {"from": "science", "to": "whatif"}, {"from": "science", "to": "igem"}, {"from": "science", "to": "shrooms"}, {"from": "science", "to": "popping"}, {"from": "science", "to": "nottheonion"}, {"from": "science", "to": "explainlikeimfive"}, {"from": "science", "to": "environment"}, {"from": "science", "to": "samplesize"}, {"from": "science", "to": "askhistorians"}, {"from": "science", "to": "startupaccelerators"}, {"from": "science", "to": "subredditsmeet"}, {"from": "science", "to": "truechristian"}, {"from": "science", "to": "yesno"}, {"from": "science", "to": "engineering"}, {"from": "science", "to": "tifu"}, {"from": "science", "to": "gaming"}, {"from": "science", "to": "atheism"}, {"from": "science", "to": "cancer"}, {"from": "science", "to": "gifs"}, {"from": "science", "to": "evergreencoin"}, {"from": "science", "to": "programming"}, {"from": "science", "to": "mentalhealth"}, {"from": "science", "to": "c_s_t"}, {"from": "science", "to": "canning"}, {"from": "science", "to": "fishing"}, {"from": "science", "to": "whowouldwin"}, {"from": "science", "to": "gamedetectives"}, {"from": "science", "to": "lhc"}, {"from": "science", "to": "newzealand"}, {"from": "science", "to": "upliftingnews"}, {"from": "science", "to": "scientists"}, {"from": "science", "to": "the_donald"}, {"from": "science", "to": "whatsthisbug"}, {"from": "science", "to": "youshouldknow"}, {"from": "science", "to": "neil_degrasse_tyson"}, {"from": "science", "to": "prostatecancer"}, {"from": "science", "to": "kotakuinaction"}, {"from": "science", "to": "earthscience"}, {"from": "science", "to": "drugnerds"}, {"from": "science", "to": "interestingasfuck"}, {"from": "science", "to": "spinalcordinjuries"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>

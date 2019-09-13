@@ -1,0 +1,201 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 500px;
+            height: 500px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#001414", "id": "infertility", "label": "infertility", "shape": "dot"}, {"color": "#001414", "id": "samplesize", "label": "samplesize", "shape": "dot"}, {"color": "#001414", "id": "diabetes", "label": "diabetes", "shape": "dot"}, {"color": "#001414", "id": "kotakuinaction", "label": "kotakuinaction", "shape": "dot"}, {"color": "#001414", "id": "bioinformatics", "label": "bioinformatics", "shape": "dot"}, {"color": "#001414", "id": "environment", "label": "environment", "shape": "dot"}, {"color": "#001414", "id": "redditmade", "label": "redditmade", "shape": "dot"}, {"color": "#001414", "id": "conspiracy", "label": "conspiracy", "shape": "dot"}, {"color": "#001414", "id": "youshouldknow", "label": "youshouldknow", "shape": "dot"}, {"color": "#001414", "id": "dublin", "label": "dublin", "shape": "dot"}, {"color": "#001414", "id": "genomics", "label": "genomics", "shape": "dot"}, {"color": "#361414", "id": "askreddit", "label": "askreddit", "shape": "dot"}, {"color": "#361414", "id": "pics", "label": "pics", "shape": "dot"}, {"color": "#001414", "id": "tifu", "label": "tifu", "shape": "dot"}, {"color": "#001414", "id": "shrooms", "label": "shrooms", "shape": "dot"}, {"color": "#001414", "id": "machinelearning", "label": "machinelearning", "shape": "dot"}, {"color": "#221414", "id": "whowouldwin", "label": "whowouldwin", "shape": "dot"}, {"color": "#001414", "id": "gifs", "label": "gifs", "shape": "dot"}, {"color": "#221414", "id": "mildlyinteresting", "label": "mildlyinteresting", "shape": "dot"}, {"color": "#001414", "id": "thermalperformance", "label": "thermalperformance", "shape": "dot"}, {"color": "#001414", "id": "philosophy", "label": "philosophy", "shape": "dot"}, {"color": "#001414", "id": "space", "label": "space", "shape": "dot"}, {"color": "#221414", "id": "nottheonion", "label": "nottheonion", "shape": "dot"}, {"color": "#001414", "id": "medical", "label": "medical", "shape": "dot"}, {"color": "#001414", "id": "oecake", "label": "oecake", "shape": "dot"}, {"color": "#001414", "id": "scientists", "label": "scientists", "shape": "dot"}, {"color": "#001414", "id": "c_s_t", "label": "c_s_t", "shape": "dot"}, {"color": "#221414", "id": "whatsthisbug", "label": "whatsthisbug", "shape": "dot"}, {"color": "#221414", "id": "askscience", "label": "askscience", "shape": "dot"}, {"color": "#361414", "id": "videos", "label": "videos", "shape": "dot"}, {"color": "#001414", "id": "prostatecancer", "label": "prostatecancer", "shape": "dot"}, {"color": "#001414", "id": "atheism", "label": "atheism", "shape": "dot"}, {"color": "#001414", "id": "truechristian", "label": "truechristian", "shape": "dot"}, {"color": "#d81414", "id": "science", "label": "science", "shape": "dot"}, {"color": "#361414", "id": "news", "label": "news", "shape": "dot"}, {"color": "#361414", "id": "funny", "label": "funny", "shape": "dot"}, {"color": "#001414", "id": "astronomy", "label": "astronomy", "shape": "dot"}, {"color": "#221414", "id": "askhistorians", "label": "askhistorians", "shape": "dot"}, {"color": "#001414", "id": "subredditsmeet", "label": "subredditsmeet", "shape": "dot"}, {"color": "#001414", "id": "roosterteeth", "label": "roosterteeth", "shape": "dot"}, {"color": "#001414", "id": "novapbs", "label": "novapbs", "shape": "dot"}, {"color": "#001414", "id": "yesno", "label": "yesno", "shape": "dot"}, {"color": "#001414", "id": "drugnerds", "label": "drugnerds", "shape": "dot"}, {"color": "#361414", "id": "iama", "label": "iama", "shape": "dot"}, {"color": "#001414", "id": "the_donald", "label": "the_donald", "shape": "dot"}, {"color": "#001414", "id": "igem", "label": "igem", "shape": "dot"}, {"color": "#001414", "id": "datascience", "label": "datascience", "shape": "dot"}, {"color": "#001414", "id": "evergreencoin", "label": "evergreencoin", "shape": "dot"}, {"color": "#001414", "id": "startupaccelerators", "label": "startupaccelerators", "shape": "dot"}, {"color": "#001414", "id": "spinalcordinjuries", "label": "spinalcordinjuries", "shape": "dot"}, {"color": "#001414", "id": "advancedfitness", "label": "advancedfitness", "shape": "dot"}, {"color": "#001414", "id": "everythingscience", "label": "everythingscience", "shape": "dot"}, {"color": "#001414", "id": "programming", "label": "programming", "shape": "dot"}, {"color": "#001414", "id": "genetics", "label": "genetics", "shape": "dot"}, {"color": "#001414", "id": "whatif", "label": "whatif", "shape": "dot"}, {"color": "#001414", "id": "artificial", "label": "artificial", "shape": "dot"}, {"color": "#001414", "id": "starwars", "label": "starwars", "shape": "dot"}, {"color": "#221414", "id": "explainlikeimfive", "label": "explainlikeimfive", "shape": "dot"}, {"color": "#001414", "id": "cancer", "label": "cancer", "shape": "dot"}, {"color": "#001414", "id": "futurology", "label": "futurology", "shape": "dot"}, {"color": "#001414", "id": "canning", "label": "canning", "shape": "dot"}, {"color": "#001414", "id": "newzealand", "label": "newzealand", "shape": "dot"}, {"color": "#001414", "id": "lhc", "label": "lhc", "shape": "dot"}, {"color": "#361414", "id": "worldnews", "label": "worldnews", "shape": "dot"}, {"color": "#001414", "id": "engineering", "label": "engineering", "shape": "dot"}, {"color": "#221414", "id": "gaming", "label": "gaming", "shape": "dot"}, {"color": "#001414", "id": "upliftingnews", "label": "upliftingnews", "shape": "dot"}, {"color": "#001414", "id": "popping", "label": "popping", "shape": "dot"}, {"color": "#001414", "id": "india", "label": "india", "shape": "dot"}, {"color": "#361414", "id": "todayilearned", "label": "todayilearned", "shape": "dot"}, {"color": "#001414", "id": "neil_degrasse_tyson", "label": "neil_degrasse_tyson", "shape": "dot"}, {"color": "#001414", "id": "physics", "label": "physics", "shape": "dot"}, {"color": "#001414", "id": "gamedetectives", "label": "gamedetectives", "shape": "dot"}, {"color": "#001414", "id": "fishing", "label": "fishing", "shape": "dot"}, {"color": "#221414", "id": "technology", "label": "technology", "shape": "dot"}, {"color": "#001414", "id": "mentalhealth", "label": "mentalhealth", "shape": "dot"}, {"color": "#221414", "id": "interestingasfuck", "label": "interestingasfuck", "shape": "dot"}, {"color": "#001414", "id": "earthscience", "label": "earthscience", "shape": "dot"}, {"color": "#001414", "id": "antipoaching", "label": "antipoaching", "shape": "dot"}, {"color": "#001414", "id": "mhocpress", "label": "mhocpress", "shape": "dot"}, {"color": "#001414", "id": "cfb", "label": "cfb", "shape": "dot"}, {"color": "#001414", "id": "connecticut", "label": "connecticut", "shape": "dot"}, {"color": "#001414", "id": "tulsi", "label": "tulsi", "shape": "dot"}, {"color": "#001414", "id": "vegan", "label": "vegan", "shape": "dot"}, {"color": "#221414", "id": "assistance", "label": "assistance", "shape": "dot"}, {"color": "#221414", "id": "politics", "label": "politics", "shape": "dot"}, {"color": "#001414", "id": "scotland", "label": "scotland", "shape": "dot"}, {"color": "#001414", "id": "lalist", "label": "lalist", "shape": "dot"}, {"color": "#001414", "id": "ifuckinghatecats", "label": "ifuckinghatecats", "shape": "dot"}, {"color": "#001414", "id": "animals", "label": "animals", "shape": "dot"}, {"color": "#221414", "id": "europe", "label": "europe", "shape": "dot"}, {"color": "#001414", "id": "ontario", "label": "ontario", "shape": "dot"}, {"color": "#001414", "id": "propagandaposters", "label": "propagandaposters", "shape": "dot"}, {"color": "#001414", "id": "northcarolina", "label": "northcarolina", "shape": "dot"}, {"color": "#001414", "id": "documentaries", "label": "documentaries", "shape": "dot"}, {"color": "#001414", "id": "aww", "label": "aww", "shape": "dot"}, {"color": "#001414", "id": "trueoffmychest", "label": "trueoffmychest", "shape": "dot"}, {"color": "#001414", "id": "ireland", "label": "ireland", "shape": "dot"}, {"color": "#001414", "id": "babyelephantgifs", "label": "babyelephantgifs", "shape": "dot"}, {"color": "#001414", "id": "travel", "label": "travel", "shape": "dot"}, {"color": "#001414", "id": "kickstarter", "label": "kickstarter", "shape": "dot"}, {"color": "#001414", "id": "changemyview", "label": "changemyview", "shape": "dot"}, {"color": "#001414", "id": "publicfreakout", "label": "publicfreakout", "shape": "dot"}, {"color": "#001414", "id": "againstpetownership", "label": "againstpetownership", "shape": "dot"}, {"color": "#001414", "id": "breakingmom", "label": "breakingmom", "shape": "dot"}, {"color": "#001414", "id": "reptiles", "label": "reptiles", "shape": "dot"}, {"color": "#001414", "id": "cutesystuff", "label": "cutesystuff", "shape": "dot"}, {"color": "#001414", "id": "vegetarian", "label": "vegetarian", "shape": "dot"}, {"color": "#001414", "id": "dogs", "label": "dogs", "shape": "dot"}, {"color": "#001414", "id": "rabbits", "label": "rabbits", "shape": "dot"}, {"color": "#221414", "id": "food", "label": "food", "shape": "dot"}, {"color": "#001414", "id": "wtf", "label": "wtf", "shape": "dot"}, {"color": "#c41414", "id": "animalrights", "label": "animalrights", "shape": "dot"}, {"color": "#001414", "id": "farming", "label": "farming", "shape": "dot"}, {"color": "#001414", "id": "sex", "label": "sex", "shape": "dot"}, {"color": "#221414", "id": "truereddit", "label": "truereddit", "shape": "dot"}, {"color": "#221414", "id": "diy", "label": "diy", "shape": "dot"}, {"color": "#001414", "id": "inthenews", "label": "inthenews", "shape": "dot"}, {"color": "#001414", "id": "good_cop_free_donut", "label": "good_cop_free_donut", "shape": "dot"}, {"color": "#001414", "id": "sandersforpresident", "label": "sandersforpresident", "shape": "dot"}, {"color": "#001414", "id": "mhoc", "label": "mhoc", "shape": "dot"}, {"color": "#001414", "id": "iwanttolearn", "label": "iwanttolearn", "shape": "dot"}, {"color": "#001414", "id": "mormon", "label": "mormon", "shape": "dot"}, {"color": "#001414", "id": "hiphop101", "label": "hiphop101", "shape": "dot"}, {"color": "#001414", "id": "suggestmeabook", "label": "suggestmeabook", "shape": "dot"}, {"color": "#001414", "id": "rush", "label": "rush", "shape": "dot"}, {"color": "#001414", "id": "philosophybookclub", "label": "philosophybookclub", "shape": "dot"}, {"color": "#001414", "id": "dreamtheater", "label": "dreamtheater", "shape": "dot"}, {"color": "#001414", "id": "thriftstorehauls", "label": "thriftstorehauls", "shape": "dot"}, {"color": "#001414", "id": "janeausten", "label": "janeausten", "shape": "dot"}, {"color": "#001414", "id": "linguistics", "label": "linguistics", "shape": "dot"}, {"color": "#001414", "id": "sciencefiction", "label": "sciencefiction", "shape": "dot"}, {"color": "#001414", "id": "wot", "label": "wot", "shape": "dot"}, {"color": "#001414", "id": "satire", "label": "satire", "shape": "dot"}, {"color": "#001414", "id": "stevenaveryisguilty", "label": "stevenaveryisguilty", "shape": "dot"}, {"color": "#001414", "id": "nonfictionbookclub", "label": "nonfictionbookclub", "shape": "dot"}, {"color": "#001414", "id": "turkey", "label": "turkey", "shape": "dot"}, {"color": "#001414", "id": "truebooks", "label": "truebooks", "shape": "dot"}, {"color": "#001414", "id": "interactivefiction", "label": "interactivefiction", "shape": "dot"}, {"color": "#001414", "id": "worldbuilding", "label": "worldbuilding", "shape": "dot"}, {"color": "#001414", "id": "bookclub", "label": "bookclub", "shape": "dot"}, {"color": "#001414", "id": "ama", "label": "ama", "shape": "dot"}, {"color": "#001414", "id": "catholicism", "label": "catholicism", "shape": "dot"}, {"color": "#001414", "id": "fantasy", "label": "fantasy", "shape": "dot"}, {"color": "#001414", "id": "liverpoolfc", "label": "liverpoolfc", "shape": "dot"}, {"color": "#001414", "id": "japan", "label": "japan", "shape": "dot"}, {"color": "#001414", "id": "mrmenlittlemiss", "label": "mrmenlittlemiss", "shape": "dot"}, {"color": "#001414", "id": "christopherhitchens", "label": "christopherhitchens", "shape": "dot"}, {"color": "#001414", "id": "thefamiliar", "label": "thefamiliar", "shape": "dot"}, {"color": "#001414", "id": "history", "label": "history", "shape": "dot"}, {"color": "#001414", "id": "undelete", "label": "undelete", "shape": "dot"}, {"color": "#001414", "id": "bakker", "label": "bakker", "shape": "dot"}, {"color": "#001414", "id": "robinhobb", "label": "robinhobb", "shape": "dot"}, {"color": "#001414", "id": "indianreaders", "label": "indianreaders", "shape": "dot"}, {"color": "#001414", "id": "holmes", "label": "holmes", "shape": "dot"}, {"color": "#001414", "id": "iamverysmart", "label": "iamverysmart", "shape": "dot"}, {"color": "#001414", "id": "pakistan", "label": "pakistan", "shape": "dot"}, {"color": "#001414", "id": "arabs", "label": "arabs", "shape": "dot"}, {"color": "#001414", "id": "lifeprotips", "label": "lifeprotips", "shape": "dot"}, {"color": "#001414", "id": "mneumonese", "label": "mneumonese", "shape": "dot"}, {"color": "#001414", "id": "television", "label": "television", "shape": "dot"}, {"color": "#001414", "id": "peloton", "label": "peloton", "shape": "dot"}, {"color": "#001414", "id": "horrorlit", "label": "horrorlit", "shape": "dot"}, {"color": "#001414", "id": "bookdiscussion", "label": "bookdiscussion", "shape": "dot"}, {"color": "#001414", "id": "indianbooks", "label": "indianbooks", "shape": "dot"}, {"color": "#001414", "id": "scifi", "label": "scifi", "shape": "dot"}, {"color": "#001414", "id": "photoshopbattles", "label": "photoshopbattles", "shape": "dot"}, {"color": "#001414", "id": "bookswitch", "label": "bookswitch", "shape": "dot"}, {"color": "#001414", "id": "askphilosophy", "label": "askphilosophy", "shape": "dot"}, {"color": "#001414", "id": "makeupaddiction", "label": "makeupaddiction", "shape": "dot"}, {"color": "#001414", "id": "disney", "label": "disney", "shape": "dot"}, {"color": "#001414", "id": "selfpublish", "label": "selfpublish", "shape": "dot"}, {"color": "#001414", "id": "humanporn", "label": "humanporn", "shape": "dot"}, {"color": "#001414", "id": "trekbooks", "label": "trekbooks", "shape": "dot"}, {"color": "#001414", "id": "music", "label": "music", "shape": "dot"}, {"color": "#001414", "id": "yukiomishima", "label": "yukiomishima", "shape": "dot"}, {"color": "#001414", "id": "forgotten_realms", "label": "forgotten_realms", "shape": "dot"}, {"color": "#001414", "id": "brakebills", "label": "brakebills", "shape": "dot"}, {"color": "#001414", "id": "comicbooks", "label": "comicbooks", "shape": "dot"}, {"color": "#001414", "id": "readalong", "label": "readalong", "shape": "dot"}, {"color": "#001414", "id": "freeebooks", "label": "freeebooks", "shape": "dot"}, {"color": "#001414", "id": "reactjs", "label": "reactjs", "shape": "dot"}, {"color": "#001414", "id": "autographs", "label": "autographs", "shape": "dot"}, {"color": "#001414", "id": "frugallearning", "label": "frugallearning", "shape": "dot"}, {"color": "#001414", "id": "sf_book_club", "label": "sf_book_club", "shape": "dot"}, {"color": "#001414", "id": "powdermage", "label": "powdermage", "shape": "dot"}, {"color": "#001414", "id": "bookquotes", "label": "bookquotes", "shape": "dot"}, {"color": "#001414", "id": "readporn", "label": "readporn", "shape": "dot"}, {"color": "#001414", "id": "subredditdrama", "label": "subredditdrama", "shape": "dot"}, {"color": "#001414", "id": "raisedbynarcissists", "label": "raisedbynarcissists", "shape": "dot"}, {"color": "#001414", "id": "startups", "label": "startups", "shape": "dot"}, {"color": "#001414", "id": "firstpage", "label": "firstpage", "shape": "dot"}, {"color": "#001414", "id": "askliterarystudies", "label": "askliterarystudies", "shape": "dot"}, {"color": "#001414", "id": "unresolvedmysteries", "label": "unresolvedmysteries", "shape": "dot"}, {"color": "#001414", "id": "offbeat", "label": "offbeat", "shape": "dot"}, {"color": "#001414", "id": "mildlyinfuriating", "label": "mildlyinfuriating", "shape": "dot"}, {"color": "#001414", "id": "yawriters", "label": "yawriters", "shape": "dot"}, {"color": "#001414", "id": "femalefashionadvice", "label": "femalefashionadvice", "shape": "dot"}, {"color": "#001414", "id": "infinitesummer", "label": "infinitesummer", "shape": "dot"}, {"color": "#001414", "id": "52in52", "label": "52in52", "shape": "dot"}, {"color": "#001414", "id": "scifiwriting", "label": "scifiwriting", "shape": "dot"}, {"color": "#001414", "id": "bettermentbookclub", "label": "bettermentbookclub", "shape": "dot"}, {"color": "#001414", "id": "words", "label": "words", "shape": "dot"}, {"color": "#001414", "id": "childrensbooks", "label": "childrensbooks", "shape": "dot"}, {"color": "#001414", "id": "earlyadopter", "label": "earlyadopter", "shape": "dot"}, {"color": "#001414", "id": "scientology", "label": "scientology", "shape": "dot"}, {"color": "#001414", "id": "twoxchromosomes", "label": "twoxchromosomes", "shape": "dot"}, {"color": "#001414", "id": "simpleliving", "label": "simpleliving", "shape": "dot"}, {"color": "#001414", "id": "smartbooks", "label": "smartbooks", "shape": "dot"}, {"color": "#001414", "id": "literature", "label": "literature", "shape": "dot"}, {"color": "#001414", "id": "pieceofshitbookclub", "label": "pieceofshitbookclub", "shape": "dot"}, {"color": "#001414", "id": "libraries", "label": "libraries", "shape": "dot"}, {"color": "#001414", "id": "movies", "label": "movies", "shape": "dot"}, {"color": "#001414", "id": "rarebooks", "label": "rarebooks", "shape": "dot"}, {"color": "#001414", "id": "arabic", "label": "arabic", "shape": "dot"}, {"color": "#001414", "id": "randomkindness", "label": "randomkindness", "shape": "dot"}, {"color": "#001414", "id": "sealist", "label": "sealist", "shape": "dot"}, {"color": "#001414", "id": "kingkillerchronicle", "label": "kingkillerchronicle", "shape": "dot"}, {"color": "#001414", "id": "chuckpalahniuk", "label": "chuckpalahniuk", "shape": "dot"}, {"color": "#001414", "id": "dredmorbius", "label": "dredmorbius", "shape": "dot"}, {"color": "#001414", "id": "halostory", "label": "halostory", "shape": "dot"}, {"color": "#001414", "id": "showerthoughts", "label": "showerthoughts", "shape": "dot"}, {"color": "#001414", "id": "yalit", "label": "yalit", "shape": "dot"}, {"color": "#ff1414", "id": "books", "label": "books", "shape": "dot"}, {"color": "#001414", "id": "weirdlit", "label": "weirdlit", "shape": "dot"}, {"color": "#001414", "id": "wheeloftimerp", "label": "wheeloftimerp", "shape": "dot"}, {"color": "#001414", "id": "expectationvsreality", "label": "expectationvsreality", "shape": "dot"}, {"color": "#001414", "id": "stormlightarchivebc", "label": "stormlightarchivebc", "shape": "dot"}, {"color": "#001414", "id": "murakami", "label": "murakami", "shape": "dot"}, {"color": "#001414", "id": "kindle", "label": "kindle", "shape": "dot"}, {"color": "#001414", "id": "getmotivated", "label": "getmotivated", "shape": "dot"}, {"color": "#001414", "id": "outoftheloop", "label": "outoftheloop", "shape": "dot"}, {"color": "#001414", "id": "discworld", "label": "discworld", "shape": "dot"}, {"color": "#001414", "id": "ebooks", "label": "ebooks", "shape": "dot"}, {"color": "#001414", "id": "accursedkings", "label": "accursedkings", "shape": "dot"}, {"color": "#001414", "id": "oregon", "label": "oregon", "shape": "dot"}, {"color": "#001414", "id": "romania", "label": "romania", "shape": "dot"}, {"color": "#001414", "id": "dataisbeautiful", "label": "dataisbeautiful", "shape": "dot"}, {"color": "#001414", "id": "northkoreanews", "label": "northkoreanews", "shape": "dot"}, {"color": "#001414", "id": "kindlescreensavers", "label": "kindlescreensavers", "shape": "dot"}, {"color": "#001414", "id": "legaladviceofftopic", "label": "legaladviceofftopic", "shape": "dot"}, {"color": "#001414", "id": "thecompositional", "label": "thecompositional", "shape": "dot"}, {"color": "#001414", "id": "cats", "label": "cats", "shape": "dot"}, {"color": "#001414", "id": "horrorbookclub", "label": "horrorbookclub", "shape": "dot"}, {"color": "#001414", "id": "malefashionadvice", "label": "malefashionadvice", "shape": "dot"}, {"color": "#001414", "id": "books_uk", "label": "books_uk", "shape": "dot"}, {"color": "#001414", "id": "podcasts", "label": "podcasts", "shape": "dot"}, {"color": "#001414", "id": "brandonsanderson", "label": "brandonsanderson", "shape": "dot"}, {"color": "#001414", "id": "coolgithubprojects", "label": "coolgithubprojects", "shape": "dot"}, {"color": "#001414", "id": "booksuggestions", "label": "booksuggestions", "shape": "dot"}, {"color": "#001414", "id": "tolkienfans", "label": "tolkienfans", "shape": "dot"}, {"color": "#001414", "id": "dayz", "label": "dayz", "shape": "dot"}, {"color": "#001414", "id": "lendme", "label": "lendme", "shape": "dot"}, {"color": "#001414", "id": "writing", "label": "writing", "shape": "dot"}, {"color": "#001414", "id": "toronto", "label": "toronto", "shape": "dot"}, {"color": "#001414", "id": "tipofmytongue", "label": "tipofmytongue", "shape": "dot"}, {"color": "#001414", "id": "zombies", "label": "zombies", "shape": "dot"}, {"color": "#001414", "id": "thegreatgatsby", "label": "thegreatgatsby", "shape": "dot"}, {"color": "#001414", "id": "crafts", "label": "crafts", "shape": "dot"}, {"color": "#001414", "id": "starwarsbooks", "label": "starwarsbooks", "shape": "dot"}, {"color": "#001414", "id": "shakespeare", "label": "shakespeare", "shape": "dot"}, {"color": "#001414", "id": "horror", "label": "horror", "shape": "dot"}, {"color": "#001414", "id": "stephenkingbookclub", "label": "stephenkingbookclub", "shape": "dot"}, {"color": "#001414", "id": "anime", "label": "anime", "shape": "dot"}, {"color": "#001414", "id": "casualiama", "label": "casualiama", "shape": "dot"}, {"color": "#001414", "id": "anarchism", "label": "anarchism", "shape": "dot"}, {"color": "#001414", "id": "audiobooks", "label": "audiobooks", "shape": "dot"}, {"color": "#001414", "id": "52book", "label": "52book", "shape": "dot"}]);
+        edges = new vis.DataSet([{"from": "science", "to": "everythingscience"}, {"from": "science", "to": "genomics"}, {"from": "science", "to": "genetics"}, {"from": "science", "to": "bioinformatics"}, {"from": "science", "to": "news"}, {"from": "science", "to": "iama"}, {"from": "science", "to": "askscience"}, {"from": "science", "to": "novapbs"}, {"from": "science", "to": "videos"}, {"from": "science", "to": "artificial"}, {"from": "science", "to": "mildlyinteresting"}, {"from": "science", "to": "india"}, {"from": "science", "to": "dublin"}, {"from": "science", "to": "futurology"}, {"from": "science", "to": "philosophy"}, {"from": "science", "to": "astronomy"}, {"from": "science", "to": "physics"}, {"from": "science", "to": "datascience"}, {"from": "science", "to": "askreddit"}, {"from": "science", "to": "thermalperformance"}, {"from": "science", "to": "pics"}, {"from": "science", "to": "conspiracy"}, {"from": "science", "to": "todayilearned"}, {"from": "science", "to": "space"}, {"from": "science", "to": "technology"}, {"from": "science", "to": "worldnews"}, {"from": "science", "to": "medical"}, {"from": "science", "to": "funny"}, {"from": "science", "to": "machinelearning"}, {"from": "science", "to": "infertility"}, {"from": "science", "to": "redditmade"}, {"from": "science", "to": "advancedfitness"}, {"from": "science", "to": "diabetes"}, {"from": "science", "to": "roosterteeth"}, {"from": "science", "to": "starwars"}, {"from": "science", "to": "oecake"}, {"from": "science", "to": "whatif"}, {"from": "science", "to": "igem"}, {"from": "science", "to": "shrooms"}, {"from": "science", "to": "popping"}, {"from": "science", "to": "nottheonion"}, {"from": "science", "to": "explainlikeimfive"}, {"from": "science", "to": "environment"}, {"from": "science", "to": "samplesize"}, {"from": "science", "to": "askhistorians"}, {"from": "science", "to": "startupaccelerators"}, {"from": "science", "to": "subredditsmeet"}, {"from": "science", "to": "truechristian"}, {"from": "science", "to": "yesno"}, {"from": "science", "to": "engineering"}, {"from": "science", "to": "tifu"}, {"from": "science", "to": "gaming"}, {"from": "science", "to": "atheism"}, {"from": "science", "to": "cancer"}, {"from": "science", "to": "gifs"}, {"from": "science", "to": "evergreencoin"}, {"from": "science", "to": "programming"}, {"from": "science", "to": "mentalhealth"}, {"from": "science", "to": "c_s_t"}, {"from": "science", "to": "canning"}, {"from": "science", "to": "fishing"}, {"from": "science", "to": "whowouldwin"}, {"from": "science", "to": "gamedetectives"}, {"from": "science", "to": "lhc"}, {"from": "science", "to": "newzealand"}, {"from": "science", "to": "upliftingnews"}, {"from": "science", "to": "scientists"}, {"from": "science", "to": "the_donald"}, {"from": "science", "to": "whatsthisbug"}, {"from": "science", "to": "youshouldknow"}, {"from": "science", "to": "neil_degrasse_tyson"}, {"from": "science", "to": "prostatecancer"}, {"from": "science", "to": "kotakuinaction"}, {"from": "science", "to": "earthscience"}, {"from": "science", "to": "drugnerds"}, {"from": "science", "to": "interestingasfuck"}, {"from": "science", "to": "spinalcordinjuries"}, {"from": "animalrights", "to": "wtf"}, {"from": "animalrights", "to": "vegan"}, {"from": "animalrights", "to": "antipoaching"}, {"from": "animalrights", "to": "assistance"}, {"from": "animalrights", "to": "connecticut"}, {"from": "animalrights", "to": "mhoc"}, {"from": "animalrights", "to": "rabbits"}, {"from": "animalrights", "to": "changemyview"}, {"from": "animalrights", "to": "mhocpress"}, {"from": "animalrights", "to": "aww"}, {"from": "animalrights", "to": "askreddit"}, {"from": "animalrights", "to": "truereddit"}, {"from": "animalrights", "to": "reptiles"}, {"from": "animalrights", "to": "diy"}, {"from": "animalrights", "to": "kickstarter"}, {"from": "animalrights", "to": "iama"}, {"from": "animalrights", "to": "farming"}, {"from": "animalrights", "to": "politics"}, {"from": "animalrights", "to": "good_cop_free_donut"}, {"from": "animalrights", "to": "ireland"}, {"from": "animalrights", "to": "todayilearned"}, {"from": "animalrights", "to": "explainlikeimfive"}, {"from": "animalrights", "to": "breakingmom"}, {"from": "animalrights", "to": "news"}, {"from": "animalrights", "to": "dogs"}, {"from": "animalrights", "to": "propagandaposters"}, {"from": "animalrights", "to": "food"}, {"from": "animalrights", "to": "sex"}, {"from": "animalrights", "to": "scotland"}, {"from": "animalrights", "to": "europe"}, {"from": "animalrights", "to": "worldnews"}, {"from": "animalrights", "to": "babyelephantgifs"}, {"from": "animalrights", "to": "pics"}, {"from": "animalrights", "to": "inthenews"}, {"from": "animalrights", "to": "animals"}, {"from": "animalrights", "to": "northcarolina"}, {"from": "animalrights", "to": "videos"}, {"from": "animalrights", "to": "cfb"}, {"from": "animalrights", "to": "funny"}, {"from": "animalrights", "to": "documentaries"}, {"from": "animalrights", "to": "publicfreakout"}, {"from": "animalrights", "to": "trueoffmychest"}, {"from": "animalrights", "to": "lalist"}, {"from": "animalrights", "to": "sandersforpresident"}, {"from": "animalrights", "to": "ontario"}, {"from": "animalrights", "to": "ifuckinghatecats"}, {"from": "animalrights", "to": "travel"}, {"from": "animalrights", "to": "againstpetownership"}, {"from": "animalrights", "to": "vegetarian"}, {"from": "animalrights", "to": "cutesystuff"}, {"from": "animalrights", "to": "tulsi"}, {"from": "animalrights", "to": "science"}, {"from": "books", "to": "arabs"}, {"from": "books", "to": "iama"}, {"from": "books", "to": "truebooks"}, {"from": "books", "to": "tolkienfans"}, {"from": "books", "to": "horrorlit"}, {"from": "books", "to": "sciencefiction"}, {"from": "books", "to": "robinhobb"}, {"from": "books", "to": "romania"}, {"from": "books", "to": "lendme"}, {"from": "books", "to": "powdermage"}, {"from": "books", "to": "askreddit"}, {"from": "books", "to": "askphilosophy"}, {"from": "books", "to": "worldbuilding"}, {"from": "books", "to": "cats"}, {"from": "books", "to": "zombies"}, {"from": "books", "to": "ebooks"}, {"from": "books", "to": "iwanttolearn"}, {"from": "books", "to": "kindlescreensavers"}, {"from": "books", "to": "libraries"}, {"from": "books", "to": "bookquotes"}, {"from": "books", "to": "history"}, {"from": "books", "to": "fantasy"}, {"from": "books", "to": "videos"}, {"from": "books", "to": "writing"}, {"from": "books", "to": "suggestmeabook"}, {"from": "books", "to": "dataisbeautiful"}, {"from": "books", "to": "trekbooks"}, {"from": "books", "to": "malefashionadvice"}, {"from": "books", "to": "femalefashionadvice"}, {"from": "books", "to": "makeupaddiction"}, {"from": "books", "to": "horrorbookclub"}, {"from": "books", "to": "bookdiscussion"}, {"from": "books", "to": "music"}, {"from": "books", "to": "bookclub"}, {"from": "books", "to": "christopherhitchens"}, {"from": "books", "to": "arabic"}, {"from": "books", "to": "todayilearned"}, {"from": "books", "to": "subredditdrama"}, {"from": "books", "to": "randomkindness"}, {"from": "books", "to": "askliterarystudies"}, {"from": "books", "to": "movies"}, {"from": "books", "to": "literature"}, {"from": "books", "to": "pieceofshitbookclub"}, {"from": "books", "to": "photoshopbattles"}, {"from": "books", "to": "anime"}, {"from": "books", "to": "bettermentbookclub"}, {"from": "books", "to": "outoftheloop"}, {"from": "books", "to": "raisedbynarcissists"}, {"from": "books", "to": "mneumonese"}, {"from": "books", "to": "philosophybookclub"}, {"from": "books", "to": "halostory"}, {"from": "books", "to": "holmes"}, {"from": "books", "to": "shakespeare"}, {"from": "books", "to": "forgotten_realms"}, {"from": "books", "to": "wheeloftimerp"}, {"from": "books", "to": "readalong"}, {"from": "books", "to": "booksuggestions"}, {"from": "books", "to": "askscience"}, {"from": "books", "to": "getmotivated"}, {"from": "books", "to": "discworld"}, {"from": "books", "to": "scientology"}, {"from": "books", "to": "television"}, {"from": "books", "to": "thefamiliar"}, {"from": "books", "to": "brakebills"}, {"from": "books", "to": "mildlyinfuriating"}, {"from": "books", "to": "infinitesummer"}, {"from": "books", "to": "crafts"}, {"from": "books", "to": "comicbooks"}, {"from": "books", "to": "pics"}, {"from": "books", "to": "truereddit"}, {"from": "books", "to": "stevenaveryisguilty"}, {"from": "books", "to": "murakami"}, {"from": "books", "to": "indianreaders"}, {"from": "books", "to": "food"}, {"from": "books", "to": "yalit"}, {"from": "books", "to": "weirdlit"}, {"from": "books", "to": "dredmorbius"}, {"from": "books", "to": "satire"}, {"from": "books", "to": "dreamtheater"}, {"from": "books", "to": "52book"}, {"from": "books", "to": "stormlightarchivebc"}, {"from": "books", "to": "52in52"}, {"from": "books", "to": "thegreatgatsby"}, {"from": "books", "to": "firstpage"}, {"from": "books", "to": "thriftstorehauls"}, {"from": "books", "to": "childrensbooks"}, {"from": "books", "to": "accursedkings"}, {"from": "books", "to": "toronto"}, {"from": "books", "to": "bakker"}, {"from": "books", "to": "offbeat"}, {"from": "books", "to": "freeebooks"}, {"from": "books", "to": "scifi"}, {"from": "books", "to": "dayz"}, {"from": "books", "to": "stephenkingbookclub"}, {"from": "books", "to": "readporn"}, {"from": "books", "to": "frugallearning"}, {"from": "books", "to": "catholicism"}, {"from": "books", "to": "autographs"}, {"from": "books", "to": "scifiwriting"}, {"from": "books", "to": "wot"}, {"from": "books", "to": "peloton"}, {"from": "books", "to": "northkoreanews"}, {"from": "books", "to": "whowouldwin"}, {"from": "books", "to": "kingkillerchronicle"}, {"from": "books", "to": "funny"}, {"from": "books", "to": "horror"}, {"from": "books", "to": "janeausten"}, {"from": "books", "to": "technology"}, {"from": "books", "to": "mormon"}, {"from": "books", "to": "rarebooks"}, {"from": "books", "to": "ama"}, {"from": "books", "to": "interactivefiction"}, {"from": "books", "to": "news"}, {"from": "books", "to": "hiphop101"}, {"from": "books", "to": "yawriters"}, {"from": "books", "to": "iamverysmart"}, {"from": "books", "to": "linguistics"}, {"from": "books", "to": "chuckpalahniuk"}, {"from": "books", "to": "bookswitch"}, {"from": "books", "to": "books_uk"}, {"from": "books", "to": "assistance"}, {"from": "books", "to": "starwarsbooks"}, {"from": "books", "to": "humanporn"}, {"from": "books", "to": "pakistan"}, {"from": "books", "to": "tipofmytongue"}, {"from": "books", "to": "politics"}, {"from": "books", "to": "words"}, {"from": "books", "to": "sf_book_club"}, {"from": "books", "to": "audiobooks"}, {"from": "books", "to": "undelete"}, {"from": "books", "to": "askhistorians"}, {"from": "books", "to": "expectationvsreality"}, {"from": "books", "to": "worldnews"}, {"from": "books", "to": "disney"}, {"from": "books", "to": "nonfictionbookclub"}, {"from": "books", "to": "mildlyinteresting"}, {"from": "books", "to": "anarchism"}, {"from": "books", "to": "sealist"}, {"from": "books", "to": "showerthoughts"}, {"from": "books", "to": "diy"}, {"from": "books", "to": "reactjs"}, {"from": "books", "to": "casualiama"}, {"from": "books", "to": "legaladviceofftopic"}, {"from": "books", "to": "yukiomishima"}, {"from": "books", "to": "twoxchromosomes"}, {"from": "books", "to": "kindle"}, {"from": "books", "to": "simpleliving"}, {"from": "books", "to": "nottheonion"}, {"from": "books", "to": "thecompositional"}, {"from": "books", "to": "startups"}, {"from": "books", "to": "indianbooks"}, {"from": "books", "to": "selfpublish"}, {"from": "books", "to": "coolgithubprojects"}, {"from": "books", "to": "interestingasfuck"}, {"from": "books", "to": "whatsthisbug"}, {"from": "books", "to": "unresolvedmysteries"}, {"from": "books", "to": "smartbooks"}, {"from": "books", "to": "rush"}, {"from": "books", "to": "gaming"}, {"from": "books", "to": "liverpoolfc"}, {"from": "books", "to": "europe"}, {"from": "books", "to": "lifeprotips"}, {"from": "books", "to": "mrmenlittlemiss"}, {"from": "books", "to": "japan"}, {"from": "books", "to": "turkey"}, {"from": "books", "to": "podcasts"}, {"from": "books", "to": "earlyadopter"}, {"from": "books", "to": "brandonsanderson"}, {"from": "books", "to": "oregon"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
