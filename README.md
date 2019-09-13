@@ -28,6 +28,8 @@ With the prevalence of problems that can be viewed as graph problems, I wanted t
 
 By learning how to represent and analyze graphs, I can learn how to help construct a better society for us all.
 
+_(This was also an interesting and enlightening analysis project for me as someone who has spent only a couple hours on Reddit ever.)_
+
 ## The Data
 
 In this project, I worked with the Stanford [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset made available through [SNAP](https://snap.stanford.edu/index.html), the Stanford Network Analysis Platform.
@@ -130,7 +132,7 @@ Let's get started!
 
 ### Who's the most connected? (Max Degree: In-Degree and Out-Degree)
 
-Since we're dealing with network data, of course we need to ask the question "Who's the most popular?" This is what we're looking at here with "degree".
+My first question of the data was essentially the classic one we might ask about a network: "Who's the most popular?" This is what we're looking at here with "degree".
 
 #### In-Degrees: Edges coming into a node
 
@@ -170,7 +172,9 @@ _Casually: "Who's gossiping about others? Who's sharing things from others?"_
 | circlebroke2 | -- | 6089 |
 | shitstatistssay | -- | 4278 |
 
-There are some interesting results here:
+So if we're specifically interested in the question of popularity, we only need to look at the in-degree numbers since out-degree is only a measure of how much a subreddit "talks" about others. And the popularity winner is... askreddit!
+
+There are some other interesting results here:
 
 **In-Degree Results**
 - All of the top "in-degree" nodes look pretty official and fairly mainstream. They're fairly broad in topic ("funny", "news"), and the top two explicitly encourage interaction ("askreddit", "iama").
@@ -183,71 +187,146 @@ There are some interesting results here:
 - However, there are also aggregation subreddits like "bestof" and "shitredditsays", which compiles the "best of" Reddit.
 - It makes sense for aggregation-oriented subreddits to post the most links to other subreddits.
 
+### How many distinct networks are there? (Component Analysis)
+
+I actually stumbled my way into this question after somehow discovering that some of the nodes were disconnected. I was then able to find a NetworkX function that calculated the number of distinct, separated graphs (known as "components").
+
+**(insert the number of nodes and components, etc, wherever that is.)**
 
 ### Who's friendly, and who's gossipy? (Sharing Reciprocity)
 
-Results...
+Another question I had was, "How might we see which subreddits tend to share things from each other?" To do this I created a metric called **reciprocity**.
+
+#### Reciprocity Definition
+
+I defined reciprocity between two nodes _n_ and _m_ as:
+
+<a href="https://www.codecogs.com/eqnedit.php?latex=nm\&space;reciprocity=\frac{n_m}{n_m&space;&plus;&space;m_n}" target="_blank"><img src="https://latex.codecogs.com/gif.latex?nm\&space;reciprocity=\frac{n_m}{n_m&space;&plus;&space;m_n}" title="nm\ reciprocity=\frac{n_m}{n_m + m_n}" /></a>
+
+where _n_<sub>_m_</sub> is the number of out-going edges from _n_ to _m_ and _m_<sub>_n_</sub> is the number of out-going edges from _m_ to _n_ (which is equivalent to in-coming edges to _n_ from _m_).
+
+Intuitively, reciprocity is simply the fraction of traffic between _n_ and _m_ that originates from _n_. A reciprocity value of 1 means that _n_ shares things about _m_ but _m_ never shares things back (the "ignored" or "gossip" or "paparazzi" scenario); a reciprocity value of 0 means that _n_ gets things shared by _m_, but never shares things back (the "popular kid" or "movie star" scenario); and reciprocity values close to 0.5 mean that the sharing is about equal back and forth between _n_ and _m_ (the "friendly" scenario—unless perhaps it isn't friendly talk being exchanged).
+
+#### Reciprocity Analysis - "Friendly" Scenario
+
+There are about 34 pairs of subreddits (68 total) who have a reciprocity value between 0.4 and 0.6 and have shared over 100 things back and forth with each other. Here are some of them:
+
+| subreddit #1 | subreddit #2 | reciprocity (from #1 - #2) | total shares |
+| --- | --- | --- | --- |
+| buildapc | techsupport | 0.48 | 351 |
+| destinythegame | crucibleplaybook | 0.46 | 286 |
+| subredditdrama | drama | 0.46 | 250 |
+| hearthstone | competitivehs | 0.52 | 237 |
+| smashbros | ssbpm | 0.47 | 212 |
+
+So it looks like the subreddits that share back and forth the most are the ones with very similar topics, which makes sense. It's hard to tell without digging further, but I might hypothesize that these are friendly sharing relationships.
+
+#### Reciprocity Analysis - "Ignored" Scenario
+
+What about those subreddits that are always sharing thing from another subreddit, but never get any love back? Well, it turns out that a lot of these are the same subreddits as we saw in the top out-degree nodes earlier—the aggregators / sharers / complainers: "bestof", "circlebroke2", "shitredditsays", etc. There were also a huge number of "circlejerk" subreddits that showed up in this list: 9 of the top 33 most-ignored subreddits (for high share volume) had "circlejerk" in the name. Shows you something about the internet, I suppose. (Or just Reddit.)
 
 ### If you start at a random subreddit, where do you end up? (Random Walk Analysis)
 
-Results...
+The next question I had pertained to navigating the full graph. If you were to be dropped anywhere in the share network (any subreddit) and follow a random hyperlink to another subreddit, what subreddits would you stumble your way into?
 
-### Which subreddits are the most well-connected? (Centrality and PageRank)
+To run this experiment, I created a RandomWalk class that held information about the graph, the current node, and the nodes that had been seen on the walk. I then created a lot of these walks and looked at the resulting aggregated nodes seen.
 
-Results...
+**(animation of what a random walk through a graph would look like, using a subgraph)**
 
-- Centrality / PageRank (what's the correlation between these two? Could pull this in and do a quick correlation.)
+**(link random walk class, once it's cleaned up. Maybe write a full script that does everything)**
+
+One interesting result that came of this was that most random walks through the graph dead-end at some point, where there are no out-bound edges to follow. In other words, you will usually eventually find yourself in a subreddit that hasn't shared anything from any other subreddit.
+
+**(insert histogram of the distribution of walks -- probably the 100-max-length one.)**
+
+On the other hand, you may have originally gotten dropped into a subreddit that only ever linked to one other subreddit, and that subreddit linked back (one of the 2-node components mentioned above). In that case, you could only cycle back and forth, back and forth, forever and ever. Hope you like the Beach Boys.
+
+**(Beach Boys image)**
+
+But as far as which subreddits you would see the most, the answer isn't too surprising—you're going to see the most popular subreddits many times. (askreddit, iama, etc.)
+
+#### Which subreddits are the most well-connected? (Centrality and PageRank)
+
+This notion of random walks got me wondering—is there any way to determine how "central" any given node is to the network? Is this what I was trying to find with my "nodes seen" analysis?
+
+It turns out there is a notion of node centrality, which also appears to be connected to the PageRank algorithm that Google based their search engine on. When you calculate that and look at the top nodes, you see the usual suspects—the most popular subreddits that we had found earlier, which also aligns with the nodes we saw on our random walks. I'd love to do more research here and see how correlated all of these metrics are.
 
 ### How do we visualize massive graphs? (Big Graph Data Visualization: Random Node Sampling)
 
-Results...
+All of this led me to what was probably my favorite part of the whole project—trying to visualize the graph.
 
-- Visualizing random subsets of the data
-    - Big data visualization - very difficult with graphs, especially, since it's not intuitive how to aggregate nodes
-    - I hit upon this idea - what if we were to take a random sample of each node's neighbors
-    - Clustering / communities / node aggregation. These are future topics for exploration, but I didn't get to them here.
+First, let's just say that trying to visualize tens of thousands of data points in a graph doesn't go well.
 
+**(insert image of all the text, the bad graphs)**
 
+#### First Attempt — Plotting Graph Subsets
 
+We can plot subsets of the graph, but even these blow up very quickly...
 
+**(insert image of one of the subgraphs)**
 
+But, it's still better than nothing!
 
+#### Second Attempt - Coloring the Graph
 
+We can also color the graphs by metrics related to the nodes, such as node degree...
 
+**(insert image of colored graph)**
 
+#### Third Attempt - Random Subgraphs
 
+As you can see in the previous graphs, one of the big problems here is that many subreddits are connected to dozens or hundreds of other subreddits, which makes the graph get out of hand very quickly.
 
-## Conclusions
+All of this brought me to an idea: what if instead of showing _all_ of the neighboring nodes, we randomly selected a few and only showed them? And then what if we did the same for those nodes?
 
-Conclusions...
+When you work this out (see my RandomSubgraph class if you're interested), you get something that looks like this:
 
-- Takeaways
-    - only scratching the surface. this project was really a first attempt at me working with graph data.
-    - huge power and potential here.
-    - lots of interesting visualization questions
+**(tada! great image!)**
+
+By fiddling with the parameters, you can get either a higher or lower percentage of nodes in the graph, and by tweaking some of the internals of the RandomSubgraph class I was also able to sample more of the nodes for nodes that didn't have many neighbors in an attempt to branch throughout more of the full graph structure.
+
+**(insert one of the "full graph" attempts)**
+
+And although we've only been coloring by degree so far, you can color by anything...
+
+**(insert rainbow graph)**
+
+Although the rainbow graph isn't very useful, it does get us thinking about how we might be able to use the power of coloring and graph visualization to discover hidden patterns that are harder to detect.
 
 ## Future Research
 
-Future research...
+I'm only just scratching the surface here, but I discovered a lot. Here are some areas for future research into both this dataset and graph data more generally.
 
-(Neo4j // GraphQL // GraphX)
+- Look at Text Properties
+    * I managed to discover a lot during this project, which is even more interesting because I was only analyzing the structure of the graph itself (along with the node names). I could discover a huge amount if I continued exploring the text properties in this dataset.
+- More Random Sampling and Random Walks
+    * I figured out how to use randomness in a few different ways to aid in my analysis of the graph. More work could definitely be done in this area.
+- Graph Theory
+    * Learn more about how to characterize graphs, and how to navigate them.
+    * Dive into graph algorithms and metrics to expand my toolbox.
+- Graph Machine Learning
+    * Try applying some machine learning to graphs. There's a lot of interesting work being done here.
+- Data Visualization
+    * Clustering / communities / node aggregation. These are future topics for exploration, but I didn't get to them here.
+    * Additional data visualization tools like Cytoscape (and py2cytoscape or the Dash Cytoscape wrapper), NetworkX Viewer, or perhaps even trying to translate graph data to geospatial and visualize it using Folium or another geospatial visualization tool. 
+- Data Structures
+    * Other graph data storage and analysis tools, like Neo4j, GraphX, etc.
 
 ## Technologies & Techniques Used
 
 Technologies:
 - Python
+- [NetworkX](https://networkx.github.io/)
+- [pyvis](https://pyvis.readthedocs.io/en/latest/) - Graph visualization with ability to load graphs from NetworkX.
 - pandas
 - NumPy
 - Jupyter Notebooks
-- NetworkX
-- pyvis
 
 Techniques:
 - Graph Theory
 - Network Analysis
 - Graph Visualization
+- Reciprocity
 - Centrality / PageRank
 - Random Walks
-
-
-
+- Random Sampling
