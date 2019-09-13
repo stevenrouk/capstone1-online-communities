@@ -60,7 +60,7 @@ class GraphCreator:
         return graph
 
 class NetworkXGraphCreator:
-    """Load graph using NetworkX."""
+    """Load graph using NetworkX (without attributes)."""
 
     def __init__(self):
         pass
@@ -104,7 +104,7 @@ class NetworkXGraphCreator:
         return graph
 
 class NetworkXAttributeGraphCreator:
-    """Load graph using NetworkX."""
+    """Load graph using NetworkX (with attributes)."""
 
     def __init__(self):
         pass
