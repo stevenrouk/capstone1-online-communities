@@ -9,9 +9,9 @@ _Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](
 ---
 
 ## Table of Contents
-1. [Motivation](#motivations)
-2. [Dataset](#the-data)
-3. [Terminology](#terminology)
+1. [Motivation](#motivation)
+2. [The Data](#the-data)
+3. [Graph Theory Terminology](#graph-theory-terminology)
 4. [Representing the Data Computationally](#representing-the-data-computationally)
 5. [Questions & Answers](#questions--answers)
     * [Who's the most connected? (Max Degree: In-Degree and Out-Degree)](#whos-the-most-connected-max-degree-in-degree-and-out-degree)
@@ -19,7 +19,6 @@ _Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](
     * [Who's friendly, and who's gossipy? (Sharing Reciprocity)](#whos-friendly-and-whos-gossipy-sharing-reciprocity)
     * [If you start at a random subreddit, where do you end up? (Random Walk Analysis)](#if-you-start-at-a-random-subreddit-where-do-you-end-up-random-walk-analysis)
     * [How do we visualize massive graphs? (Big Graph Data Visualization: Random Node Sampling)](#how-do-we-visualize-massive-graphs-big-graph-data-visualization-random-node-sampling)
-    * []()
 6. [Future Research](#future-research)
 7. [Technologies & Techniques Used](#technologies--techniques-used)
 8. [Gallery](#gallery)
@@ -73,7 +72,7 @@ Here are a few example rows from the data:
 
 **(Insert rows or screenshots or something here.)**
 
-## Terminology
+## Graph Theory Terminology
 
 Compared to working with normal tabular or text data, graph data introduced a whole new glossary of terms, topics, and methods that have to be used to discuss the data. This section will provide a brief introduction to the most important terms used in graph theory. Other terms will be defined as needed throughout the README.
 
