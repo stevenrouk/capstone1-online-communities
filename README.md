@@ -25,9 +25,17 @@ _Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](
 
 _(Note: Due the nature of the content in this dataset, there is some inappropriate language.)_
 
+## README Todos
+
+* clean up src/ folder files
+* find all the paperclips for spots where I want to insert something (:paperclip:)
+* insert links to my class files and helper scripts, where appropriate
+    * maybe have an appendix with all the files and what they're for?
+* link the technologies at the bottom
+
 ## Motivation
 
-Network data–and more generally graph data—is everywhere.
+Network data—and more generally graph data—is everywhere.
 
 Google models websites and knowledge as graphs. Facebook models social networks as graphs. Netflix models movie-watchers as graphs. Scientists model molecules and proteins as graphs. Airlines model flights as graphs.
 
@@ -78,7 +86,6 @@ Compared to working with normal tabular or text data, graph data introduced a wh
 
 These definitions come from (or are adapted from) the Wikipedia page [Glossary of graph theory terms](https://en.wikipedia.org/wiki/Glossary_of_graph_theory_terms), which was an invaluable asset during this project. Beneath each definition, there is a description of how the term translates to this specific dataset.
 
-
 <img src="images/wikipedia-graph.svg" alt="Graph Image, from Wikipedia">
 
 <sub><b>Figure: </b> Example Undirected Graph with 6 Nodes and 7 Edges, from Wikipedia </sub>
@@ -112,7 +119,7 @@ In the following sections we'll explore how more complex graphs can be represent
 
 Before diving into a completely new domain, it can make sense to try your usual tools on the problem. Before I looked at how to represent nodes and edges in a graph-specific data structure, I pulled the data into [pandas](https://pandas.pydata.org/) and looked at some basic statistics.
 
-**(Insert basic pandas results here)**
+:paperclip: **(Insert basic pandas results here)**
 
 Although I could have continued analyzing the data in pandas, I wanted to see what interesting analyses came out of graph-specific approaches.
 
@@ -254,7 +261,7 @@ There are some other interesting results here:
 
 I actually stumbled my way into this question after somehow discovering that some of the nodes were disconnected. I was then able to find a NetworkX function that calculated the number of distinct, separated graphs (known as "components").
 
-**(insert the number of nodes and components, etc, wherever that is.)**
+:paperclip: **(insert the number of nodes and components, etc, wherever that is.)**
 
 ### Who's friendly, and who's gossipy? (Sharing Reciprocity)
 
@@ -294,17 +301,17 @@ The next question I had pertained to navigating the full graph. If you were to b
 
 To run this experiment, I created a RandomWalk class that held information about the graph, the current node, and the nodes that had been seen on the walk. I then created a lot of these walks and looked at the resulting aggregated nodes seen.
 
-**(animation of what a random walk through a graph would look like, using a subgraph)**
+:paperclip: **(animation of what a random walk through a graph would look like, using a subgraph)**
 
-**(link random walk class, once it's cleaned up. Maybe write a full script that does everything)**
+:paperclip: **(link random walk class, once it's cleaned up. Maybe write a full script that does everything)**
 
 One interesting result that came of this was that most random walks through the graph dead-end at some point, where there are no out-bound edges to follow. In other words, you will usually eventually find yourself in a subreddit that hasn't shared anything from any other subreddit.
 
-**(insert histogram of the distribution of walks -- probably the 100-max-length one.)**
+:paperclip: **(insert histogram of the distribution of walks -- probably the 100-max-length one.)**
 
 On the other hand, you may have originally gotten dropped into a subreddit that only ever linked to one other subreddit, and that subreddit linked back (one of the 2-node components mentioned above). In that case, you could only cycle back and forth, back and forth, forever and ever. Hope you like the Beach Boys.
 
-**(Beach Boys image)**
+:paperclip: **(Beach Boys image)**
 
 But as far as which subreddits you would see the most, the answer isn't too surprising—you're going to see the most popular subreddits many times. (askreddit, iama, etc.)
 
@@ -423,6 +430,5 @@ Here's a gallery of some other cool images from this project!
 <img src="images/vegan-10.png" alt="" width="300" height="300"> <img src="images/rainbow2.png" alt="" width="300" height="300">
 
 <img src="images/the-donald-rainbow.png" alt="" width="300" height="300"> <img src="images/ask-reddit-greyscale.png" alt="" width="300" height="300">
-
 
 <img src="images/ask-reddit-jumbled.png" alt="" width="300" height="300"> <img src="/images/reddit-10-full.png" alt="" width="300" height="300">
