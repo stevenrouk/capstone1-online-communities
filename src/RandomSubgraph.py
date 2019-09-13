@@ -58,6 +58,41 @@ class RandomSubgraph:
         
         self._generate_graph_from_results()
     
+    def run_one(self):
+        # Sample from our node
+        sampled_nodes, new_exclusions = self.randomly_sample_adjacent_nodes(self.node)
+
+        # Update our exclusions
+        self.exclusions.update(new_exclusions)
+
+        # Add our sampled nodes to our full list
+        self.random_node_edge_pairs.extend(sampled_nodes)
+
+        # Add our new sampled nodes to our queue to sample from in the future
+        self.queue.extend([x[1] for x in sampled_nodes])
+
+        # Add the node that we just processed to our exclusion list
+        self.exclusions.add(self.node)
+        
+        self._logs.append({
+            "Iteration": self.count,
+            "Sampled": len(sampled_nodes),
+            "Total sampled so far": len(self.random_node_edge_pairs),
+            "Rejected triplets this iteration": len(new_exclusions),
+            "Total rejected triplets so far": len(self.exclusions),
+            "Queue": len(self.queue)
+        })
+
+        self.count += 1
+        if self.count % 100 == 0:
+            print("Iteration:", self.count)
+        try:
+            self.node = self.queue.pop()
+        except:
+            print("Finished after {} iterations.".format(self.count))
+        
+        self._generate_graph_from_results()
+    
     def randomly_sample_adjacent_nodes(self, node):
         # Adjacent nodes to select from, excluding nodes in our exclusion list
         adjacent_nodes = [n for n in list(self.graph[node]) if n not in self.exclusions]
