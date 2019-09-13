@@ -124,6 +124,10 @@ Before diving into a completely new domain, it can make sense to try your usual 
 
 :paperclip: **(Insert basic pandas results here)**
 
+<img src="images/histogram-of-link-sentiment.png" alt="Histogram of Link Sentiment">
+
+<sub><b>Figure: </b> Histogram of Link Sentiment </sub>
+
 Although I could have continued analyzing the data in pandas, I wanted to see what interesting analyses came out of graph-specific approaches.
 
 ### Custom Graph Class: Python Dictionaries and Classes
