@@ -114,8 +114,6 @@ In the following sections we'll explore how more complex graphs can be represent
 
 Before diving into a completely new domain, it can make sense to try your usual tools on the problem. Before I looked at how to represent nodes and edges in a graph-specific data structure, I pulled the data into [pandas](https://pandas.pydata.org/) and looked at some basic statistics.
 
-:paperclip: **(Insert basic pandas results here)**
-
 <img src="images/histogram-of-link-sentiment.png" alt="Histogram of Link Sentiment">
 
 <sub><b>Figure: </b> Histogram of Link Sentiment </sub>
