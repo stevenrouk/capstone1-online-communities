@@ -70,7 +70,7 @@ The dataset also includes a timestamp, and a label of whether the reposted post 
 
 Here are a few example rows from the data:
 
-**(Insert rows or screenshots or something here.)**
+:paperclip: **(Insert rows or screenshots or something here.)**
 
 ## Graph Theory Terminology
 
@@ -319,8 +319,6 @@ It turns out there is a notion of node centrality, which also appears to be conn
 All of this led me to what was probably my favorite part of the whole project—trying to visualize the graph.
 
 First, let's just say that trying to visualize tens of thousands of data points in a graph doesn't go well.
-
-**(insert image of all the text, the bad graphs)**
 
 #### First Attempt — Plotting Graph Subsets
 
