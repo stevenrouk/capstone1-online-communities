@@ -8,8 +8,6 @@ _Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](
 
 ---
 
-<img src="images/subgraph.gif" alt="test subgraph gif" width="400" height="400">
-
 ## Table of Contents
 1. [Motivation](#motivation)
 2. [The Data](#the-data)
