@@ -25,14 +25,6 @@ _Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](
 
 _(Note: Due the nature of the content in this dataset, there is some inappropriate language.)_
 
-## README Todos
-
-* clean up src/ folder files
-* find all the paperclips for spots where I want to insert something (:paperclip:)
-* insert links to my class files and helper scripts, where appropriate
-    * maybe have an appendix with all the files and what they're for?
-* link the technologies at the bottom
-
 ## Motivation
 
 Network data—and more generally graph data—is everywhere.
@@ -321,17 +313,17 @@ The next question I had pertained to navigating the full graph. If you were to b
 
 To run this experiment, I created a RandomWalk class that held information about the graph, the current node, and the nodes that had been seen on the walk. I then created a lot of these walks and looked at the resulting aggregated nodes seen.
 
-:paperclip: **(animation of what a random walk through a graph would look like, using a subgraph)**
-
-:paperclip: **(link random walk class, once it's cleaned up. Maybe write a full script that does everything)**
-
 One interesting result that came of this was that most random walks through the graph dead-end at some point, where there are no out-bound edges to follow. In other words, you will usually eventually find yourself in a subreddit that hasn't shared anything from any other subreddit.
 
-:paperclip: **(insert histogram of the distribution of walks -- probably the 100-max-length one.)**
+<img src="images/histogram-of-random-walk-steps.png" alt="Histogram of the number of steps taken during random walks" width=60% height=60%>
+
+<sub><b>Figure: </b> Histogram of the number of steps taken during random walks </sub>
 
 On the other hand, you may have originally gotten dropped into a subreddit that only ever linked to one other subreddit, and that subreddit linked back (one of the 2-node components mentioned above). In that case, you could only cycle back and forth, back and forth, forever and ever. Hope you like the Beach Boys.
 
-:paperclip: **(Beach Boys image)**
+<img src="images/beach-boys.png" alt="The Beach Boys subreddits, stuck in an endless loop" width=40% height=40%>
+
+<sub><b>Figure: </b> The Beach Boys subreddits, stuck in an endless loop </sub>
 
 But as far as which subreddits you would see the most, the answer isn't too surprising—you're going to see the most popular subreddits many times. (askreddit, iama, etc.)
 
