@@ -31,14 +31,14 @@ def map_nodefunc_to_colors(nodes, nodefunc, how='log'):
     
     return colors
 
-def get_pyvis_graph_with_colors(graph=None, color_map_func=map_degrees_to_colors, color_map_func_kwargs={}):
+def get_pyvis_graph_with_colors(graph=None, color_map_func=map_degrees_to_colors, color_map_func_kwargs={}, notebook=True):
     """Return a pyvis Network graphing object with nodes colored by the mapping function.
     
     With the returned option, you just need to call .show(filename) to show the graph. Example:
     >>> g = get_colorful_graph(graph)
     >>> g.show()
     """
-    g = Network(notebook=True)
+    g = Network(notebook=notebook)
     
     # Get colors for nodes
     G_nodes = graph.nodes

@@ -1,0 +1,201 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.css" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis-network.min.js"> </script>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+
+<style type="text/css">
+
+        #mynetwork {
+            width: 500px;
+            height: 500px;
+            background-color: #ffffff;
+            border: 1px solid lightgray;
+            position: relative;
+            float: left;
+        }
+
+        
+        #loadingBar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width: 500px;
+            height: 500px;
+            background-color:rgba(200,200,200,0.8);
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -ms-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity:1;
+        }
+
+        #bar {
+            position:absolute;
+            top:0px;
+            left:0px;
+            width:20px;
+            height:20px;
+            margin:auto auto auto auto;
+            border-radius:11px;
+            border:2px solid rgba(30,30,30,0.05);
+            background: rgb(0, 173, 246); /* Old browsers */
+            box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+        }
+
+        #border {
+            position:absolute;
+            top:10px;
+            left:10px;
+            width:500px;
+            height:23px;
+            margin:auto auto auto auto;
+            box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+            border-radius:10px;
+        }
+
+        #text {
+            position:absolute;
+            top:8px;
+            left:530px;
+            width:30px;
+            height:50px;
+            margin:auto auto auto auto;
+            font-size:22px;
+            color: #000000;
+        }
+
+        div.outerBorder {
+            position:relative;
+            top:400px;
+            width:600px;
+            height:44px;
+            margin:auto auto auto auto;
+            border:8px solid rgba(0,0,0,0.1);
+            background: rgb(252,252,252); /* Old browsers */
+            background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+            background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+            background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+            background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+            background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+            border-radius:72px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+        }
+        
+
+        
+
+        
+</style>
+
+</head>
+
+<body>
+<div id = "mynetwork"></div>
+
+<div id="loadingBar">
+    <div class="outerBorder">
+        <div id="text">0%</div>
+        <div id="border">
+            <div id="bar"></div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    // initialize global variables.
+    var edges;
+    var nodes;
+    var network; 
+    var container;
+    var options, data;
+
+    
+    // This method is responsible for drawing the graph, returns the drawn network
+    function drawGraph() {
+        var container = document.getElementById('mynetwork');
+        
+        
+
+        // parsing and collecting nodes and edges from the python
+        nodes = new vis.DataSet([{"color": "#ff1414", "id": "askreddit", "label": "askreddit", "shape": "dot"}, {"color": "#001414", "id": "iwanttolearn", "label": "iwanttolearn", "shape": "dot"}, {"color": "#d91414", "id": "leagueoflegends", "label": "leagueoflegends", "shape": "dot"}, {"color": "#6f1414", "id": "worldpolitics", "label": "worldpolitics", "shape": "dot"}, {"color": "#001414", "id": "realbne", "label": "realbne", "shape": "dot"}, {"color": "#581414", "id": "makeupaddiction", "label": "makeupaddiction", "shape": "dot"}, {"color": "#6f1414", "id": "furry", "label": "furry", "shape": "dot"}, {"color": "#b01414", "id": "pcmasterrace", "label": "pcmasterrace", "shape": "dot"}, {"color": "#371414", "id": "cscareerquestions", "label": "cscareerquestions", "shape": "dot"}, {"color": "#581414", "id": "frugal", "label": "frugal", "shape": "dot"}, {"color": "#c01414", "id": "legaladvice", "label": "legaladvice", "shape": "dot"}, {"color": "#001414", "id": "albuquerque", "label": "albuquerque", "shape": "dot"}, {"color": "#001414", "id": "buildapcforme", "label": "buildapcforme", "shape": "dot"}, {"color": "#6f1414", "id": "houston", "label": "houston", "shape": "dot"}, {"color": "#001414", "id": "truetravel", "label": "truetravel", "shape": "dot"}, {"color": "#b81414", "id": "ps4", "label": "ps4", "shape": "dot"}, {"color": "#a61414", "id": "drugs", "label": "drugs", "shape": "dot"}, {"color": "#371414", "id": "dataisbeautiful", "label": "dataisbeautiful", "shape": "dot"}, {"color": "#d91414", "id": "television", "label": "television", "shape": "dot"}, {"color": "#001414", "id": "moderatepolitics", "label": "moderatepolitics", "shape": "dot"}, {"color": "#371414", "id": "eldertrees", "label": "eldertrees", "shape": "dot"}, {"color": "#001414", "id": "monsterrancher", "label": "monsterrancher", "shape": "dot"}, {"color": "#8f1414", "id": "bandnames", "label": "bandnames", "shape": "dot"}, {"color": "#001414", "id": "redditdotcom", "label": "redditdotcom", "shape": "dot"}, {"color": "#001414", "id": "tabled", "label": "tabled", "shape": "dot"}, {"color": "#001414", "id": "youdontsurf", "label": "youdontsurf", "shape": "dot"}, {"color": "#001414", "id": "warcraftlore", "label": "warcraftlore", "shape": "dot"}, {"color": "#6f1414", "id": "starcitizen", "label": "starcitizen", "shape": "dot"}, {"color": "#b81414", "id": "pokemongo", "label": "pokemongo", "shape": "dot"}, {"color": "#001414", "id": "hohsi", "label": "hohsi", "shape": "dot"}, {"color": "#581414", "id": "baltimore", "label": "baltimore", "shape": "dot"}, {"color": "#001414", "id": "explainlikeiama", "label": "explainlikeiama", "shape": "dot"}, {"color": "#001414", "id": "pokemongo_hongkong", "label": "pokemongo_hongkong", "shape": "dot"}, {"color": "#371414", "id": "subredditsimmeta", "label": "subredditsimmeta", "shape": "dot"}, {"color": "#001414", "id": "zaptie", "label": "zaptie", "shape": "dot"}, {"color": "#001414", "id": "birmingham", "label": "birmingham", "shape": "dot"}, {"color": "#001414", "id": "janekim", "label": "janekim", "shape": "dot"}, {"color": "#371414", "id": "nexus6p", "label": "nexus6p", "shape": "dot"}, {"color": "#001414", "id": "pokemongonashville", "label": "pokemongonashville", "shape": "dot"}, {"color": "#581414", "id": "gonewild", "label": "gonewild", "shape": "dot"}, {"color": "#6f1414", "id": "redditmobile", "label": "redditmobile", "shape": "dot"}, {"color": "#001414", "id": "pleasewatchme", "label": "pleasewatchme", "shape": "dot"}, {"color": "#b81414", "id": "learnprogramming", "label": "learnprogramming", "shape": "dot"}, {"color": "#371414", "id": "wicked_edge", "label": "wicked_edge", "shape": "dot"}, {"color": "#001414", "id": "iostraverse", "label": "iostraverse", "shape": "dot"}, {"color": "#001414", "id": "wet_shavers", "label": "wet_shavers", "shape": "dot"}, {"color": "#001414", "id": "webgames", "label": "webgames", "shape": "dot"}, {"color": "#001414", "id": "visualbasic", "label": "visualbasic", "shape": "dot"}, {"color": "#371414", "id": "firefox", "label": "firefox", "shape": "dot"}, {"color": "#001414", "id": "watchpeoplecode", "label": "watchpeoplecode", "shape": "dot"}, {"color": "#001414", "id": "learnjavascript", "label": "learnjavascript", "shape": "dot"}, {"color": "#001414", "id": "dayone", "label": "dayone", "shape": "dot"}, {"color": "#6f1414", "id": "programmerhumor", "label": "programmerhumor", "shape": "dot"}, {"color": "#001414", "id": "mnemonics", "label": "mnemonics", "shape": "dot"}, {"color": "#581414", "id": "datahoarder", "label": "datahoarder", "shape": "dot"}, {"color": "#371414", "id": "blender", "label": "blender", "shape": "dot"}, {"color": "#001414", "id": "lightroom", "label": "lightroom", "shape": "dot"}, {"color": "#001414", "id": "blenderhelp", "label": "blenderhelp", "shape": "dot"}, {"color": "#581414", "id": "electronics", "label": "electronics", "shape": "dot"}, {"color": "#6f1414", "id": "denverbroncos", "label": "denverbroncos", "shape": "dot"}, {"color": "#001414", "id": "frc", "label": "frc", "shape": "dot"}, {"color": "#8f1414", "id": "nba", "label": "nba", "shape": "dot"}, {"color": "#001414", "id": "ravens", "label": "ravens", "shape": "dot"}, {"color": "#001414", "id": "bengals", "label": "bengals", "shape": "dot"}, {"color": "#001414", "id": "nbadiscussion", "label": "nbadiscussion", "shape": "dot"}, {"color": "#001414", "id": "warriors", "label": "warriors", "shape": "dot"}, {"color": "#371414", "id": "reddevils", "label": "reddevils", "shape": "dot"}, {"color": "#001414", "id": "sonics", "label": "sonics", "shape": "dot"}, {"color": "#371414", "id": "liverpoolfc", "label": "liverpoolfc", "shape": "dot"}, {"color": "#001414", "id": "nufc", "label": "nufc", "shape": "dot"}, {"color": "#001414", "id": "strangenewthings", "label": "strangenewthings", "shape": "dot"}, {"color": "#001414", "id": "talkshows", "label": "talkshows", "shape": "dot"}, {"color": "#001414", "id": "screamqueenstv", "label": "screamqueenstv", "shape": "dot"}, {"color": "#001414", "id": "trueseries", "label": "trueseries", "shape": "dot"}, {"color": "#001414", "id": "quarry", "label": "quarry", "shape": "dot"}, {"color": "#371414", "id": "freefolk", "label": "freefolk", "shape": "dot"}, {"color": "#001414", "id": "rushtv", "label": "rushtv", "shape": "dot"}, {"color": "#001414", "id": "bsg", "label": "bsg", "shape": "dot"}, {"color": "#001414", "id": "latenighttalkshows", "label": "latenighttalkshows", "shape": "dot"}, {"color": "#001414", "id": "wyt10", "label": "wyt10", "shape": "dot"}, {"color": "#001414", "id": "nathanforyou", "label": "nathanforyou", "shape": "dot"}, {"color": "#6f1414", "id": "iasip", "label": "iasip", "shape": "dot"}, {"color": "#001414", "id": "theaffair", "label": "theaffair", "shape": "dot"}, {"color": "#001414", "id": "cookingvideos", "label": "cookingvideos", "shape": "dot"}, {"color": "#001414", "id": "googleplaydeals", "label": "googleplaydeals", "shape": "dot"}, {"color": "#001414", "id": "nsfwcelebarchive", "label": "nsfwcelebarchive", "shape": "dot"}, {"color": "#001414", "id": "tvstreams", "label": "tvstreams", "shape": "dot"}, {"color": "#001414", "id": "zenfone2", "label": "zenfone2", "shape": "dot"}, {"color": "#001414", "id": "fpga", "label": "fpga", "shape": "dot"}, {"color": "#001414", "id": "redditdonate", "label": "redditdonate", "shape": "dot"}, {"color": "#001414", "id": "subredditsimulator_ss", "label": "subredditsimulator_ss", "shape": "dot"}, {"color": "#001414", "id": "baltimorejobs", "label": "baltimorejobs", "shape": "dot"}, {"color": "#371414", "id": "cycling", "label": "cycling", "shape": "dot"}, {"color": "#001414", "id": "fixedgearbicycle", "label": "fixedgearbicycle", "shape": "dot"}, {"color": "#001414", "id": "galacticinquiry", "label": "galacticinquiry", "shape": "dot"}, {"color": "#581414", "id": "guildwars2", "label": "guildwars2", "shape": "dot"}, {"color": "#371414", "id": "monitors", "label": "monitors", "shape": "dot"}, {"color": "#371414", "id": "nvidia", "label": "nvidia", "shape": "dot"}, {"color": "#001414", "id": "conanexiles", "label": "conanexiles", "shape": "dot"}, {"color": "#001414", "id": "guildwars2pvp", "label": "guildwars2pvp", "shape": "dot"}, {"color": "#001414", "id": "guildwarsgonewild", "label": "guildwarsgonewild", "shape": "dot"}, {"color": "#001414", "id": "timetolegalize", "label": "timetolegalize", "shape": "dot"}, {"color": "#001414", "id": "comment_grapher", "label": "comment_grapher", "shape": "dot"}, {"color": "#001414", "id": "thingsforants", "label": "thingsforants", "shape": "dot"}, {"color": "#001414", "id": "drugsover30", "label": "drugsover30", "shape": "dot"}, {"color": "#371414", "id": "ketamine", "label": "ketamine", "shape": "dot"}, {"color": "#001414", "id": "ayahuasca", "label": "ayahuasca", "shape": "dot"}, {"color": "#371414", "id": "researchchemicals", "label": "researchchemicals", "shape": "dot"}, {"color": "#001414", "id": "replications", "label": "replications", "shape": "dot"}, {"color": "#001414", "id": "nosurf", "label": "nosurf", "shape": "dot"}, {"color": "#001414", "id": "roku", "label": "roku", "shape": "dot"}, {"color": "#001414", "id": "pes2015", "label": "pes2015", "shape": "dot"}, {"color": "#371414", "id": "rigsmcl", "label": "rigsmcl", "shape": "dot"}, {"color": "#001414", "id": "horizon", "label": "horizon", "shape": "dot"}, {"color": "#001414", "id": "d3ps4", "label": "d3ps4", "shape": "dot"}, {"color": "#001414", "id": "shadowofmordor", "label": "shadowofmordor", "shape": "dot"}, {"color": "#581414", "id": "metalgearsolid", "label": "metalgearsolid", "shape": "dot"}, {"color": "#371414", "id": "jrpg", "label": "jrpg", "shape": "dot"}, {"color": "#371414", "id": "psvr", "label": "psvr", "shape": "dot"}, {"color": "#001414", "id": "finalfantasyexplorers", "label": "finalfantasyexplorers", "shape": "dot"}, {"color": "#001414", "id": "rsf", "label": "rsf", "shape": "dot"}, {"color": "#001414", "id": "neverbegameover", "label": "neverbegameover", "shape": "dot"}, {"color": "#001414", "id": "houstonr4r", "label": "houstonr4r", "shape": "dot"}, {"color": "#811414", "id": "chicago", "label": "chicago", "shape": "dot"}, {"color": "#001414", "id": "graffiti", "label": "graffiti", "shape": "dot"}, {"color": "#001414", "id": "crappymusic", "label": "crappymusic", "shape": "dot"}, {"color": "#001414", "id": "chicagomesh", "label": "chicagomesh", "shape": "dot"}, {"color": "#001414", "id": "cubs", "label": "cubs", "shape": "dot"}, {"color": "#001414", "id": "hawks", "label": "hawks", "shape": "dot"}, {"color": "#6f1414", "id": "kotakuinaction", "label": "kotakuinaction", "shape": "dot"}, {"color": "#001414", "id": "ornithology", "label": "ornithology", "shape": "dot"}, {"color": "#371414", "id": "sneakers", "label": "sneakers", "shape": "dot"}, {"color": "#001414", "id": "asused", "label": "asused", "shape": "dot"}, {"color": "#371414", "id": "mentalhealth", "label": "mentalhealth", "shape": "dot"}, {"color": "#001414", "id": "asklaw", "label": "asklaw", "shape": "dot"}, {"color": "#001414", "id": "legal", "label": "legal", "shape": "dot"}, {"color": "#001414", "id": "artistlounge", "label": "artistlounge", "shape": "dot"}, {"color": "#001414", "id": "credit", "label": "credit", "shape": "dot"}, {"color": "#001414", "id": "asklegal", "label": "asklegal", "shape": "dot"}, {"color": "#001414", "id": "ptsd", "label": "ptsd", "shape": "dot"}, {"color": "#001414", "id": "nike", "label": "nike", "shape": "dot"}, {"color": "#581414", "id": "philosophy", "label": "philosophy", "shape": "dot"}, {"color": "#001414", "id": "shitghazisays", "label": "shitghazisays", "shape": "dot"}, {"color": "#001414", "id": "kiachatroom", "label": "kiachatroom", "shape": "dot"}, {"color": "#001414", "id": "nonfictionbookclub", "label": "nonfictionbookclub", "shape": "dot"}, {"color": "#001414", "id": "intjthinktank", "label": "intjthinktank", "shape": "dot"}, {"color": "#001414", "id": "apotheoun", "label": "apotheoun", "shape": "dot"}, {"color": "#001414", "id": "newreddits", "label": "newreddits", "shape": "dot"}, {"color": "#001414", "id": "salesforce", "label": "salesforce", "shape": "dot"}, {"color": "#001414", "id": "factorio", "label": "factorio", "shape": "dot"}, {"color": "#001414", "id": "dirtgame", "label": "dirtgame", "shape": "dot"}, {"color": "#001414", "id": "gamernews", "label": "gamernews", "shape": "dot"}, {"color": "#001414", "id": "elderscrolls", "label": "elderscrolls", "shape": "dot"}, {"color": "#001414", "id": "assettocorsa", "label": "assettocorsa", "shape": "dot"}, {"color": "#001414", "id": "prisonarchitect", "label": "prisonarchitect", "shape": "dot"}, {"color": "#001414", "id": "druaga1", "label": "druaga1", "shape": "dot"}, {"color": "#001414", "id": "gildstats", "label": "gildstats", "shape": "dot"}, {"color": "#001414", "id": "shortscarystories", "label": "shortscarystories", "shape": "dot"}, {"color": "#001414", "id": "guyswithbodypaint", "label": "guyswithbodypaint", "shape": "dot"}, {"color": "#001414", "id": "nightinthewoods", "label": "nightinthewoods", "shape": "dot"}, {"color": "#001414", "id": "makeupswatches", "label": "makeupswatches", "shape": "dot"}, {"color": "#001414", "id": "randomactsofmakeup", "label": "randomactsofmakeup", "shape": "dot"}, {"color": "#001414", "id": "levantinewar", "label": "levantinewar", "shape": "dot"}, {"color": "#001414", "id": "cia", "label": "cia", "shape": "dot"}, {"color": "#001414", "id": "occupy", "label": "occupy", "shape": "dot"}, {"color": "#001414", "id": "talonmains", "label": "talonmains", "shape": "dot"}, {"color": "#001414", "id": "ghosts", "label": "ghosts", "shape": "dot"}, {"color": "#001414", "id": "lolclubs", "label": "lolclubs", "shape": "dot"}, {"color": "#001414", "id": "league_of_legends_", "label": "league_of_legends_", "shape": "dot"}, {"color": "#001414", "id": "velkoz", "label": "velkoz", "shape": "dot"}, {"color": "#001414", "id": "wallpapers", "label": "wallpapers", "shape": "dot"}, {"color": "#001414", "id": "teamredditteams", "label": "teamredditteams", "shape": "dot"}, {"color": "#001414", "id": "purdue", "label": "purdue", "shape": "dot"}, {"color": "#001414", "id": "cryptoanarchy", "label": "cryptoanarchy", "shape": "dot"}, {"color": "#001414", "id": "vlg", "label": "vlg", "shape": "dot"}, {"color": "#001414", "id": "lucianmains", "label": "lucianmains", "shape": "dot"}, {"color": "#001414", "id": "noveltranslations", "label": "noveltranslations", "shape": "dot"}, {"color": "#001414", "id": "jannamains", "label": "jannamains", "shape": "dot"}, {"color": "#371414", "id": "destiny", "label": "destiny", "shape": "dot"}, {"color": "#001414", "id": "allthingsprotoss", "label": "allthingsprotoss", "shape": "dot"}]);
+        edges = new vis.DataSet([{"from": "askreddit", "to": "iwanttolearn"}, {"from": "askreddit", "to": "leagueoflegends"}, {"from": "askreddit", "to": "worldpolitics"}, {"from": "askreddit", "to": "realbne"}, {"from": "askreddit", "to": "makeupaddiction"}, {"from": "askreddit", "to": "furry"}, {"from": "askreddit", "to": "pcmasterrace"}, {"from": "askreddit", "to": "cscareerquestions"}, {"from": "askreddit", "to": "frugal"}, {"from": "askreddit", "to": "legaladvice"}, {"from": "askreddit", "to": "albuquerque"}, {"from": "askreddit", "to": "buildapcforme"}, {"from": "askreddit", "to": "houston"}, {"from": "askreddit", "to": "truetravel"}, {"from": "askreddit", "to": "ps4"}, {"from": "askreddit", "to": "drugs"}, {"from": "askreddit", "to": "dataisbeautiful"}, {"from": "askreddit", "to": "television"}, {"from": "askreddit", "to": "moderatepolitics"}, {"from": "askreddit", "to": "eldertrees"}, {"from": "askreddit", "to": "monsterrancher"}, {"from": "askreddit", "to": "bandnames"}, {"from": "askreddit", "to": "redditdotcom"}, {"from": "askreddit", "to": "tabled"}, {"from": "leagueoflegends", "to": "talonmains"}, {"from": "leagueoflegends", "to": "ghosts"}, {"from": "leagueoflegends", "to": "lolclubs"}, {"from": "leagueoflegends", "to": "league_of_legends_"}, {"from": "leagueoflegends", "to": "velkoz"}, {"from": "leagueoflegends", "to": "wallpapers"}, {"from": "leagueoflegends", "to": "teamredditteams"}, {"from": "leagueoflegends", "to": "purdue"}, {"from": "leagueoflegends", "to": "cryptoanarchy"}, {"from": "leagueoflegends", "to": "vlg"}, {"from": "leagueoflegends", "to": "lucianmains"}, {"from": "leagueoflegends", "to": "noveltranslations"}, {"from": "leagueoflegends", "to": "jannamains"}, {"from": "leagueoflegends", "to": "destiny"}, {"from": "worldpolitics", "to": "levantinewar"}, {"from": "worldpolitics", "to": "cia"}, {"from": "worldpolitics", "to": "occupy"}, {"from": "makeupaddiction", "to": "makeupswatches"}, {"from": "makeupaddiction", "to": "randomactsofmakeup"}, {"from": "furry", "to": "shortscarystories"}, {"from": "furry", "to": "guyswithbodypaint"}, {"from": "furry", "to": "nightinthewoods"}, {"from": "pcmasterrace", "to": "factorio"}, {"from": "pcmasterrace", "to": "dirtgame"}, {"from": "pcmasterrace", "to": "gamernews"}, {"from": "pcmasterrace", "to": "elderscrolls"}, {"from": "pcmasterrace", "to": "assettocorsa"}, {"from": "pcmasterrace", "to": "prisonarchitect"}, {"from": "pcmasterrace", "to": "druaga1"}, {"from": "pcmasterrace", "to": "gildstats"}, {"from": "cscareerquestions", "to": "salesforce"}, {"from": "frugal", "to": "apotheoun"}, {"from": "frugal", "to": "newreddits"}, {"from": "legaladvice", "to": "kotakuinaction"}, {"from": "legaladvice", "to": "ornithology"}, {"from": "legaladvice", "to": "sneakers"}, {"from": "legaladvice", "to": "asused"}, {"from": "legaladvice", "to": "mentalhealth"}, {"from": "legaladvice", "to": "asklaw"}, {"from": "legaladvice", "to": "legal"}, {"from": "legaladvice", "to": "artistlounge"}, {"from": "legaladvice", "to": "credit"}, {"from": "legaladvice", "to": "asklegal"}, {"from": "houston", "to": "houstonr4r"}, {"from": "houston", "to": "chicago"}, {"from": "houston", "to": "graffiti"}, {"from": "ps4", "to": "roku"}, {"from": "ps4", "to": "pes2015"}, {"from": "ps4", "to": "rigsmcl"}, {"from": "ps4", "to": "horizon"}, {"from": "ps4", "to": "d3ps4"}, {"from": "ps4", "to": "shadowofmordor"}, {"from": "ps4", "to": "metalgearsolid"}, {"from": "ps4", "to": "jrpg"}, {"from": "ps4", "to": "psvr"}, {"from": "drugs", "to": "thingsforants"}, {"from": "drugs", "to": "drugsover30"}, {"from": "drugs", "to": "ketamine"}, {"from": "drugs", "to": "ayahuasca"}, {"from": "drugs", "to": "researchchemicals"}, {"from": "drugs", "to": "replications"}, {"from": "drugs", "to": "nosurf"}, {"from": "dataisbeautiful", "to": "comment_grapher"}, {"from": "television", "to": "strangenewthings"}, {"from": "television", "to": "talkshows"}, {"from": "television", "to": "screamqueenstv"}, {"from": "television", "to": "trueseries"}, {"from": "television", "to": "quarry"}, {"from": "television", "to": "freefolk"}, {"from": "television", "to": "rushtv"}, {"from": "television", "to": "bsg"}, {"from": "television", "to": "latenighttalkshows"}, {"from": "television", "to": "wyt10"}, {"from": "television", "to": "nathanforyou"}, {"from": "television", "to": "iasip"}, {"from": "television", "to": "theaffair"}, {"from": "eldertrees", "to": "timetolegalize"}, {"from": "bandnames", "to": "youdontsurf"}, {"from": "bandnames", "to": "warcraftlore"}, {"from": "bandnames", "to": "starcitizen"}, {"from": "bandnames", "to": "pokemongo"}, {"from": "bandnames", "to": "hohsi"}, {"from": "starcitizen", "to": "galacticinquiry"}, {"from": "starcitizen", "to": "guildwars2"}, {"from": "starcitizen", "to": "monitors"}, {"from": "pokemongo", "to": "baltimore"}, {"from": "pokemongo", "to": "explainlikeiama"}, {"from": "pokemongo", "to": "pokemongo_hongkong"}, {"from": "pokemongo", "to": "subredditsimmeta"}, {"from": "pokemongo", "to": "zaptie"}, {"from": "pokemongo", "to": "birmingham"}, {"from": "pokemongo", "to": "janekim"}, {"from": "pokemongo", "to": "nexus6p"}, {"from": "pokemongo", "to": "pokemongonashville"}, {"from": "baltimore", "to": "baltimorejobs"}, {"from": "baltimore", "to": "cycling"}, {"from": "subredditsimmeta", "to": "subredditsimulator_ss"}, {"from": "nexus6p", "to": "gonewild"}, {"from": "gonewild", "to": "redditmobile"}, {"from": "gonewild", "to": "pleasewatchme"}, {"from": "redditmobile", "to": "learnprogramming"}, {"from": "redditmobile", "to": "wicked_edge"}, {"from": "redditmobile", "to": "iostraverse"}, {"from": "learnprogramming", "to": "webgames"}, {"from": "learnprogramming", "to": "visualbasic"}, {"from": "learnprogramming", "to": "firefox"}, {"from": "learnprogramming", "to": "watchpeoplecode"}, {"from": "learnprogramming", "to": "learnjavascript"}, {"from": "learnprogramming", "to": "dayone"}, {"from": "learnprogramming", "to": "programmerhumor"}, {"from": "learnprogramming", "to": "mnemonics"}, {"from": "learnprogramming", "to": "datahoarder"}, {"from": "wicked_edge", "to": "wet_shavers"}, {"from": "firefox", "to": "redditdonate"}, {"from": "programmerhumor", "to": "electronics"}, {"from": "programmerhumor", "to": "denverbroncos"}, {"from": "programmerhumor", "to": "frc"}, {"from": "datahoarder", "to": "blender"}, {"from": "datahoarder", "to": "lightroom"}, {"from": "blender", "to": "blenderhelp"}, {"from": "electronics", "to": "zenfone2"}, {"from": "electronics", "to": "fpga"}, {"from": "denverbroncos", "to": "nba"}, {"from": "denverbroncos", "to": "ravens"}, {"from": "denverbroncos", "to": "bengals"}, {"from": "nba", "to": "nbadiscussion"}, {"from": "nba", "to": "warriors"}, {"from": "nba", "to": "television"}, {"from": "nba", "to": "reddevils"}, {"from": "nba", "to": "sonics"}, {"from": "reddevils", "to": "liverpoolfc"}, {"from": "liverpoolfc", "to": "nufc"}, {"from": "freefolk", "to": "tvstreams"}, {"from": "iasip", "to": "cookingvideos"}, {"from": "iasip", "to": "googleplaydeals"}, {"from": "iasip", "to": "nsfwcelebarchive"}, {"from": "cycling", "to": "fixedgearbicycle"}, {"from": "guildwars2", "to": "guildwars2pvp"}, {"from": "guildwars2", "to": "guildwarsgonewild"}, {"from": "monitors", "to": "nvidia"}, {"from": "nvidia", "to": "conanexiles"}, {"from": "researchchemicals", "to": "ketamine"}, {"from": "metalgearsolid", "to": "rsf"}, {"from": "metalgearsolid", "to": "neverbegameover"}, {"from": "jrpg", "to": "finalfantasyexplorers"}, {"from": "psvr", "to": "rigsmcl"}, {"from": "chicago", "to": "crappymusic"}, {"from": "chicago", "to": "chicagomesh"}, {"from": "chicago", "to": "cubs"}, {"from": "chicago", "to": "hawks"}, {"from": "kotakuinaction", "to": "philosophy"}, {"from": "kotakuinaction", "to": "shitghazisays"}, {"from": "kotakuinaction", "to": "kiachatroom"}, {"from": "sneakers", "to": "nike"}, {"from": "mentalhealth", "to": "ptsd"}, {"from": "philosophy", "to": "nonfictionbookclub"}, {"from": "philosophy", "to": "intjthinktank"}, {"from": "destiny", "to": "allthingsprotoss"}]);
+
+        // adding nodes and edges to the graph
+        data = {nodes: nodes, edges: edges};
+
+        var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": false,
+            "type": "continuous"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+        
+        
+
+        
+
+        network = new vis.Network(container, data, options);
+
+        
+
+
+        
+        network.on("stabilizationProgress", function(params) {
+      		document.getElementById('loadingBar').removeAttribute("style");
+	        var maxWidth = 496;
+	        var minWidth = 20;
+	        var widthFactor = params.iterations/params.total;
+	        var width = Math.max(minWidth,maxWidth * widthFactor);
+
+	        document.getElementById('bar').style.width = width + 'px';
+	        document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+	    });
+	    network.once("stabilizationIterationsDone", function() {
+	        document.getElementById('text').innerHTML = '100%';
+	        document.getElementById('bar').style.width = '496px';
+	        document.getElementById('loadingBar').style.opacity = 0;
+	        // really clean the dom element
+	        setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+	    });
+        
+
+        return network;
+
+    }
+
+    drawGraph();
+
+</script>
+</body>
+</html>
