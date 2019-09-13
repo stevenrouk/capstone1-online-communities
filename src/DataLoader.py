@@ -39,6 +39,7 @@ class DataLoader:
         self.cols_to_load = cols_to_load
 
     def load(self):
+        """Load the data file and return the lines as a list."""
         with open(self.filepath) as f:
             if not self.full_file:
                 lines = []
@@ -47,7 +48,7 @@ class DataLoader:
             else:
                 lines = f.readlines()
 
-        cleaned_lines = np.array(self.clean(lines))
+        cleaned_lines = np.array(self._clean(lines))
         if not self.cols_to_load:
             return cleaned_lines
         else:
@@ -57,7 +58,8 @@ class DataLoader:
                     cols_to_load_idx.append(i)
             return cleaned_lines[:, cols_to_load_idx]
     
-    def clean(self, lines):
+    def _clean(self, lines):
+        """Splits lines on tabs and removes the extraneous new line sometimes found."""
         new_lines = []
         for line in lines:
             new_lines.append(line.replace('\n', '').split('\t'))
