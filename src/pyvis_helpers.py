@@ -17,20 +17,6 @@ def map_degrees_to_colors(nodes, graph, how='log'):
     
     return colors
 
-def map_nodefunc_to_colors(nodes, nodefunc, how='log'):
-    """BROKEN FOR NOW.
-    
-    Takes in any function that maps nodes to real numbers
-    and returns a color gradient mapping from those numbers
-    to colors.
-    
-    Note that nodefunc can be a class method like `graph.degree`.
-    """
-    nums = np.log([nodefunc(node) for node in nodes])
-    colors = nums_to_greyscale_hex(nums)
-    
-    return colors
-
 def get_pyvis_graph_with_colors(graph=None, color_map_func=map_degrees_to_colors, color_map_func_kwargs={}, notebook=True):
     """Return a pyvis Network graphing object with nodes colored by the mapping function.
     
