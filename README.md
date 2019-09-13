@@ -22,7 +22,7 @@ Google models websites and knowledge as graphs. Facebook models social networks 
 
 And in this data exploration, we're looking at Reddit hyperlink networks as graphs.
 
-![Colorful Graph 1](images/colorful-graph-1.png)
+<img src="images/colorful-graph-1.png" alt="colorful graph 1" width="400" height="400">
 **(insert image of one of my graphs here...but maybe not one of the _best_ ones just yet.)**
 
 With the prevalence of problems that can be viewed as graph problems, I wanted to know how to conduct an analysis on graph data. This isn't an idle interest for me, either. I think that most of the big problems we face today are fundamantally problems of social networks and information flow, problems like: improving our democracies; maintaining freedom of speech while combatting misleading information; connecting people to necessary resources; fighting extreme wealth inequality; creating effective organizations and communities; etc.
