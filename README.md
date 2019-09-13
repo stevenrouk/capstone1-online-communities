@@ -35,7 +35,7 @@ And in this data exploration, we're looking at Reddit hyperlink networks as grap
 
 <img src="images/colorful-graph-1.png" alt="colorful graph 1" width="400" height="400">
 
-<sub><b>Figure 1: </b> Example graph using the pyvis library </sub>
+<sub><b>Figure: </b> Example graph using the pyvis library </sub>
 
 With the prevalence of problems that can be viewed as graph problems, I wanted to know how to conduct an analysis on graph data. This isn't an idle interest for me, either. I think that most of the big problems we face today are fundamantally problems of social networks and information flow, problems like: improving our democracies; maintaining freedom of speech while combatting misleading information; connecting people to necessary resources; fighting extreme wealth inequality; creating effective organizations and communities; etc.
 
@@ -81,7 +81,7 @@ These definitions come from (or are adapted from) the Wikipedia page [Glossary o
 
 <img src="images/wikipedia-graph.svg" alt="Graph Image, from Wikipedia">
 
-<sub><b>Figure 2: </b> Example Undirected Graph with 6 Nodes and 7 Edges, from Wikipedia </sub>
+<sub><b>Figure: </b> Example Undirected Graph with 6 Nodes and 7 Edges, from Wikipedia </sub>
 
 1. **graph.** The fundamental object of study in graph theory, a system of vertices connected in pairs by edges. Often subdivided into directed graphs or undirected graphs according to whether the edges have an orientation or not.
     * _The graph that we're working with is the system of all hyperlinks shared between subreddits over our 2.5 year period._
@@ -124,7 +124,7 @@ In Python, you can represent graphs using dictionaries where the keys are nodes 
 
 <img src="images/toy-graph-1.png" alt="Toy Undirected Graph" width="400" height="400">
 
-<sub><b>Figure 3: </b> A toy undirected graph that I used for developing custom graph classes. There was a lot of whiteboard doodling during this project. </sub>
+<sub><b>Figure: </b> A toy undirected graph that I used for developing custom graph classes. There was a lot of whiteboard doodling during this project. </sub>
 
 And here is the corresponding dictionary representation in Python:
 
@@ -187,7 +187,7 @@ My first question of the data was essentially the classic one we might ask about
 
 <img src="images/example-color-nodes-by-degree.png" alt="Example of coloring nodes by degree" width="600" height="600">
 
-<sub><b>Figure 4: </b> Example of coloring nodes by degree with a demo graph </sub>
+<sub><b>Figure: </b> Example of coloring nodes by degree with a demo graph </sub>
 
 #### In-Degrees: Edges coming into a node
 
@@ -244,11 +244,11 @@ There are some other interesting results here:
 
 <img src="images/color-by-degree.png" alt="Example of coloring nodes by degree" width="600" height="600">
 
-<sub><b>Figure 5: </b> Example of coloring nodes by degree with Reddit data </sub>
+<sub><b>Figure: </b> Example of coloring nodes by degree with Reddit data </sub>
 
 <img src="images/color-by-degree-zoomed.png" alt="Coloring by degree, zoomed in" width="600" height="600">
 
-<sub><b>Figure 6: </b> Zoomed in so you can see the subreddit names </sub>
+<sub><b>Figure: </b> Zoomed in so you can see the subreddit names </sub>
 
 ### How many distinct networks are there? (Component Analysis)
 
@@ -328,15 +328,15 @@ We can plot subsets of the graph, but even these blow up very quickly...
 
 <img src="images/science.png" alt="science subgraph" width="500" height="500">
 
-<sub><b>Figure ##: </b> The subgraph of science and its adjacent nodes </sub>
+<sub><b>Figure: </b> The subgraph of science and its adjacent nodes </sub>
 
 <img src="images/science-animalrights.png" alt="science and animal rights subgraph" width="500" height="500">
 
-<sub><b>Figure ##: </b> The subgraph of science, animal rights, and their adjacent nodes </sub>
+<sub><b>Figure: </b> The subgraph of science, animal rights, and their adjacent nodes </sub>
 
 <img src="images/science-animalrights-books.png" alt="science, animal rights, and books subgraph" width="500" height="500">
 
-<sub><b>Figure ##: </b> The subgraph of science, animal rights, books, and their adjacent nodes </sub>
+<sub><b>Figure: </b> The subgraph of science, animal rights, books, and their adjacent nodes </sub>
 
 But, it's still better than nothing!
 
@@ -346,7 +346,7 @@ We can also color the graphs by metrics related to the nodes, such as node degre
 
 <img src="images/science-animalrights-books-colored-by-degree.png" alt="science, animal rights, and books subgraph, colored by degree" width="500" height="500">
 
-<sub><b>Figure ##: </b> The subgraph of science, animal rights, books, and their adjacent nodes, colored by degree </sub>
+<sub><b>Figure: </b> The subgraph of science, animal rights, books, and their adjacent nodes, colored by degree </sub>
 
 #### Third Attempt - Random Subgraphs
 
@@ -358,19 +358,19 @@ When you work this out (see my RandomSubgraph class if you're interested), you g
 
 <img src="images/random-sample-1.png" alt="askreddit small random sample" width="600" height="600">
 
-<sub><b>Figure ##: </b> Small random sample, starting with askreddit </sub>
+<sub><b>Figure: </b> Small random sample, starting with askreddit </sub>
 
 By fiddling with the parameters, you can get either a higher or lower percentage of nodes in the graph, and by tweaking some of the internals of the RandomSubgraph class I was also able to sample more of the nodes for nodes that didn't have many neighbors in an attempt to branch throughout more of the full graph structure. Color by degree again and you get this...
 
 <img src="images/big-graph-colored-by-degree.png" alt="askreddit full graph random sample" width="600" height="600">
 
-<sub><b>Figure ##: </b> Attempt at randomly sampling from the full graph, starting with askreddit </sub>
+<sub><b>Figure: </b> Attempt at randomly sampling from the full graph, starting with askreddit </sub>
 
 Which, frankly, is _beautiful_. And although we've only been coloring by degree so far, you can color by anything...
 
 <img src="images/big-graph-colored-by-degree-rainbow.png" alt="askreddit full graph random sample rainbow!" width="600" height="600">
 
-<sub><b>Figure ##: </b> Full graph sample, rainbow-ified! </sub>
+<sub><b>Figure: </b> Full graph sample, rainbow-ified! </sub>
 
 Even though the rainbow graph isn't very useful, it does get us thinking about how we might be able to use the power of coloring and graph visualization to discover hidden patterns that are harder to detect.
 
