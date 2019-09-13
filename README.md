@@ -254,15 +254,15 @@ There are some other interesting results here:
 - However, there are also aggregation subreddits like "bestof" and "shitredditsays", which compiles the "best of" Reddit.
 - It makes sense for aggregation-oriented subreddits to post the most links to other subreddits.
 
-<img src="images/color-by-degree.png" alt="Example of coloring nodes by degree" width="600" height="600">
+<img src="images/color-by-degree.png" alt="Example of coloring nodes by degree" width="500" height="500">
 
 <sub><b>Figure: </b> Example of coloring nodes by degree with Reddit data </sub>
 
-<img src="images/color-by-degree-zoomed.png" alt="Coloring by degree, zoomed in" width="600" height="600">
+<img src="images/color-by-degree-zoomed.png" alt="Coloring by degree, zoomed in" width="500" height="500">
 
 <sub><b>Figure: </b> Zoomed in so you can see the subreddit names </sub>
 
-<img src="images/jiggly-graph-high-res.gif" alt="Example of interactive graph" width="600" height="600">
+<img src="images/jiggly-graph-high-res.gif" alt="Example of interactive graph" width="500" height="500">
 
 <sub><b>Figure: </b> In the actual HTML file, you can interact with the graph! (It's very jiggly!) </sub>
 
