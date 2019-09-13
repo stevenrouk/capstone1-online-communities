@@ -262,6 +262,10 @@ There are some other interesting results here:
 
 <sub><b>Figure: </b> Zoomed in so you can see the subreddit names </sub>
 
+<img src="images/jiggly-graph-high-res.gif" alt="Example of interactive graph" width="600" height="600">
+
+<sub><b>Figure: </b> In the actual HTML file, you can interact with the graph! (It's very jiggly!) </sub>
+
 ### How many distinct networks are there? (Component Analysis)
 
 I actually stumbled my way into this question after somehow discovering that some of the nodes were disconnected. I was then able to find a NetworkX function that calculated the number of distinct, separated graphs (known as "components").
@@ -271,8 +275,19 @@ I actually stumbled my way into this question after somehow discovering that som
 connected_components = list(nx.connected_components(G_combined.to_undirected()))
 component_length_counts = Counter([len(x) for x in connected_components])
 
+# key-value pairs are: "Number of nodes in component": "how many graphs have that many nodes"
 print(component_length_counts)
-* Counter({2: 646, 3: 42, 4: 14, 5: 3, 7: 2, 6: 2, 65648: 1, 9: 1, 8: 1})
+* Counter({
+    65648: 1,
+        9: 1,
+        8: 1,
+        7: 2,
+        6: 2,
+        5: 3,
+        4: 14,
+        3: 42,
+        2: 646
+})
 ```
 
 ### Who's friendly, and who's gossipy? (Sharing Reciprocity)
