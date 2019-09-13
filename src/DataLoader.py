@@ -13,6 +13,24 @@ import pandas as pd
 from src.property_names import PROPERTIES_COLUMN_NAMES
 
 class DataLoader:
+    """Helper class for loading Reddit Hyperlink data.
+
+    Attributes
+    ----------
+    filepath : str
+        Path to the data file.
+    full_file : bool, optional
+        Whether or not to load the full file.
+        If this is set to true, then the num_lines
+        argument is not used.
+    num_lines : str
+        How many lines of the file to load.
+        Use this parameter if not loading the
+        full file.
+    cols_to_load : bool, optional
+        Which columns in the data to load. Need
+        to use the column names found in the raw data.
+    """
 
     def __init__(self, filepath, full_file=False, num_lines=10, cols_to_load=[]):
         self.filepath = filepath
