@@ -1,4 +1,4 @@
-# Capstone 1 - Finding Patterns in Social Networks Using Graph Data
+# Steven Rouk, Capstone 1 - Finding Patterns in Social Networks Using Graph Data
 
 Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset.
 
@@ -12,7 +12,7 @@ Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](h
     * [Graph Theory](#)
     * []
 
-_(Note: Due the nature of the content in this dataset, there is some inappropriate language shown in some of the graphs.)_
+_(Note: Due the nature of the content in this dataset, there is some inappropriate language.)_
 
 ## Motivation
 
@@ -22,6 +22,7 @@ Google models websites and knowledge as graphs. Facebook models social networks 
 
 And in this data exploration, we're looking at Reddit hyperlink networks as graphs.
 
+![Colorful Graph 1]('images/colorful-graph-1.png')
 **(insert image of one of my graphs here...but maybe not one of the _best_ ones just yet.)**
 
 With the prevalence of problems that can be viewed as graph problems, I wanted to know how to conduct an analysis on graph data. This isn't an idle interest for me, either. I think that most of the big problems we face today are fundamantally problems of social networks and information flow, problems like: improving our democracies; maintaining freedom of speech while combatting misleading information; connecting people to necessary resources; fighting extreme wealth inequality; creating effective organizations and communities; etc.
