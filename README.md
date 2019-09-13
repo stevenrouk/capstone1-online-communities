@@ -392,6 +392,12 @@ When you work this out (see my RandomSubgraph class if you're interested), you g
 
 <sub><b>Figure: </b> Small random sample, starting with askreddit </sub>
 
+Here's what the graph looks like as it's growing...
+
+<img src="images/subgraph-growth.gif" alt="growth of a random sample subgraph" width="400" height="400">
+
+<sub><b>Figure: </b> Growth of a random sample subgraph </sub>
+
 By fiddling with the parameters, you can get either a higher or lower percentage of nodes in the graph, and by tweaking some of the internals of the RandomSubgraph class I was also able to sample more of the nodes for nodes that didn't have many neighbors in an attempt to branch throughout more of the full graph structure. Color by degree again and you get this...
 
 <img src="images/big-graph-colored-by-degree.png" alt="askreddit full graph random sample" width="600" height="600">
