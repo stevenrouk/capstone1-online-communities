@@ -67,12 +67,25 @@ class DataLoader:
         return new_lines
 
 class PandasDataLoader:
+    """Helper class for loading Reddit Hyperlink data into pandas.
+
+    Attributes
+    ----------
+    filepath1 : str
+        Path to the data file.
+    filepath2 : str, optional
+        If filepath2 is passed, then another
+        data file is loaded and combined with
+        the first data file. The combined
+        DataFrame is returned.
+    """
 
     def __init__(self, filepath1, filepath2=None):
         self.filepath1 = filepath1
         self.filepath2 = filepath2
     
     def load(self):
+        """Load one data file if only one filepath was passed, else load two and return combined."""
         df1 = pd.read_csv(self.filepath1, delimiter='\t')
         if not self.filepath2:
             return df1
@@ -83,6 +96,8 @@ class PandasDataLoader:
     
     @staticmethod
     def generate_properties_df(df):
+        """Takes the 'PROPERTIES' column of the DataFrame and splits it into its 86 numeric columns.
+        Returns a DataFrame of just these text properties."""
         text_properties = df.apply(lambda row: ast.literal_eval(row['PROPERTIES']), axis=1).values.tolist()
         df_properties = pd.DataFrame(text_properties, columns=PROPERTIES_COLUMN_NAMES)
 
