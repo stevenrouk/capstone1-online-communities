@@ -47,7 +47,7 @@ _(This was also an interesting and enlightening analysis project for me as someo
 
 In this project, I worked with the Stanford [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset made available through [SNAP](https://snap.stanford.edu/index.html), the Stanford Network Analysis Platform.
 
-<img src="https://images.app.goo.gl/A82qdcug3NfryvSEA" alt="Stanford SNAP Logo">
+<img src="images/snap_logo.png" alt="Stanford SNAP Logo">
 
 <sub><b></b> The Stanford SNAP Logo </sub>
 
@@ -79,7 +79,7 @@ Compared to working with normal tabular or text data, graph data introduced a wh
 These definitions come from (or are adapted from) the Wikipedia page [Glossary of graph theory terms](https://en.wikipedia.org/wiki/Glossary_of_graph_theory_terms), which was an invaluable asset during this project. Beneath each definition, there is a description of how the term translates to this specific dataset.
 
 
-<img src="https://en.wikipedia.org/wiki/Graph_theory#/media/File:6n-graf.svg" alt="Graph Image, from Wikipedia">
+<img src="images/wikipedia-graph.svg" alt="Graph Image, from Wikipedia">
 
 <sub><b>Figure 2: </b> Example Undirected Graph with 6 Nodes and 7 Edges, from Wikipedia </sub>
 
