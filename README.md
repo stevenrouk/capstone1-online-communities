@@ -1,4 +1,4 @@
-# Steven Rouk, Capstone 1 - Finding Patterns in Social Networks Using Graph Data
+# Steven Rouk - Finding Patterns in Social Networks Using Graph Data
 
 _Graph analysis of the Stanford SNAP [Social Network: Reddit Hyperlink Network](https://snap.stanford.edu/data/soc-RedditHyperlinks.html) dataset._
 
